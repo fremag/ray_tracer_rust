@@ -1,5 +1,5 @@
 use crate::math::{equals, Float};
-
+use std::ops::{Add, Sub, Neg, Mul, Div};
 
 #[derive(Debug)]
 pub struct Tuple {
@@ -10,11 +10,23 @@ pub struct Tuple {
 }
 
 impl Tuple {
+    pub fn new(x: Float, y : Float, z : Float, w: Float) -> Self {
+        Tuple {x, y, z, w }
+    }
+
     pub fn is_vector(&self) -> bool {
         self.w == 0.0
     }
     pub fn is_point(&self) -> bool {
         self.w == 1.0
+    }
+
+    pub fn magnitude(&self) -> Float {
+        (self.x*self.x+self.y*self.y+self.z*self.z).sqrt()
+    }
+    pub fn normalize(&self) -> Tuple {
+        let mag = self.magnitude();
+        Tuple::new(self.x / mag, self.y / mag, self.z / mag, self.w / mag)
     }
 }
 
@@ -24,6 +36,44 @@ impl PartialEq for Tuple {
             equals(self.y, other.y) &&
             equals(self.z, other.z) &&
             equals(self.w, other.w)
+    }
+}
+
+impl Add for Tuple {
+    type Output = Tuple;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Tuple {x: self.x + rhs.x, y: self.y + rhs.y, z: self.z + rhs.z, w: self.w + rhs.w}
+    }
+}
+impl Sub for Tuple {
+    type Output = Tuple;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        Tuple {x: self.x - rhs.x, y: self.y - rhs.y, z: self.z - rhs.z, w: self.w - rhs.w}
+    }
+}
+impl Neg for Tuple {
+    type Output = Tuple;
+
+    fn neg(self) -> Self::Output {
+        Tuple {x: -self.x, y: -self.y, z: -self.z, w: -self.w}
+    }
+}
+
+impl Mul<Float> for Tuple {
+    type Output = Tuple;
+
+    fn mul(self, rhs: Float) -> Self::Output {
+        Tuple{ x: self.x * rhs, y: self.y * rhs, z: self.z * rhs, w: self.w * rhs}
+    }
+}
+
+impl Div<Float> for Tuple {
+    type Output = Tuple;
+
+    fn div(self, rhs: Float) -> Self::Output {
+        Tuple{ x: self.x / rhs, y: self.y / rhs, z: self.z / rhs, w: self.w / rhs}
     }
 }
 pub fn point(x : Float, y : Float, z : Float) -> Tuple {
