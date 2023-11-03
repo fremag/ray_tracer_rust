@@ -1,11 +1,17 @@
 use crate::math::{equals, Float};
 use std::ops::{Add, Sub, Mul};
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Color  {
     pub(crate) r : Float,
     pub(crate) g : Float,
     pub(crate) b : Float
+}
+
+impl Color {
+    pub fn new(red : Float, green : Float, blue : Float ) -> Self {
+        Self{r: red, g: green, b: blue}
+    }
 }
 
 impl PartialEq for Color {
