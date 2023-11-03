@@ -1,7 +1,7 @@
 use crate::math::{equals, Float};
 use std::ops::{Add, Sub, Neg, Mul, Div};
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct Tuple {
     pub(crate) x : Float,
     pub(crate) y : Float,
@@ -27,6 +27,10 @@ impl Tuple {
     pub fn normalize(&self) -> Tuple {
         let mag = self.magnitude();
         Tuple::new(self.x / mag, self.y / mag, self.z / mag, self.w / mag)
+    }
+
+    pub fn dot(&self, v : &Tuple) -> Float {
+        self.x * v.x + self.y * v.y +self.z * v.z
     }
 }
 
@@ -66,6 +70,16 @@ impl Mul<Float> for Tuple {
 
     fn mul(self, rhs: Float) -> Self::Output {
         Tuple{ x: self.x * rhs, y: self.y * rhs, z: self.z * rhs, w: self.w * rhs}
+    }
+}
+
+impl Mul<&Tuple> for Tuple {
+    type Output = Tuple;
+
+    fn mul(self, rhs: &Tuple) -> Self::Output {
+        vector(self.y * rhs.z - self.z * rhs.y,
+            self.z * rhs.x - self.x * rhs.z,
+            self.x * rhs.y - self.y * rhs.x)
     }
 }
 

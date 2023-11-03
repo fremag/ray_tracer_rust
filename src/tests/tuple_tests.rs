@@ -161,3 +161,20 @@ fn magnitude_of_a_normalized_vector_test() {
     let v = vector(1.0, 2.0,3.0);
     assert_eq!(math::equals(v.normalize().magnitude(), 1.0), true)
 }
+
+#[test]
+fn dot_product_two_tuples_test () {
+    let v1 = vector(1.0, 2.0, 3.0);
+    let v2 = vector(2.0, 3.0, 4.0);
+    let dot_product = v1.dot(&v2);
+    assert_eq!(dot_product, 20.0)
+}
+#[test]
+fn cross_product_two_vectors_test () {
+    let v1 = vector(1.0, 2.0, 3.0);
+    let v2 = vector(2.0, 3.0, 4.0);
+    let dot_product = v1 * &v2;
+    assert_eq!(dot_product, vector(-1.0, 2.0, -1.0));
+    let inv_dot_product = v2 * &v1;
+    assert_eq!(inv_dot_product, vector(1.0, -2.0, 1.0))
+}
