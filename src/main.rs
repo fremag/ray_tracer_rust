@@ -4,6 +4,7 @@ mod core;
 mod math;
 mod tuple;
 mod projectile;
+mod colors;
 fn main() {
     println!("Hello, world!");
     println!("{0}", ray_tracer::add(2, 3))
