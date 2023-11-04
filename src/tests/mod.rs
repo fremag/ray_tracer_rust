@@ -3,3 +3,4 @@ mod math_tests;
 mod projectile_tests;
 mod color_tests;
 mod canvas_tests;
+mod matrix_tests;
