@@ -1,5 +1,5 @@
 use crate::math::{equals, Float};
-use std::ops::{Add, Sub, Neg, Mul, Div};
+use std::ops::{Add, Sub, Neg, Mul, Div, Index};
 
 #[derive(Debug, Copy, Clone)]
 pub struct Tuple {
@@ -95,4 +95,15 @@ pub fn point(x : Float, y : Float, z : Float) -> Tuple {
 }
 pub fn vector(x : Float, y : Float, z : Float) -> Tuple {
     Tuple { x, y, z, w : 0.0}
+}
+
+impl Index<usize> for Tuple {
+    type Output = Float;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        match index {
+            0 => &self.x, 1 => &self.y, 2 => &self.z, 3 => &self.w,
+            _ => &f32::NAN as &Float
+        }
+    }
 }

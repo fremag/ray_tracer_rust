@@ -1,4 +1,5 @@
 use crate::matrix::Matrix;
+use crate::tuple::Tuple;
 
 #[test]
 fn matrix4_test() {
@@ -53,4 +54,16 @@ fn multiplying_two_matrices_test() {
     let matrix_d = matrix_a * matrix_b;
 
     assert_eq!(matrix_d == matrix_c, true )
+}
+
+#[test]
+fn a_matrix_multiplied_by_a_tuple() {
+    let matrix = Matrix::new4
+        (1.0, 2.0, 3.0, 4.0,
+         2.0, 4.0, 4.0, 2.0,
+         8.0, 6.0, 4.0, 1.0,
+         0.0, 0.0, 0.0, 1.0);
+    let tuple = Tuple::new(1.0, 2.0, 3.0, 1.0);
+    let result = matrix * tuple;
+    assert_eq!(result , Tuple::new(18.0, 24.0, 33.0, 1.0) )
 }

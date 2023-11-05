@@ -1,5 +1,6 @@
 use std::ops::{Index, Mul};
 use crate::math::{equals, Float};
+use crate::tuple::Tuple;
 
 pub struct Matrix<const N: usize> {
     data: [[Float; N]; N]
@@ -90,5 +91,22 @@ impl<const N : usize> Mul<Matrix<N>> for Matrix<N> {
         }
         let matrix : Matrix<N> = Matrix {data};
         matrix
+    }
+}
+
+impl<const N : usize> Mul<Tuple> for Matrix<N> {
+    type Output = Tuple;
+
+    fn mul(self, rhs: Tuple) -> Tuple {
+        let mut data = [0.0; N];
+        for row in 0..N {
+            let mut c: Float  = 0.0;
+            for col in 0..N {
+                c += self[row][col] * rhs[col];
+            }
+            data[row]= c;
+        }
+        let tuple : Tuple = Tuple {x: data[0], y: data[1], z: data[2], w: data[3]};
+        tuple
     }
 }
