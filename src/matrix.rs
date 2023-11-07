@@ -2,24 +2,27 @@ use std::ops::{Index, Mul};
 use crate::math::{equals, Float};
 use crate::tuple::Tuple;
 
+#[derive(Debug, Copy, Clone)]
 pub struct Matrix<const N: usize> {
     data: [[Float; N]; N]
 }
 
-impl Matrix<2> {
-    pub fn new2(
-        m00: Float, m01: Float,
-        m10: Float, m11: Float
-    ) -> Matrix<2> {
-        let data = [
-            [m00, m01],
-            [m10, m11]
-        ];
+impl<const N : usize> Matrix<N> {
+    pub fn identity() -> Matrix<N> {
+        let mut x: Matrix<N> = Matrix { data: [[0.0; N]; N] };
+        for i in 0..N {
+            x.data[i][i] = 1.0;
+        }
+        x
+    }
+
+    pub fn new(data: [[Float; N]; N]) -> Matrix<N> {
         Matrix { data }
     }
 }
 
 impl Matrix<4> {
+
     pub fn new4(
         m00: Float, m01: Float, m02: Float, m03: Float,
         m10: Float, m11: Float, m12: Float, m13: Float,
@@ -34,21 +37,7 @@ impl Matrix<4> {
         ];
         Matrix { data }
     }
-}
 
-impl Matrix<3> {
-    pub fn new3(
-        m00: Float, m01: Float, m02: Float,
-        m10: Float, m11: Float, m12: Float,
-        m20: Float, m21: Float, m22: Float,
-    ) -> Matrix<3> {
-        let data = [
-            [m00, m01, m02],
-            [m10, m11, m12],
-            [m20, m21, m22],
-        ];
-        Matrix { data }
-    }
 }
 
 impl<const N: usize> Index<usize> for Matrix<N> {
@@ -75,10 +64,10 @@ impl<const N : usize> PartialEq for Matrix<N> {
     }
 }
 
-impl<const N : usize> Mul<Matrix<N>> for Matrix<N> {
+impl<const N : usize> Mul<&Matrix<N>> for Matrix<N> {
     type Output = Matrix<N>;
 
-    fn mul(self, rhs: Matrix<N>) -> Matrix<N> {
+    fn mul(self, rhs: &Matrix<N>) -> Matrix<N> {
         let mut data = [[0.0; N]; N];
         for row in 0..N {
             for col in 0..N {
