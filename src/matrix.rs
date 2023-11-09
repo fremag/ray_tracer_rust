@@ -78,6 +78,19 @@ impl Matrix<4> {
         let sub_data = sub_mat::<4,3>(remove_row, remove_col, &(self.data));
         Matrix::<3> { data: *sub_data }
     }
+
+    pub fn inverse(&self) -> Matrix<4> {
+        let determinant = self.determinant();
+        let mut transposed_cofactor_data: [[Float;4];4] = [[0.0; 4]; 4];
+        for row in 0..4 {
+            for col in 0..4 {
+                let cofactor = self.cofactor(row, col);
+                transposed_cofactor_data[col][row] = cofactor / determinant;
+            }
+        }
+
+        Matrix {data: transposed_cofactor_data}
+    }
 }
 
 fn sub_mat<const SIZE: usize, const SUB_SIZE: usize>(remove_row : usize, remove_col : usize, data: &[[Float; SIZE]; SIZE]) -> Box<[[Float; SUB_SIZE]; SUB_SIZE]> {
@@ -160,7 +173,9 @@ impl<const N : usize> PartialEq for Matrix<N> {
     fn eq(&self, other: &Self) -> bool {
         for i in 0..N {
             for j in 0..N {
-                if ! equals( self[i][j], other[i][j]) {
+                let a = self[i][j];
+                let b = other[i][j];
+                if ! equals(a, b) {
                     return false;
                 }
             }
