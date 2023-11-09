@@ -2,7 +2,7 @@ use std::ops::{Index, Mul};
 use crate::math::{equals, Float};
 use crate::tuple::Tuple;
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug)]
 pub struct Matrix<const N: usize> {
     data: [[Float; N]; N]
 }
@@ -56,49 +56,37 @@ impl Matrix<4> {
     }
 
     pub fn sub_matrix(&self, remove_row : usize, remove_col : usize) -> Matrix<3> {
-        let mut sub_data = [[0.0; 3]; 3];
+        let sub_data = sub_mat::<4,3>(remove_row, remove_col, &(self.data));
+        Matrix::<3> { data: *sub_data }
+    }
+}
 
-        let mut new_row = 0;
-        for old_row in 0..4 {
-            if old_row == remove_row {
+fn sub_mat<const SIZE: usize, const SUB_SIZE: usize>(remove_row : usize, remove_col : usize, data: &[[Float; SIZE]; SIZE]) -> Box<[[Float; SUB_SIZE]; SUB_SIZE]> {
+    let mut sub_data : [[Float; SUB_SIZE]; SUB_SIZE] = [[0.0; SUB_SIZE]; SUB_SIZE];
+
+    let mut new_row = 0;
+    for old_row in 0..SIZE {
+        if old_row == remove_row {
+            continue;
+        }
+        let mut new_col = 0;
+        for old_col in 0..SIZE {
+            if old_col == remove_col {
                 continue;
             }
-            let mut new_col = 0;
-            for old_col in 0..4 {
-                if old_col == remove_col {
-                    continue;
-                }
-                sub_data[new_row][new_col] = self.data[old_row][old_col];
-                new_col += 1;
-            }
-            new_row += 1;
+            sub_data[new_row][new_col] = data[old_row][old_col];
+            new_col += 1;
         }
-
-        Matrix::<3> { data: sub_data}
+        new_row += 1;
     }
+
+    Box::new(sub_data)
 }
 
 impl Matrix<3> {
     pub fn sub_matrix(&self, remove_row : usize, remove_col : usize) -> Matrix<2> {
-        let mut sub_data = [[0.0; 2]; 2];
-
-        let mut new_row = 0;
-        for old_row in 0..3 {
-            if old_row == remove_row {
-                continue;
-            }
-            let mut new_col = 0;
-            for old_col in 0..3 {
-                if old_col == remove_col {
-                    continue;
-                }
-                sub_data[new_row][new_col] = self.data[old_row][old_col];
-                new_col += 1;
-            }
-            new_row += 1;
-        }
-
-        Matrix::<2> { data: sub_data}
+        let sub_data = sub_mat::<3,2>(remove_row, remove_col, &(self.data));
+        Matrix::<2> { data: *sub_data }
     }
 }
 
@@ -122,11 +110,10 @@ impl<const N : usize> PartialEq for Matrix<N> {
         }
 
         return true;
-
     }
 }
 
-impl<const N : usize> Mul<&Matrix<N>> for Matrix<N> {
+impl<const N : usize> Mul<&Matrix<N>> for &Matrix<N> {
     type Output = Matrix<N>;
 
     fn mul(self, rhs: &Matrix<N>) -> Matrix<N> {
@@ -145,10 +132,10 @@ impl<const N : usize> Mul<&Matrix<N>> for Matrix<N> {
     }
 }
 
-impl<const N : usize> Mul<Tuple> for Matrix<N> {
+impl<const N : usize> Mul<&Tuple> for &Matrix<N> {
     type Output = Tuple;
 
-    fn mul(self, rhs: Tuple) -> Tuple {
+    fn mul(self, rhs: &Tuple) -> Tuple {
         let mut data = [0.0; N];
         for row in 0..N {
             let mut c: Float  = 0.0;
