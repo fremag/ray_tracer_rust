@@ -85,3 +85,32 @@ fn multiplying_a_matrix_by_the_identity_matrix_test() {
     let result_2x2 = matrix_2x2 * &identity_2x2;
     assert_eq!(result_2x2 == matrix_2x2, true );
 }
+
+#[test]
+fn transposing_a_matrix_test() {
+    let matrix = Matrix::new4(0.0, 9.0, 3.0, 0.0, 9.0, 8.0, 0.0, 8.0, 1.0, 8.0, 5.0, 3.0, 0.0, 0.0, 5.0, 8.0);
+    let transposed_matrix = Matrix::new4(0.0, 9.0, 1.0, 0.0, 9.0, 8.0, 8.0, 0.0, 3.0, 0.0, 5.0, 5.0, 0.0, 8.0, 3.0, 8.0);
+    let result = matrix.transpose();
+
+    assert_eq!(result, transposed_matrix)
+}
+
+#[test]
+fn transposing_identity_matrix_test() {
+    let matrix = Matrix::<4>::identity();
+    assert_eq!(matrix.transpose(), matrix)
+}
+
+#[test]
+fn sub_matrix_3x3_test() {
+    let matrix_3x3 = Matrix::new([[1.0, 5.0, 0.0], [-3.0, 2.0, 7.0], [0.0, 6.0, -3.0]]);
+    let matrix_2x2 = Matrix::new([[-3.0, 2.0], [0.0, 6.0]]);
+
+    assert_eq!(matrix_3x3.sub_matrix(0, 2), matrix_2x2)
+}
+
+#[test]
+fn calculating_determinant_matrix_2x2_test() {
+    let matrix_2x2 = Matrix::new([[1.0, 5.0], [-3.0, 2.0]]);
+    assert_eq!(matrix_2x2.determinant(), 17.0)
+}

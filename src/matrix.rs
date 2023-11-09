@@ -9,15 +9,32 @@ pub struct Matrix<const N: usize> {
 
 impl<const N : usize> Matrix<N> {
     pub fn identity() -> Matrix<N> {
-        let mut x: Matrix<N> = Matrix { data: [[0.0; N]; N] };
+        let mut matrix_identity: Matrix<N> = Matrix { data: [[0.0; N]; N] };
         for i in 0..N {
-            x.data[i][i] = 1.0;
+            matrix_identity.data[i][i] = 1.0;
         }
-        x
+        matrix_identity
     }
 
     pub fn new(data: [[Float; N]; N]) -> Matrix<N> {
         Matrix { data }
+    }
+
+    pub fn transpose(&self) -> Matrix<N> {
+        let mut data  = [[0.0; N]; N];
+        for i in 0..N {
+            for j in 0..N {
+                data[i][j] = self.data[j][i];
+            }
+        }
+        Matrix {data}
+    }
+
+    pub fn determinant(&self) -> Float {
+        match N {
+            2 =>  self.data[0][0] * self.data[1][1] - self.data[0][1] * self.data[1][0],
+            _ => 0.0
+        }
     }
 }
 
@@ -38,6 +55,51 @@ impl Matrix<4> {
         Matrix { data }
     }
 
+    pub fn sub_matrix(&self, remove_row : usize, remove_col : usize) -> Matrix<3> {
+        let mut sub_data = [[0.0; 3]; 3];
+
+        let mut new_row = 0;
+        for old_row in 0..4 {
+            if old_row == remove_row {
+                continue;
+            }
+            let mut new_col = 0;
+            for old_col in 0..4 {
+                if old_col == remove_col {
+                    continue;
+                }
+                sub_data[new_row][new_col] = self.data[old_row][old_col];
+                new_col += 1;
+            }
+            new_row += 1;
+        }
+
+        Matrix::<3> { data: sub_data}
+    }
+}
+
+impl Matrix<3> {
+    pub fn sub_matrix(&self, remove_row : usize, remove_col : usize) -> Matrix<2> {
+        let mut sub_data = [[0.0; 2]; 2];
+
+        let mut new_row = 0;
+        for old_row in 0..3 {
+            if old_row == remove_row {
+                continue;
+            }
+            let mut new_col = 0;
+            for old_col in 0..3 {
+                if old_col == remove_col {
+                    continue;
+                }
+                sub_data[new_row][new_col] = self.data[old_row][old_col];
+                new_col += 1;
+            }
+            new_row += 1;
+        }
+
+        Matrix::<2> { data: sub_data}
+    }
 }
 
 impl<const N: usize> Index<usize> for Matrix<N> {
