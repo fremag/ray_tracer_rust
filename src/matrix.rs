@@ -2,6 +2,18 @@ use std::ops::{Index, Mul};
 use crate::math::{equals, Float};
 use crate::tuple::Tuple;
 
+pub trait Determinant {
+    fn determinant(&self) -> Float;
+    fn minor(&self, row : usize, col : usize) -> Float;
+    fn cofactor(&self, row : usize, col : usize) -> Float {
+        if (row + col) % 2 == 0 {
+            self.minor(row, col)
+        } else {
+            - self.minor(row, col)
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct Matrix<const N: usize> {
     data: [[Float; N]; N]
@@ -29,17 +41,24 @@ impl<const N : usize> Matrix<N> {
         }
         Matrix {data}
     }
+}
 
-    pub fn determinant(&self) -> Float {
-        match N {
-            2 =>  self.data[0][0] * self.data[1][1] - self.data[0][1] * self.data[1][0],
-            _ => 0.0
-        }
+impl Determinant for Matrix<2> {
+
+    fn determinant(&self) -> Float {
+            self.data[0][0] * self.data[1][1] - self.data[0][1] * self.data[1][0]
+    }
+
+    fn minor(&self, _row: usize, _col: usize) -> Float {
+        0.0
+    }
+
+    fn cofactor(&self, _row: usize, _col: usize) -> Float {
+        0.0
     }
 }
 
 impl Matrix<4> {
-
     pub fn new4(
         m00: Float, m01: Float, m02: Float, m03: Float,
         m10: Float, m11: Float, m12: Float, m13: Float,
@@ -90,6 +109,45 @@ impl Matrix<3> {
     }
 }
 
+impl Determinant for Matrix<3> {
+    fn determinant(&self) -> Float {
+        let m0 =  self.cofactor(0,0);
+        let m1 =  self.cofactor(0,1);
+        let m2 =  self.cofactor(0,2);
+        let v0 = self.data[0][0];
+        let v1 = self.data[0][1];
+        let v2 = self.data[0][2];
+
+        let det = m0 * v0 + m1 * v1 + m2 * v2;
+        det
+    }
+
+    fn minor(&self, row : usize, col : usize) -> Float {
+        let sub_matrix = self.sub_matrix(row, col);
+        sub_matrix.determinant()
+    }
+}
+
+impl Determinant for Matrix<4> {
+    fn determinant(&self) -> Float {
+        let m0 =  self.cofactor(0,0);
+        let m1 =  self.cofactor(0,1);
+        let m2 =  self.cofactor(0,2);
+        let m3 =  self.cofactor(0,3);
+        let v0 = self.data[0][0];
+        let v1 = self.data[0][1];
+        let v2 = self.data[0][2];
+        let v3 = self.data[0][3];
+
+        let det = m0 * v0 + m1 * v1 + m2 * v2 + m3 * v3;
+        det
+    }
+
+    fn minor(&self, row : usize, col : usize) -> Float {
+        let sub_matrix = self.sub_matrix(row, col);
+        sub_matrix.determinant()
+    }
+}
 impl<const N: usize> Index<usize> for Matrix<N> {
     type Output = [Float; N];
 

@@ -1,4 +1,4 @@
-use crate::matrix::{Matrix};
+use crate::matrix::{Determinant, Matrix};
 use crate::tuple::Tuple;
 
 #[test]
@@ -121,4 +121,38 @@ fn sub_matrix_3x3_test() {
 fn calculating_determinant_matrix_2x2_test() {
     let matrix_2x2 = Matrix::new([[1.0, 5.0], [-3.0, 2.0]]);
     assert_eq!(matrix_2x2.determinant(), 17.0)
+}
+
+#[test]
+fn calculating_minor_matrix_3x3_test() {
+    let matrix_3x3 = Matrix::new([[3.0, 5.0, 0.0], [2.0, -1.0, -7.0], [6.0, -1.0, 5.0]]);
+    assert_eq!(matrix_3x3.minor(1, 0), 25.0)
+}
+
+#[test]
+fn calculating_cofactor_matrix_3x3_test() {
+    let matrix_3x3 = Matrix::new([[3.0, 5.0, 0.0], [2.0, -1.0, -7.0], [6.0, -1.0, 5.0]]);
+    assert_eq!(matrix_3x3.minor(0, 0), -12.0);
+    assert_eq!(matrix_3x3.cofactor(0, 0), -12.0);
+    assert_eq!(matrix_3x3.minor(1, 0), 25.0);
+    assert_eq!(matrix_3x3.cofactor(1, 0), -25.0);
+}
+
+#[test]
+fn calculating_determinant_matrix_3x3_test() {
+    let matrix_3x3 = Matrix::new([[1.0, 2.0, 6.0], [-5.0, 8.0, -4.0], [2.0, 6.0, 4.0]]);
+    assert_eq!(matrix_3x3.cofactor(0, 0), 56.0);
+    assert_eq!(matrix_3x3.cofactor(0, 1), 12.0);
+    assert_eq!(matrix_3x3.cofactor(0, 2), -46.0);
+    assert_eq!(matrix_3x3.determinant(), -196.0);
+}
+
+#[test]
+fn calculating_determinant_matrix_4x4_test() {
+    let matrix_4x4 = Matrix::new([[-2.0, -8.0, 3.0, 5.0], [-3.0, 1.0, 7.0, 3.0], [1.0, 2.0, -9.0, 6.0], [-6.0, 7.0, 7.0, -9.0]]);
+    assert_eq!(matrix_4x4.cofactor(0, 0), 690.0);
+    assert_eq!(matrix_4x4.cofactor(0, 1), 447.0);
+    assert_eq!(matrix_4x4.cofactor(0, 2), 210.0);
+    assert_eq!(matrix_4x4.cofactor(0, 3), 51.0);
+    assert_eq!(matrix_4x4.determinant(), -4071.0);
 }
