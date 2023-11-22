@@ -7,6 +7,7 @@ mod projectile;
 mod colors;
 mod canvas;
 mod matrix;
+mod transform;
 
 fn main() {
     println!("Hello, world!");
