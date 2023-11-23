@@ -9,6 +9,7 @@ mod canvas;
 mod matrix;
 mod transform;
 mod ray;
+mod sphere;
 
 fn main() {
     println!("Hello, world!");
