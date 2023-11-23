@@ -73,6 +73,14 @@ impl Mul<Float> for Tuple {
     }
 }
 
+impl Mul<Tuple> for Float {
+    type Output = Tuple;
+
+    fn mul(self, rhs: Tuple) -> Self::Output {
+        rhs * self
+    }
+}
+
 impl Mul<&Tuple> for Tuple {
     type Output = Tuple;
 

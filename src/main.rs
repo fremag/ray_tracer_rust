@@ -8,6 +8,7 @@ mod colors;
 mod canvas;
 mod matrix;
 mod transform;
+mod ray;
 
 fn main() {
     println!("Hello, world!");

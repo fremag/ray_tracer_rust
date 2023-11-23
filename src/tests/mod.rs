@@ -5,3 +5,4 @@ mod color_tests;
 mod canvas_tests;
 mod matrix_tests;
 mod transform_tests;
+mod ray_tests;
