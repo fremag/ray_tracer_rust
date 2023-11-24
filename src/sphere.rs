@@ -2,8 +2,14 @@ use crate::math::Float;
 use crate::ray::Ray;
 use crate::tuple::point;
 
+#[derive(Debug)]
 pub struct Sphere {
 
+}
+impl PartialEq for Sphere {
+    fn eq(&self, _ : &Self) -> bool {
+        true
+    }
 }
 
 impl Sphere {

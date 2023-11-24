@@ -10,6 +10,8 @@ mod matrix;
 mod transform;
 mod ray;
 mod sphere;
+mod intersection;
+mod shape;
 
 fn main() {
     println!("Hello, world!");
