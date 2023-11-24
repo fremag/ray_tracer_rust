@@ -1,11 +1,17 @@
 use crate::math::Float;
 use crate::ray::Ray;
+use crate::shape::Shape;
 use crate::tuple::point;
 
 #[derive(Debug)]
 pub struct Sphere {
 
 }
+
+impl Shape for Sphere {
+
+}
+
 impl PartialEq for Sphere {
     fn eq(&self, _ : &Self) -> bool {
         true
@@ -32,6 +38,6 @@ impl Sphere {
     }
 }
 
-pub fn sphere() -> Sphere {
-    Sphere { }
+pub fn sphere() -> &'static Sphere {
+    &Sphere { }
 }
