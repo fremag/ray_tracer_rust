@@ -1,21 +1,11 @@
 use crate::math::Float;
 use crate::ray::Ray;
-use crate::shape::{Shape, ShapeType};
+use crate::shape::Shape;
 use crate::tuple::point;
 
 #[derive(Debug)]
 pub struct Sphere {
 
-}
-
-impl Shape for Sphere {
-    fn shape_type(&self) -> ShapeType {
-        ShapeType::Sphere
-    }
-
-    fn equals(&self, other: &dyn Shape) -> bool {
-        other.shape_type() == self.shape_type()
-    }
 }
 
 impl Sphere {
@@ -38,6 +28,6 @@ impl Sphere {
     }
 }
 
-pub fn sphere() -> &'static Sphere {
-    &Sphere { }
+pub fn sphere() -> &'static Shape {
+    &Shape::Sphere(Sphere { })
 }

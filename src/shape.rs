@@ -1,20 +1,23 @@
 use std::fmt::Debug;
+use crate::math::Float;
+use crate::ray::Ray;
+use crate::sphere::Sphere;
 
-#[derive(PartialEq)]
-pub enum ShapeType {Sphere}
+#[derive(Debug)]
+pub enum Shape {Sphere(Sphere)}
 
-pub trait Shape : Debug {
-
-    fn shape_type(&self) -> ShapeType;
-    fn equals(&self, other : &dyn Shape) -> bool;
-}
-
-impl PartialEq<Self> for dyn Shape {
+impl PartialEq for Shape {
     fn eq(&self, other: &Self) -> bool {
-        self.equals(other)
+        match (self, other) {
+            (Shape::Sphere(_), Shape::Sphere(_)) =>true
+        }
     }
 }
 
-impl Eq for dyn Shape {
-
+impl Shape {
+    pub fn intersect(&self, ray: &Ray) -> Vec<Float> {
+        match self {
+            Shape::Sphere(sphere) => sphere.intersect(ray)
+        }
+    }
 }

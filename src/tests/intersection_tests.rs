@@ -1,7 +1,6 @@
 #[cfg(test)]
 mod intersection_tests {
     use crate::intersection::Intersection;
-    use crate::shape::Shape;
     use crate::sphere::sphere;
 
     #[test]
@@ -9,7 +8,7 @@ mod intersection_tests {
         let s= sphere();
         let i = Intersection::new(3.5, s);
         assert_eq!(i.t, 3.5);
-        assert_eq!(i.shape, s as &dyn Shape);
+        assert_eq!(i.shape, s);
     }
 }
 

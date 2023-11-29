@@ -1,14 +1,14 @@
 use crate::math::Float;
-use crate::shape::Shape;
+use crate::shape::{Shape};
 
 #[derive(Debug)]
 pub struct Intersection<'a> {
     pub t : Float,
-    pub shape: &'a dyn Shape
+    pub shape: &'a Shape
 }
 
 impl Intersection<'_> {
-    pub fn new(t : Float, shape : & dyn Shape) -> Intersection {
+    pub fn new(t : Float, shape : &Shape) -> Intersection {
         let inter = Intersection {t, shape};
         inter
     }
