@@ -7,8 +7,8 @@ pub struct Intersection<'a> {
     pub shape: &'a Shape
 }
 
-impl Intersection<'_> {
-    pub fn new(t : Float, shape : &Shape) -> Intersection {
+impl<'a> Intersection<'a> {
+    pub fn new(t : Float, shape : &'a Shape) -> Self {
         let inter = Intersection {t, shape};
         inter
     }

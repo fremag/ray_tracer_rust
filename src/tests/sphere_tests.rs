@@ -11,9 +11,9 @@ mod sphere_tests
         let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
         let s = sphere();
         let xs = s.intersect(&r);
-        assert_eq!(xs.len(), 2);
-        assert_eq!(xs[0], 4.0);
-        assert_eq!(xs[1], 6.0);
+        assert_eq!(xs.count(), 2);
+        assert_eq!(xs[0].t, 4.0);
+        assert_eq!(xs[1].t, 6.0);
     }
 
     #[test]
@@ -21,9 +21,9 @@ mod sphere_tests
         let r = ray(point(0.0, 1.0, -5.0), vector(0.0, 0.0, 1.0));
         let s = sphere();
         let xs = s.intersect(&r);
-        assert_eq!(xs.len(), 2);
-        assert_eq!(xs[0], 5.0);
-        assert_eq!(xs[1], 5.0);
+        assert_eq!(xs.count(), 2);
+        assert_eq!(xs[0].t, 5.0);
+        assert_eq!(xs[1].t, 5.0);
     }
 
     #[test]
@@ -31,7 +31,7 @@ mod sphere_tests
         let r = ray(point(0.0, 2.0, -5.0), vector(0.0, 0.0, 1.0));
         let s = sphere();
         let xs = s.intersect(&r);
-        assert_eq!(xs.len(), 0);
+        assert_eq!(xs.count(), 0);
     }
 
     #[test]
@@ -39,9 +39,9 @@ mod sphere_tests
         let r = ray(point(0.0, 0.0, 0.0), vector(0.0, 0.0, 1.0));
         let s = sphere();
         let xs = s.intersect(&r);
-        assert_eq!(xs.len(), 2);
-        assert_eq!(xs[0], -1.0);
-        assert_eq!(xs[1], 1.0);
+        assert_eq!(xs.count(), 2);
+        assert_eq!(xs[0].t, -1.0);
+        assert_eq!(xs[1].t, 1.0);
     }
 
     #[test]
@@ -49,8 +49,8 @@ mod sphere_tests
         let r = ray(point(0.0, 0.0, 5.0), vector(0.0, 0.0, 1.0));
         let s = sphere();
         let xs = s.intersect(&r);
-        assert_eq!(xs.len(), 2);
-        assert_eq!(xs[0], -6.0);
-        assert_eq!(xs[1], -4.0);
+        assert_eq!(xs.count(), 2);
+        assert_eq!(xs[0].t, -6.0);
+        assert_eq!(xs[1].t, -4.0);
     }
 }

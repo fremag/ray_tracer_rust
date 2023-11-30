@@ -1,15 +1,16 @@
-use crate::math::Float;
+use crate::intersection::Intersection;
+use crate::intersections::Intersections;
 use crate::ray::Ray;
 use crate::shape::Shape;
 use crate::tuple::point;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Sphere {
 
 }
 
 impl Sphere {
-    pub(crate) fn intersect(&self, ray : &Ray) -> Vec<Float> {
+    pub(crate) fn intersect<'a>(&self, ray : &Ray) -> Intersections<'a> {
         // the vector from the sphere's center, to the ray origin
         // remember: the sphere is centered at the world origin
         let sphere_to_ray = ray.origin - point(0.0, 0.0, 0.0);
@@ -19,12 +20,12 @@ impl Sphere {
         let discriminant = b * b - 4.0 * a * c;
 
         if discriminant < 0.0 {
-            return vec!()
+            return Intersections {intersections: vec!()}
         }
 
         let t1 = (-b - discriminant.sqrt()) / (2.0 * a);
         let t2 = (-b + discriminant.sqrt()) / (2.0 * a);
-        vec! (t1, t2)
+        Intersections {intersections: vec!(Intersection::new(t1, &Shape::Sphere(Sphere {})), Intersection::new(t2, &Shape::Sphere(Sphere {}))) }
     }
 }
 
