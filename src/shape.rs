@@ -3,7 +3,7 @@ use crate::intersections::Intersections;
 use crate::ray::Ray;
 use crate::sphere::Sphere;
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub enum Shape {Sphere(Sphere)}
 
 impl PartialEq for Shape {
@@ -15,7 +15,7 @@ impl PartialEq for Shape {
 }
 
 impl Shape {
-    pub fn intersect<'a>(&self, ray: &Ray) -> Intersections<'a> {
+    pub fn intersect(&self, ray: &Ray) -> Intersections {
         match self {
             Shape::Sphere(sphere) => sphere.intersect(ray)
         }

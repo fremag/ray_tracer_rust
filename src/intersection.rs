@@ -2,13 +2,13 @@ use crate::math::Float;
 use crate::shape::{Shape};
 
 #[derive(Debug)]
-pub struct Intersection<'a> {
+pub struct Intersection {
     pub t : Float,
-    pub shape: &'a Shape
+    pub shape: Shape
 }
 
-impl<'a> Intersection<'a> {
-    pub fn new(t : Float, shape : &'a Shape) -> Self {
+impl Intersection {
+    pub fn new(t : Float, shape : Shape) -> Self {
         let inter = Intersection {t, shape};
         inter
     }

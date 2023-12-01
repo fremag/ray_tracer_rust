@@ -10,7 +10,7 @@ pub struct Sphere {
 }
 
 impl Sphere {
-    pub(crate) fn intersect<'a>(&self, ray : &Ray) -> Intersections<'a> {
+    pub(crate) fn intersect(&self, ray : &Ray) -> Intersections {
         // the vector from the sphere's center, to the ray origin
         // remember: the sphere is centered at the world origin
         let sphere_to_ray = ray.origin - point(0.0, 0.0, 0.0);
@@ -25,10 +25,10 @@ impl Sphere {
 
         let t1 = (-b - discriminant.sqrt()) / (2.0 * a);
         let t2 = (-b + discriminant.sqrt()) / (2.0 * a);
-        Intersections {intersections: vec!(Intersection::new(t1, &Shape::Sphere(Sphere {})), Intersection::new(t2, &Shape::Sphere(Sphere {}))) }
+        Intersections {intersections: vec!(Intersection::new(t1, Shape::Sphere(*self)), Intersection::new(t2, Shape::Sphere(*self))) }
     }
 }
 
-pub fn sphere() -> &'static Shape {
-    &Shape::Sphere(Sphere { })
+pub fn sphere() -> Shape {
+    Shape::Sphere(Sphere { })
 }
