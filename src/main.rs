@@ -13,6 +13,7 @@ mod sphere;
 mod intersection;
 mod shape;
 mod intersections;
+mod object;
 
 fn main() {
     println!("Hello, world!");
