@@ -1,5 +1,5 @@
 use crate::intersection::Intersection;
-use crate::intersections::Intersections;
+use crate::intersections::{Intersections, intersections};
 use crate::ray::Ray;
 use crate::shape::Shape;
 use crate::tuple::point;
@@ -20,12 +20,12 @@ impl Sphere {
         let discriminant = b * b - 4.0 * a * c;
 
         if discriminant < 0.0 {
-            return Intersections {intersections: vec!()}
+            return intersections(vec!())
         }
 
         let t1 = (-b - discriminant.sqrt()) / (2.0 * a);
         let t2 = (-b + discriminant.sqrt()) / (2.0 * a);
-        Intersections {intersections: vec!(Intersection::new(t1, Shape::Sphere(*self)), Intersection::new(t2, Shape::Sphere(*self))) }
+        intersections(vec!(Intersection::new(t1, Shape::Sphere(*self)), Intersection::new(t2, Shape::Sphere(*self))))
     }
 }
 
