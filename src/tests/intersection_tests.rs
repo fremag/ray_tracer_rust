@@ -1,7 +1,10 @@
 #[cfg(test)]
 mod intersection_tests {
+    use crate::canvas::Canvas;
+    use crate::colors::Color;
     use crate::intersection::Intersection;
     use crate::intersections::{intersections};
+    use crate::math::Float;
     use crate::ray::ray;
     use crate::sphere::sphere;
     use crate::tuple::{point, vector};
@@ -85,6 +88,47 @@ mod intersection_tests {
         match i {
             None => panic!(),
             Some(intersection) => assert_eq!(*intersection, i4)
+        }
+    }
+
+    #[test]
+    fn putting_it_together_test() {
+
+        // start the ray at z = -5
+        let ray_origin = point(0.0, 0.0, -5.0);
+        //  put the wall at z = 10
+        let wall_z = 10.0;
+        let wall_size = 7.0;
+        let canvas_pixels = 100;
+        let pixel_size = wall_size / canvas_pixels as Float;
+        let half = wall_size / 2.0;
+        let mut canvas = Canvas::new(canvas_pixels, canvas_pixels);
+        let color = Color::new(1.0, 0.0, 0.0); // red
+        let shape = sphere();
+
+        // for each row of pixels in the canvas
+        for y in 0 .. canvas_pixels - 1 {
+            // compute the world y coordinate (top = +half, bottom = -half)
+            let world_y = half - pixel_size * y as Float;
+            // for each pixel in the row
+            for x in 0..canvas_pixels - 1 {
+                // compute the world x coordinate(left = -half, right = half)
+                let world_x= -half + pixel_size * x  as Float;
+                // describe the point on the wall that the ray will target
+                let position = point(world_x, world_y, wall_z);
+                let r = ray(ray_origin, (position - ray_origin).normalize());
+                let xs = shape.intersect(&r);
+                match xs.hit() {
+                    None => { /* no intersection, do nothing */}
+                    Some(_) => { canvas.write_pixel( x, y, color) }
+                }
+            }
+        }
+
+        let result = canvas.save("e:\\tmp\\sphere_silhouette.ppm");
+        match result {
+            Ok(_) => { print!("Ok")}
+            Err(error) => { print!("Error: {}", error)}
         }
     }
 }
