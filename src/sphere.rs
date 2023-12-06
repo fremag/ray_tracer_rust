@@ -2,7 +2,7 @@ use crate::intersection::Intersection;
 use crate::intersections::{Intersections, intersections};
 use crate::ray::Ray;
 use crate::shape::Shape;
-use crate::tuple::point;
+use crate::tuple::{point, Tuple, vector};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Sphere {
@@ -26,6 +26,11 @@ impl Sphere {
         let t1 = (-b - discriminant.sqrt()) / (2.0 * a);
         let t2 = (-b + discriminant.sqrt()) / (2.0 * a);
         intersections(vec!(Intersection::new(t1, Shape::Sphere(*self)), Intersection::new(t2, Shape::Sphere(*self))))
+    }
+
+    pub(crate) fn normal_at(&self, p: Tuple) -> Tuple {
+        let inv_mag = 1.0/p.magnitude();
+        vector(p.x * inv_mag, p.y * inv_mag, p.z * inv_mag)
     }
 }
 
