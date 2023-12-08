@@ -1,9 +1,11 @@
 #[cfg(test)]
 mod sphere_tests
 {
-    use crate::math::Float;
+    use crate::math::{Float, PI, SQRT2};
+    use crate::object::build_sphere;
     use crate::ray::ray;
     use crate::sphere::sphere;
+    use crate::transform::{rotation_z, scaling, translation};
     use crate::tuple::{point, vector};
 
     #[test]
@@ -94,5 +96,23 @@ mod sphere_tests
         let n = s.normal_at(point(v, v, v));
         let expected_n = vector(v, v, v).normalize();
         assert_eq!(n, expected_n)
+    }
+
+    #[test]
+    fn computing_the_normal_on_a_translated_sphere_test() {
+
+        let mut s = build_sphere();
+        s.set_transformation(translation(0.0, 1.0, 0.0));
+        let n = s.normal_at(point(0.0, 1.0+SQRT2/2.0, -SQRT2/2.0));
+        assert_eq!(n == vector(0.0, SQRT2/2.0, -SQRT2/2.0), true);
+    }
+
+    #[test]
+    fn computing_the_normal_on_a_transformed_sphere_test() {
+        let mut s = build_sphere();
+        let m = &scaling(1.0, 0.5, 1.0) * &rotation_z(PI / 5.0);
+        s.set_transformation(m);
+        let n = s.normal_at(point(0.0, SQRT2 / 2.0, -SQRT2 / 2.0));
+        assert_eq!( n == vector(0.0, 0.97014, -0.24254), true)
     }
 }
