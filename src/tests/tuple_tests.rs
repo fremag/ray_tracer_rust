@@ -1,5 +1,5 @@
 use crate::math;
-use crate::math::Float;
+use crate::math::{Float, SQRT2};
 use crate::tuple::{Tuple, vector, point};
 
 #[test]
@@ -177,4 +177,20 @@ fn cross_product_two_vectors_test () {
     assert_eq!(dot_product, vector(-1.0, 2.0, -1.0));
     let inv_dot_product = v2 * &v1;
     assert_eq!(inv_dot_product, vector(1.0, -2.0, 1.0))
+}
+
+#[test]
+fn reflecting_a_vector_approaching_at_45_degrees_test() {
+    let  v = vector(1.0, -1.0, 0.0);
+    let  n = vector(0.0, 1.0, 0.0);
+    let r = v.reflect(&n);
+    assert_eq!(r == vector(1.0, 1.0, 0.0), true)
+}
+
+#[test]
+fn reflecting_a_vector_off_a_slanted_surface_test() {
+    let v =  vector(0.0, -1.0, 0.0);
+    let n =  vector(SQRT2 / 2.0, SQRT2 / 2.0, 0.0);
+    let r=  v.reflect(&n);
+    assert_eq!( r == vector(1.0, 0.0, 0.0), true);
 }

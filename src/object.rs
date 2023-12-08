@@ -1,4 +1,5 @@
 use crate::intersections::Intersections;
+use crate::material::{Material, material};
 use crate::matrix::Matrix;
 use crate::ray::Ray;
 use crate::shape::Shape;
@@ -7,6 +8,7 @@ use crate::tuple::Tuple;
 
 pub struct Object {
     shape : Shape,
+    material : Material,
     transformation: Matrix<4>,
     transformation_inverse: Matrix<4>, // optimization: keep inverse transformation
     transformation_inverse_transpose: Matrix<4>, // optimization: keep inverse transformation transpose
@@ -46,11 +48,17 @@ impl Object {
         &self.transformation_inverse
     }
     pub fn shape(&self) -> Shape { self.shape }
+    pub fn material(&self) -> &Material { &(self.material) }
+    pub fn set_material(&mut self, material : Material) -> &Self {
+        self.material = material;
+        self
+    }
 }
 
 pub fn build_sphere() -> Object {
     Object {
         shape: sphere(),
+        material: material(),
         transformation: Matrix::<4>::identity(),
         transformation_inverse: Matrix::<4>::identity(),
         transformation_inverse_transpose: Matrix::<4>::identity(),

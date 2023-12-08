@@ -1,5 +1,6 @@
 #[cfg(test)]
 mod object_tests {
+    use crate::material::material;
     use crate::matrix::Matrix;
     use crate::object::build_sphere;
     use crate::ray::ray;
@@ -25,7 +26,7 @@ mod object_tests {
 
     #[test]
     fn  intersecting_a_scaled_sphere_with_a_ray_test() {
-        let         r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
+        let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
         let mut obj_s = build_sphere();
         obj_s.set_transformation(scaling(2.0, 2.0, 2.0));
 
@@ -34,20 +35,29 @@ mod object_tests {
         assert_eq!(xs[0].t, 3.0);
         assert_eq!(xs[1].t, 7.0);
     }
-/*
+
     #[test]
     fn intersecting_a_translated_sphere_with_a_ray_test() {
-        Given
-        r ← ray(point(0, 0, -5), vector(0, 0, 1))
-        And
-        s ← sphere()
-        When
-        set_transform(s, translation(5, 0, 0))
-        And
-        xs ← intersect(s, r)
-        Then
-        xs.count = 0
+        let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
+        let mut s = build_sphere();
+        s.set_transformation(translation(5.0, 0.0, 0.0));
+
+        let xs = s.intersect(r);
+        assert_eq!(xs.count(), 0);
     }
 
- */
+    #[test]
+    fn a_sphere_has_a_default_material_test() {
+        let s =build_sphere();
+        let m= s.material();
+        assert_eq!(m, &material());
+    }
+    #[test]
+    fn a_sphere_may_be_assigned_a_material_test() {
+        let mut s = build_sphere();
+        let mut m= material();
+        m.ambient = 1.0;
+        s.set_material(m);
+        assert_eq!(s.material(), &m);
+    }
 }

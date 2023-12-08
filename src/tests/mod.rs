@@ -9,3 +9,5 @@ mod ray_tests;
 mod sphere_tests;
 mod intersection_tests;
 mod object_tests;
+mod light_tests;
+mod material_tests;

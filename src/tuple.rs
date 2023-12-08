@@ -32,6 +32,13 @@ impl Tuple {
     pub fn dot(&self, v : &Tuple) -> Float {
         self.x * v.x + self.y * v.y +self.z * v.z
     }
+
+    pub fn reflect(&self, normal : &Tuple) -> Tuple {
+        let c = 2.0 * self.dot(normal);
+        let n = *normal * c;
+        let reflected = self - &n;
+        reflected
+    }
 }
 
 impl PartialEq for Tuple {
@@ -57,6 +64,15 @@ impl Sub for Tuple {
         Tuple {x: self.x - rhs.x, y: self.y - rhs.y, z: self.z - rhs.z, w: self.w - rhs.w}
     }
 }
+
+impl Sub for &Tuple {
+    type Output = Tuple;
+
+    fn sub(self, &rhs: Self) -> Self::Output {
+        Tuple {x: self.x - rhs.x, y: self.y - rhs.y, z: self.z - rhs.z, w: self.w - rhs.w}
+    }
+}
+
 impl Neg for Tuple {
     type Output = Tuple;
 
