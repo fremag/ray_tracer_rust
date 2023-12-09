@@ -11,7 +11,7 @@ I'm learning Rust while working my way through Jamis Buck's
 <details open>
 <summary>Chapter 6: Light and Shading</summary>
 
-![Phong](+https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/phong.png)
+![Phong](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/phong.png)
 
 </details>
 
