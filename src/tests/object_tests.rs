@@ -30,7 +30,7 @@ mod object_tests {
         let mut obj_s = build_sphere();
         obj_s.set_transformation(scaling(2.0, 2.0, 2.0));
 
-        let xs = obj_s.intersect(r);
+        let xs = obj_s.intersect(&r);
         assert_eq!(xs.count(), 2);
         assert_eq!(xs[0].t, 3.0);
         assert_eq!(xs[1].t, 7.0);
@@ -42,7 +42,7 @@ mod object_tests {
         let mut s = build_sphere();
         s.set_transformation(translation(5.0, 0.0, 0.0));
 
-        let xs = s.intersect(r);
+        let xs = s.intersect(&r);
         assert_eq!(xs.count(), 0);
     }
 

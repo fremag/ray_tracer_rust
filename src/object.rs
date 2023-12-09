@@ -26,7 +26,7 @@ impl Object {
 }
 
 impl Object {
-    pub(crate) fn intersect(&self, ray: Ray) -> Intersections {
+    pub(crate) fn intersect(&self, ray: &Ray) -> Intersections {
         let ray2 = ray.transform( &self.transformation_inverse);
         self.shape.intersect(&ray2)
     }

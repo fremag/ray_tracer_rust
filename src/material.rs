@@ -13,7 +13,7 @@ pub struct Material {
 }
 
 impl Material {
-    pub(crate) fn lighting(&self, light : Light, point : Tuple, eyev: Tuple, normalv: Tuple) -> Color {
+    pub(crate) fn lighting(&self, light : &Light, point : Tuple, eyev: Tuple, normalv: Tuple) -> Color {
         // combine the surface color with the light's color/intensity
         let effective_color = self.color * light.intensity();
         // find the direction to the light source
