@@ -22,14 +22,14 @@ I'm learning Rust while working my way through Jamis Buck's
 
 </details>
 
-<details open>
+<details>
 <summary>Chapter 4: matrix transformations</summary>
 
 ![Clock](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/clock.png)
 
 </details>
 
-<details open>
+<details>
 <summary>Chapter 1: basics</summary>
 
   ![Projectile](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/projectile.png)
