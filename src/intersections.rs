@@ -2,15 +2,15 @@ use std::ops::Index;
 use crate::intersection::Intersection;
 use sorted_vec::SortedVec;
 
-pub struct Intersections {
-    pub intersections: SortedVec<Intersection>
+pub struct Intersections<'a> {
+    pub intersections: SortedVec<Intersection<'a>>
 }
 
 pub fn intersections<'a>(intersections: Vec<Intersection>) -> Intersections {
     Intersections{ intersections: SortedVec::from_unsorted(intersections) }
 }
 
-impl Intersections {
+impl<'a> Intersections<'a> {
     pub fn count(&self) -> usize {
         self.intersections.len()
     }
@@ -25,8 +25,8 @@ impl Intersections {
     }
 }
 
-impl Index<usize> for Intersections {
-    type Output = Intersection;
+impl<'a> Index<usize> for Intersections<'a> {
+    type Output = Intersection<'a>;
 
     fn index(&self, index: usize) -> &Self::Output {
         &(self.intersections[index])

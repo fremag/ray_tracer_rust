@@ -1,5 +1,5 @@
 use std::fmt::Debug;
-use crate::intersections::Intersections;
+use crate::math::Float;
 use crate::ray::Ray;
 use crate::sphere::Sphere;
 use crate::tuple::Tuple;
@@ -24,7 +24,7 @@ impl PartialEq for Shape {
 }
 
 impl Shape {
-    pub fn intersect(&self, ray: &Ray) -> Intersections {
+    pub fn intersect(&self, ray: &Ray) -> Vec<Float> {
         match self {
             Shape::Sphere(sphere) => sphere.intersect(ray)
         }

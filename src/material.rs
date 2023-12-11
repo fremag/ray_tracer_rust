@@ -3,7 +3,6 @@ use crate::light::Light;
 use crate::math::{equals, Float};
 use crate::tuple::Tuple;
 
-#[derive(Debug, Copy, Clone)]
 pub struct Material {
     pub color : Color,
     pub ambient : Float,

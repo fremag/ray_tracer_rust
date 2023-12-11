@@ -1,4 +1,5 @@
-use crate::intersections::Intersections;
+use crate::intersection::Intersection;
+use crate::intersections::{Intersections, intersections};
 use crate::material::{Material, material};
 use crate::matrix::Matrix;
 use crate::ray::Ray;
@@ -6,6 +7,7 @@ use crate::shape::Shape;
 use crate::sphere::sphere;
 use crate::tuple::Tuple;
 
+#[derive(Debug)]
 pub struct Object {
     shape : Shape,
     material : Material,
@@ -28,7 +30,8 @@ impl Object {
 impl Object {
     pub(crate) fn intersect(&self, ray: &Ray) -> Intersections {
         let ray2 = ray.transform( &self.transformation_inverse);
-        self.shape.intersect(&ray2)
+        let vec= self.shape.intersect(&ray2).iter().map(|t| Intersection { t: *t, object: &self }).collect();
+        intersections(vec )
     }
 }
 

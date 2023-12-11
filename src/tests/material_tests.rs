@@ -96,8 +96,8 @@ mod material_tests {
         let pixel_size = wall_size / canvas_pixels as Float;
         let half = wall_size / 2.0;
         let mut canvas = Canvas::new(canvas_pixels, canvas_pixels);
-        let mut shape = build_sphere();
-        shape.set_material(m);
+        let mut object = build_sphere();
+        object.set_material(m);
 
         // for each row of pixels in the canvas
         for y in 0 .. canvas_pixels - 1 {
@@ -110,14 +110,15 @@ mod material_tests {
                 // describe the point on the wall that the ray will target
                 let position = point(world_x, world_y, wall_z);
                 let r = ray(ray_origin, (position - ray_origin).normalize());
-                let xs = shape.intersect(&r);
+                let xs = object.intersect(&r);
                 match xs.hit() {
                     None => { /* no intersection, do nothing */}
                     Some(hit) => {
                         let point = r.position(hit.t);
-                        let normal = hit.shape.normal_at(point);
+                        let object = hit.object;
+                        let normal = object.shape().normal_at(point);
                         let eye = - r.direction;
-                        let color = m.lighting(&light, point, eye, normal);
+                        let color = object.material().lighting(&light, point, eye, normal);
                         canvas.write_pixel( x, y, color);
                     }
                 }
