@@ -96,7 +96,7 @@ mod world_test {
         inner.set_material(inner_material);
 
         let r = ray(point(0.0, 0.0, 0.75), vector(0.0, 0.0, -1.0));
-        print!("hello");
+
         let c = w.color_at(&r);
 
         assert_eq!(c, inner_material.color);

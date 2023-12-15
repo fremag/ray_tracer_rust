@@ -18,6 +18,7 @@ mod light;
 mod material;
 mod world;
 mod comps;
+mod camera;
 
 fn main() {
     println!("Hello, world!");
