@@ -16,6 +16,8 @@ mod intersections;
 mod object;
 mod light;
 mod material;
+mod world;
+mod comps;
 
 fn main() {
     println!("Hello, world!");

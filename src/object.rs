@@ -58,6 +58,12 @@ impl Object {
     }
 }
 
+impl PartialEq for Object {
+    fn eq(&self, other: &Self) -> bool {
+        self.shape == other.shape && self.transformation == other.transformation && self.material == other.material
+    }
+}
+
 pub fn build_sphere() -> Object {
     Object {
         shape: sphere(),
