@@ -1,5 +1,6 @@
 use crate::math::Float;
 use crate::matrix::Matrix;
+use crate::tuple::Tuple;
 
 pub fn translation(x : Float , y: Float, z : Float) -> Matrix<4> {
     Matrix::new4(1.0, 0.0, 0.0, x,
@@ -52,3 +53,16 @@ pub fn shearing(xy : Float , xz: Float, yx : Float, yz : Float , zx: Float, zy :
                  0.0, 0.0, 0.0, 1.0 )
 }
 
+pub fn view_transform(from : Tuple, to : Tuple, up: Tuple) -> Matrix<4> {
+    let forward = (to - from).normalize();
+    let left = forward * &up.normalize();
+    let true_up = left * &forward;
+
+    let orientation = Matrix::new4(left.x, left.y, left.z, 0.0,
+                 true_up.x, true_up.y, true_up.z, 0.0,
+                 -forward.x, -forward.y, -forward.z, 0.0,
+                 0.0, 0.0, 0.0, 1.0 );
+    let translation = translation(-from.x, -from.y, -from.z);
+
+    &orientation * &translation
+}

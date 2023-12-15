@@ -4,7 +4,8 @@ mod transform_tests {
     use crate::colors::Color;
     use crate::math::{Float, SQRT2};
     use crate::math::PI;
-    use crate::transform::{rotation_x, rotation_y, rotation_z, scaling, shearing, translation};
+    use crate::matrix::Matrix;
+    use crate::transform::{rotation_x, rotation_y, rotation_z, scaling, shearing, translation, view_transform};
     use crate::tuple::{point, vector};
 
     #[test]
@@ -183,5 +184,38 @@ mod transform_tests {
             Ok(_) => { print!("Ok") }
             Err(error) => { print!("Error: {}", error) }
         }
+    }
+
+    #[test]
+    fn a_view_transformation_matrix_looking_in_positive_z_direction_test() {
+        let from = point(0.0, 0.0, 0.0);
+        let to = point(0.0, 0.0, 1.0);
+        let up = vector(0.0, 1.0, 0.0);
+        let t = view_transform(from, to, up);
+        assert_eq!(t, scaling(-1.0, 1.0, -1.0));
+    }
+
+    #[test]
+    fn the_view_transformation_moves_the_world_test() {
+        let from = point(0.0, 0.0, 8.0);
+        let to= point(0.0, 0.0, 0.0);
+        let up= vector(0.0, 1.0, 0.0);
+        let t= view_transform(from, to, up);
+        assert_eq!(t, translation(0.0, 0.0, -8.0));
+    }
+
+    #[test]
+    fn an_arbitrary_view_transformation_test() {
+
+        let from = point(1.0, 3.0, 2.0);
+        let to = point(4.0, -2.0, 8.0);
+        let up = vector(1.0, 1.0, 0.0);
+        let t = view_transform(from, to, up);
+        let result = Matrix::new4(
+            -0.50709, 0.50709 , 0.67612 , -2.36643 ,
+            0.76772, 0.60609 ,0.12122 , -2.82843 ,
+            -0.35857, 0.59761 , -0.71714 , 0.00000 ,
+            0.00000, 0.00000 , 0.00000 , 1.00000 );
+        assert_eq!(t, result);
     }
 }
