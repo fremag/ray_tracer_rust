@@ -15,6 +15,12 @@ pub struct World {
 }
 
 impl World {
+    pub(crate) fn new() -> World {
+        World {objects: vec![], lights: vec!()}
+    }
+}
+
+impl World {
     pub(crate) fn intersect_world(&self, ray: &Ray) -> Intersections
     {
         let mut intersection_vec= vec![];
@@ -41,6 +47,10 @@ impl World {
 
     pub fn set_lights(&mut self, lights : Vec<Light>) {
         self.lights = lights;
+    }
+
+    pub fn set_objects(&mut self, objects : Vec<Object>) {
+        self.objects = objects;
     }
 
     pub fn color_at(&self, ray: &Ray) -> Color {

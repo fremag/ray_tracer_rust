@@ -1,23 +1,23 @@
-    use crate::colors::Color;
+use crate::colors::Color;
 use crate::light::Light;
 use crate::math::{equals, Float};
 use crate::tuple::Tuple;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Material {
-    pub color : Color,
-    pub ambient : Float,
-    pub diffuse : Float,
-    pub specular : Float,
-    pub shininess : Float,
+    pub color: Color,
+    pub ambient: Float,
+    pub diffuse: Float,
+    pub specular: Float,
+    pub shininess: Float,
 }
 
-    impl Material {
-        pub(crate) fn set_ambient(&mut self, ambient: Float) {
-            self.ambient = ambient;
-        }
+impl Material {
+    pub(crate) fn set_ambient(&mut self, ambient: Float) {
+        self.ambient = ambient;
+    }
 
-        pub(crate) fn lighting(&self, light : &Light, point : Tuple, eyev: Tuple, normalv: Tuple) -> Color {
+    pub(crate) fn lighting(&self, light: &Light, point: Tuple, eyev: Tuple, normalv: Tuple) -> Color {
         // combine the surface color with the light's color/intensity
         let effective_color = self.color * light.intensity();
         // find the direction to the light source
@@ -26,7 +26,7 @@ pub struct Material {
         // compute the ambient contribution
         let ambient = effective_color * self.ambient;
         let specular: Color;
-        let diffuse : Color;
+        let diffuse: Color;
 
         // light_dot_normal represents the cosine of the angle between the
         // light vector and the normal vector. A negative number means the
@@ -53,21 +53,21 @@ pub struct Material {
             }
         }
         // Add the three contributions together to get the final shading
-        return ambient + diffuse + specular
+        return ambient + diffuse + specular;
     }
 }
 
 impl PartialEq for Material {
     fn eq(&self, other: &Self) -> bool {
         self.color.eq(&other.color)
-        && equals(self.ambient, other.ambient)
-        && equals(self.diffuse, other.diffuse)
-        && equals(self.specular, other.specular)
-        && equals(self.shininess, other.shininess)
+            && equals(self.ambient, other.ambient)
+            && equals(self.diffuse, other.diffuse)
+            && equals(self.specular, other.specular)
+            && equals(self.shininess, other.shininess)
     }
 }
 
 pub fn material() -> Material {
-    Material { color : Color {r: 1.0, g: 1.0, b: 1.0}, ambient : 0.1, diffuse: 0.9, specular: 0.9, shininess: 200.0}
+    Material { color: Color { r: 1.0, g: 1.0, b: 1.0 }, ambient: 0.1, diffuse: 0.9, specular: 0.9, shininess: 200.0 }
 }
 
