@@ -1,5 +1,5 @@
 use crate::intersection::Intersection;
-use crate::math::Float;
+use crate::math::{EPSILON, Float};
 use crate::object::Object;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
@@ -10,7 +10,8 @@ pub struct Comps<'a> {
     pub point : Tuple,
     pub eyev : Tuple,
     pub normalv : Tuple,
-    pub inside : bool
+    pub inside : bool,
+    pub over_point : Tuple,
 }
 
 pub fn prepare_computations<'a>(intersection: &'a Intersection, ray : &Ray) -> Comps<'a> {
@@ -22,8 +23,8 @@ pub fn prepare_computations<'a>(intersection: &'a Intersection, ray : &Ray) -> C
 
     if normalv.dot(&eyev) < 0.0 {
         inside = true;
-        normalv = - normalv
+        normalv = -normalv;
     }
-
-    Comps {t: intersection.t, object: intersection.object, point, eyev , normalv, inside}
+    let over_point= point + normalv * EPSILON;
+    Comps {t: intersection.t, object: intersection.object, point, eyev , normalv, inside, over_point}
 }

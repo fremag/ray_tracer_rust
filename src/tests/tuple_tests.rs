@@ -1,3 +1,4 @@
+#[cfg(test)]
 use crate::math;
 use crate::math::{Float, SQRT2};
 use crate::tuple::{Tuple, vector, point};

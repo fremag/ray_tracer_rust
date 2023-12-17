@@ -1,3 +1,4 @@
+#[cfg(test)]
 use crate::math::equals;
 use crate::matrix::{Determinant, Matrix};
 use crate::tuple::Tuple;

@@ -1,3 +1,4 @@
+#[cfg(test)]
 use crate::canvas::Canvas;
 use crate::colors::Color;
 use crate::projectile::{Environment, Projectile};

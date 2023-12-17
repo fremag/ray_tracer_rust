@@ -5,9 +5,9 @@ use crate::light::Light;
 use crate::light::PointLight;
 use crate::material::{Material};
 use crate::object::{build_sphere, Object};
-use crate::ray::Ray;
+use crate::ray::{Ray, ray};
 use crate::transform::scaling;
-use crate::tuple::point;
+use crate::tuple::{point, Tuple};
 
 pub struct World {
     pub objects : Vec<Object>,
@@ -15,12 +15,11 @@ pub struct World {
 }
 
 impl World {
+
     pub(crate) fn new() -> World {
         World {objects: vec![], lights: vec!()}
     }
-}
 
-impl World {
     pub(crate) fn intersect_world(&self, ray: &Ray) -> Intersections
     {
         let mut intersection_vec= vec![];
@@ -39,7 +38,8 @@ impl World {
         let material = comps.object.material();
 
         for light in self.lights.iter() {
-            c = c + material.lighting(&light, comps.point, comps.eyev, comps.normalv);
+            let in_shadow = self.is_shadowed(light, comps.over_point);
+            c = c + material.lighting(&light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
         }
 
         c
@@ -62,6 +62,19 @@ impl World {
                 let comps = prepare_computations(intersection, ray);
                 self.shade_hit(&comps)
             }
+        }
+    }
+
+    pub(crate) fn is_shadowed(&self, light: &Light, point: Tuple) -> bool {
+        let v = light.position() - point;
+        let distance = v.magnitude();
+        let direction = v.normalize();
+        let r = ray(point, direction);
+        let intersections = self.intersect_world(&r);
+        let h = intersections.hit();
+        match h {
+            None => false,
+            Some(intersection) => intersection.t < distance
         }
     }
 }

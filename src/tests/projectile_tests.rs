@@ -1,3 +1,4 @@
+#[cfg(test)]
 use crate::math::Float;
 use crate::projectile::{Environment, Projectile};
 use crate::tuple::{point, vector};
