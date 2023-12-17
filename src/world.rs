@@ -34,15 +34,15 @@ impl World {
     }
 
     pub fn shade_hit(&self, comps : &Comps) -> Color {
-        let mut c= Color::new(0.0, 0.0, 0.0);
+        let mut color = Color::new(0.0, 0.0, 0.0);
         let material = comps.object.material();
 
         for light in self.lights.iter() {
             let in_shadow = self.is_shadowed(light, comps.over_point);
-            c = c + material.lighting(&light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
+            color = color + material.lighting(&light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
         }
 
-        c
+        color
     }
 
     pub fn set_lights(&mut self, lights : Vec<Light>) {
@@ -74,7 +74,12 @@ impl World {
         let h = intersections.hit();
         match h {
             None => false,
-            Some(intersection) => intersection.t < distance
+            Some(intersection) =>
+                {
+                    let t = intersection.t;
+                    let shadow = t < distance;
+                    shadow
+                }
         }
     }
 }

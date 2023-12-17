@@ -127,7 +127,7 @@ impl Index<usize> for Tuple {
     fn index(&self, index: usize) -> &Self::Output {
         match index {
             0 => &self.x, 1 => &self.y, 2 => &self.z, 3 => &self.w,
-            _ => &f32::NAN as &Float
+            _ => &f64::NAN as &Float
         }
     }
 }

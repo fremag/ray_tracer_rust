@@ -17,7 +17,7 @@ impl Material {
         self.ambient = ambient;
     }
 
-    pub(crate) fn lighting(&self, light: &Light, point: Tuple, eyev: Tuple, normalv: Tuple) -> Color {
+    pub(crate) fn lighting(&self, light: &Light, point: Tuple, eyev: Tuple, normalv: Tuple, in_shadow : bool) -> Color {
         // combine the surface color with the light's color/intensity
         let effective_color = self.color * light.intensity();
         // find the direction to the light source
@@ -25,6 +25,9 @@ impl Material {
 
         // compute the ambient contribution
         let ambient = effective_color * self.ambient;
+        if in_shadow {
+            return ambient;
+        }
         let specular: Color;
         let diffuse: Color;
 

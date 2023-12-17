@@ -9,6 +9,13 @@ I'm learning Rust while working my way through Jamis Buck's
 [The Ray Tracer Challenge](https://pragprog.com/book/jbtracer/the-ray-tracer-challenge)
 
 <details open>
+<summary>Chapter 8: Shadows</summary>
+
+![FirstSceneShadows](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/first_scene_shadows.png)
+
+</details>
+
+<details>
 <summary>Chapter 7: Making a scene</summary>
 
 ![FirstScene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/first_scene.png)
