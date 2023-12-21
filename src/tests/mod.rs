@@ -11,7 +11,7 @@ mod intersection_tests;
 mod object_tests;
 mod light_tests;
 mod material_tests;
-mod world_test;
+mod world_tests;
 mod comps_tests;
 mod camera_tests;
 mod plane_tests;
