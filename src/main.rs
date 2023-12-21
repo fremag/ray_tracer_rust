@@ -19,6 +19,7 @@ mod material;
 mod world;
 mod comps;
 mod camera;
+mod plane;
 
 fn main() {
     println!("Hello, world!");

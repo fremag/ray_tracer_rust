@@ -2,6 +2,7 @@ use crate::intersection::Intersection;
 use crate::intersections::{Intersections, intersections};
 use crate::material::{Material, material};
 use crate::matrix::Matrix;
+use crate::plane::Plane;
 use crate::ray::Ray;
 use crate::shape::Shape;
 use crate::sphere::sphere;
@@ -56,6 +57,16 @@ impl Object {
         self.material = material;
         self
     }
+
+    pub fn new(shape : Shape) -> Object {
+        Object {
+            shape,
+            material: material(),
+            transformation: Matrix::<4>::identity(),
+            transformation_inverse: Matrix::<4>::identity(),
+            transformation_inverse_transpose: Matrix::<4>::identity(),
+        }
+    }
 }
 
 impl PartialEq for Object {
@@ -65,11 +76,10 @@ impl PartialEq for Object {
 }
 
 pub fn build_sphere() -> Object {
-    Object {
-        shape: sphere(),
-        material: material(),
-        transformation: Matrix::<4>::identity(),
-        transformation_inverse: Matrix::<4>::identity(),
-        transformation_inverse_transpose: Matrix::<4>::identity(),
-    }
+    let sphere = sphere();
+    Object::new(sphere)
+}
+pub fn build_plane() -> Object {
+    let plane = Shape::Plane(Plane::new());
+    Object::new(plane)
 }

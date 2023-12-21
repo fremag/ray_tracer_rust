@@ -14,3 +14,4 @@ mod material_tests;
 mod world_test;
 mod comps_tests;
 mod camera_tests;
+mod plane_tests;
