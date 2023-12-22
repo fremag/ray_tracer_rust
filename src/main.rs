@@ -20,6 +20,7 @@ mod world;
 mod comps;
 mod camera;
 mod plane;
+mod pattern;
 
 fn main() {
     println!("Hello, world!");

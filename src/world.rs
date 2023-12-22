@@ -5,6 +5,7 @@ use crate::light::Light;
 use crate::light::PointLight;
 use crate::material::{Material};
 use crate::object::{build_sphere, Object};
+use crate::pattern::Pattern;
 use crate::ray::{Ray, ray};
 use crate::transform::scaling;
 use crate::tuple::{point, Tuple};
@@ -87,7 +88,7 @@ impl World {
 pub fn build_world() -> World {
     let mut sphere_1 = build_sphere();
     sphere_1.set_material(Material {color: Color::new(0.8, 1.0, 0.6),
-    diffuse: 0.7, specular: 0.2, shininess: 200.0, ambient: 0.1});
+    diffuse: 0.7, specular: 0.2, shininess: 200.0, ambient: 0.1, pattern: Pattern::None});
 
     let mut sphere_2 = build_sphere();
     sphere_2.set_transformation(scaling(0.5, 0.5, 0.5));
