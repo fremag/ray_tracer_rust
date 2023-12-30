@@ -94,3 +94,32 @@ fn putting_it_together_test() {
         Err(error) => { print!("Error: {}", error)}
     }
 }
+
+
+#[test]
+fn stripes_with_an_object_transformation_test() {
+    let mut object = build_sphere();
+    object.set_transformation(scaling(2.0, 2.0, 2.0));
+    let pattern = Pattern:: stripe(Color::white(), Color::black());
+    let c = pattern.stripe_at_object(&object, point(1.5, 0.0, 0.0));
+    assert_eq!(c, Color::white());
+}
+
+#[test]
+fn stripes_with_a_pattern_transformation_test() {
+    let object = build_sphere();
+    let mut pattern = Pattern::stripe(Color::white(), Color::black());
+    pattern.set_pattern_transform(scaling(2.0, 2.0, 2.0));
+    let c = pattern.stripe_at_object(&object, point(1.5, 0.0, 0.0));
+    assert_eq!(c, Color::white());
+}
+
+#[test]
+fn stripes_with_both_an_object_and_a_pattern_transformation_test() {
+    let mut object = build_sphere();
+    object.set_transformation(scaling(2.0, 2.0, 2.0));
+    let mut pattern = Pattern::stripe(Color::white(), Color::black());
+    pattern.set_pattern_transform(translation(0.5, 0.0, 0.0));
+    let c = pattern.stripe_at_object(&object, point(2.5, 0.0, 0.0));
+    assert_eq!(c, Color::white());
+}

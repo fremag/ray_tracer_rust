@@ -26,8 +26,8 @@ fn lighting_with_the_eye_between_the_light_and_the_surface_test() {
     let eyev = vector(0.0, 0.0, -1.0);
     let normalv = vector(0.0, 0.0, -1.0);
     let light: Light = PointLight::new(point(0.0, 0.0, -10.0), Color::new(1.0, 1.0, 1.0));
-
-    let result = m.lighting(&light, position, eyev, normalv, false);
+    let object = build_sphere();
+    let result = m.lighting(&object, &light, position, eyev, normalv, false);
     assert_eq!(result, Color::new(1.9, 1.9, 1.9));
 }
 
@@ -39,7 +39,8 @@ fn lighting_with_the_eye_between_light_and_surface_eye_offset_45_degrees_test() 
     let eyev = vector(0.0, SQRT2 / 2.0, -SQRT2 / 2.0);
     let normalv = vector(0.0, 0.0, -1.0);
     let light = PointLight::new(point(0.0, 0.0, -10.0), Color::new(1.0, 1.0, 1.0));
-    let result = m.lighting(&light, position, eyev, normalv, false);
+    let object = build_sphere();
+    let result = m.lighting(&object, &light, position, eyev, normalv, false);
     assert_eq!(result, Color::new(1.0, 1.0, 1.0));
 }
 
@@ -51,7 +52,8 @@ fn lighting_with_eye_opposite_surface_light_offset_45_degrees_test() {
     let eyev = vector(0.0, 0.0, -1.0);
     let normalv = vector(0.0, 0.0, -1.0);
     let light = PointLight::new(point(0.0, 10.0, -10.0), Color::new(1.0, 1.0, 1.0));
-    let result = m.lighting(&light, position, eyev, normalv, false);
+    let object = build_sphere();
+    let result = m.lighting(&object, &light, position, eyev, normalv, false);
     assert_eq!(result, Color::new(0.7364, 0.7364, 0.7364));
 }
 
@@ -63,7 +65,8 @@ fn lighting_with_eye_in_the_path_of_the_reflection_vector_test() {
     let eyev = vector(0.0, -SQRT2 / 2.0, -SQRT2 / 2.0);
     let normalv = vector(0.0, 0.0, -1.0);
     let light = PointLight::new(point(0.0, 10.0, -10.0), Color::new(1.0, 1.0, 1.0));
-    let result = m.lighting(&light, position, eyev, normalv, false);
+    let object = build_sphere();
+    let result = m.lighting(&object, &light, position, eyev, normalv, false);
     assert_eq!(result, Color::new(1.6364, 1.6364, 1.6364));
 }
 
@@ -75,7 +78,8 @@ fn lighting_with_the_light_behind_the_surface_test() {
     let eyev = vector(0.0, 0.0, -1.0);
     let normalv = vector(0.0, 0.0, -1.0);
     let light = PointLight::new(point(0.0, 0.0, 10.0), Color::new(1.0, 1.0, 1.0));
-    let result = m.lighting(&light, position, eyev, normalv, false);
+    let object = build_sphere();
+    let result = m.lighting(&object, &light, position, eyev, normalv, false);
     assert_eq!(result, Color::new(0.1, 0.1, 0.1));
 }
 
@@ -118,7 +122,7 @@ fn putting_it_together_test() {
                     let object = hit.object;
                     let normal = object.shape().normal_at(point);
                     let eye = -r.direction;
-                    let color = object.material().lighting(&light, point, eye, normal, false);
+                    let color = object.material().lighting(&object, &light, point, eye, normal, false);
                     canvas.write_pixel(x, y, color);
                 }
             }
@@ -141,7 +145,8 @@ fn lighting_with_the_surface_in_shadow_test() {
     let normalv = vector(0.0, 0.0, -1.0);
     let light = PointLight::new(point(0.0, 0.0, -10.0), Color::new(1.0, 1.0, 1.0));
     let in_shadow = true;
-    let result = m.lighting(&light, position, eyev, normalv, in_shadow);
+    let object = build_sphere();
+    let result = m.lighting(&object, &light, position, eyev, normalv, in_shadow);
     assert_eq!(result, Color::new(0.1, 0.1, 0.1));
 }
 
@@ -158,8 +163,9 @@ fn lighting_with_a_pattern_applied_test() {
     let normalv = vector(0.0, 0.0, -1.0);
     let light = PointLight::new(point(0.0, 0.0, -10.0), Color::white() );
 
-    let c1 = m.lighting(&light, point(0.9, 0.0, 0.0), eyev, normalv, false);
-    let c2 = m.lighting(&light, point(1.1, 0.0, 0.0), eyev, normalv, false);
+    let object = build_sphere();
+    let c1 = m.lighting(&object, &light, point(0.9, 0.0, 0.0), eyev, normalv, false);
+    let c2 = m.lighting(&object, &light, point(1.1, 0.0, 0.0), eyev, normalv, false);
     assert_eq!( c1, Color::white());
     assert_eq!( c2, Color::black());
 }

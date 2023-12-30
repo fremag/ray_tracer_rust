@@ -1,7 +1,8 @@
 use crate::colors::Color;
 use crate::light::Light;
 use crate::math::{equals, Float};
-use crate::pattern::{Pattern, Patterns};
+use crate::object::Object;
+use crate::pattern::{Pattern};
 use crate::tuple::Tuple;
 
 #[derive(Debug, Copy, Clone)]
@@ -25,12 +26,8 @@ impl Material {
         self.ambient = ambient;
     }
 
-    pub(crate) fn lighting(&self, light: &Light, point: Tuple, eyev: Tuple, normalv: Tuple, in_shadow : bool) -> Color {
-        let color : Color;
-        match self.pattern.pattern {
-            Patterns::None => color = self.color,
-            Patterns::Stripe(stripe_pattern) => color = stripe_pattern.stripe_at(&point)
-        }
+    pub(crate) fn lighting(&self, object: &Object, light: &Light, point: Tuple, eyev: Tuple, normalv: Tuple, in_shadow : bool) -> Color {
+        let color =self.pattern.stripe_at_object(object, point);
 
         // combine the surface color with the light's color/intensity
         let effective_color = color * light.intensity();

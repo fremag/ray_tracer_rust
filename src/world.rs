@@ -40,7 +40,7 @@ impl World {
 
         for light in self.lights.iter() {
             let in_shadow = self.is_shadowed(light, comps.over_point);
-            color = color + material.lighting(&light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
+            color = color + material.lighting(comps.object, &light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
         }
 
         color
