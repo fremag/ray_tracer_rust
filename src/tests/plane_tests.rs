@@ -1,7 +1,7 @@
 use crate::camera::Camera;
 use crate::colors::Color;
 use crate::light::PointLight;
-use crate::material::material;
+use crate::material::Material;
 use crate::math::PI;
 use crate::object::{build_plane, build_sphere};
 use crate::plane::Plane;
@@ -61,14 +61,14 @@ fn a_ray_intersecting_a_plane_from_below_test() {
 
 #[test]
 fn putting_it_together_test() {
-    let mut wall_material = material();
+    let mut wall_material = Material::new();
     wall_material.color = Color::new(1.0, 0.9, 0.9);
     wall_material.specular = 0.0;
 
     let mut floor = build_plane();
     floor.set_material(wall_material.clone());
 
-    let mut mid_material = material();
+    let mut mid_material = Material::new();
     mid_material.color = Color::new(0.1, 1.0, 0.5);
     mid_material.diffuse = 0.7;
     mid_material.specular = 0.3;
@@ -76,7 +76,7 @@ fn putting_it_together_test() {
     middle.set_transformation(translation(-0.5, 1.0, 0.5));
     middle.set_material(mid_material);
 
-    let mut right_material = material();
+    let mut right_material = Material::new();
     right_material.color = Color::new(0.5, 1.0, 0.1);
     right_material.diffuse = 0.7;
     right_material.specular = 0.3;
@@ -84,7 +84,7 @@ fn putting_it_together_test() {
     right.set_transformation(&translation(1.5, 0.5, -0.5) * &scaling(0.5, 0.5, 0.5));
     right.set_material(right_material);
 
-    let mut left_material = material();
+    let mut left_material = Material::new();
     left_material.color = Color::new(1.0, 0.8, 0.1);
     left_material.diffuse = 0.7;
     left_material.specular = 0.3;

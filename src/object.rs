@@ -1,6 +1,6 @@
 use crate::intersection::Intersection;
 use crate::intersections::{Intersections, intersections};
-use crate::material::{Material, material};
+use crate::material::{Material};
 use crate::matrix::Matrix;
 use crate::plane::Plane;
 use crate::ray::Ray;
@@ -61,7 +61,7 @@ impl Object {
     pub fn new(shape : Shape) -> Object {
         Object {
             shape,
-            material: material(),
+            material: Material::new(),
             transformation: Matrix::<4>::identity(),
             transformation_inverse: Matrix::<4>::identity(),
             transformation_inverse_transpose: Matrix::<4>::identity(),

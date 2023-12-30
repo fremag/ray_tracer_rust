@@ -2,7 +2,7 @@ use crate::camera::Camera;
 #[cfg(test)]
 use crate::colors::Color;
 use crate::light::PointLight;
-use crate::material::material;
+use crate::material::Material;
 use crate::math::PI;
 use crate::object::{build_plane, build_sphere};
 use crate::pattern::{Pattern, StripePattern};
@@ -47,7 +47,7 @@ fn a_stripe_pattern_alternates_in_x_test() {
 
 #[test]
 fn putting_it_together_test() {
-    let mut material = material();
+    let mut material = Material::new();
     material.color = Color::new(1.0, 0.5, 0.5);
     material.specular = 0.0;
     material.pattern = Pattern::stripe(Color::white(), material.color);

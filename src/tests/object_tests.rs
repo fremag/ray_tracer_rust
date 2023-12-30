@@ -1,5 +1,5 @@
 #[cfg(test)]
-use crate::material::material;
+use crate::material::Material;
 use crate::math::{PI, SQRT2};
 use crate::matrix::Matrix;
 use crate::object::{build_sphere, Object};
@@ -52,13 +52,13 @@ fn intersecting_a_translated_sphere_with_a_ray_test() {
 fn a_sphere_has_a_default_material_test() {
     let s = build_sphere();
     let m = s.material();
-    assert_eq!(m, &material());
+    assert_eq!(m, &Material::new());
 }
 
 #[test]
 fn a_sphere_may_be_assigned_a_material_test() {
     let mut s = build_sphere();
-    let mut m = material();
+    let mut m = Material::new();
     m.ambient = 1.0;
     s.set_material(m);
     assert_eq!(s.material(), &m);
@@ -84,14 +84,14 @@ fn the_default_material_test() {
     let sphere = sphere::Sphere {};
     let s = Object::new(Shape::Sphere(sphere));
     let m = s.material();
-    assert_eq!(m, &material());
+    assert_eq!(m, &Material::new());
 }
 
 #[test]
 fn assigning_a_material_test() {
     let sphere = sphere::Sphere {};
     let mut s = Object::new(Shape::Sphere(sphere));
-    let mut m = material();
+    let mut m = Material::new();
     m.ambient = 1.0;
     s.set_material(m);
     assert_eq!(s.material(), &m)

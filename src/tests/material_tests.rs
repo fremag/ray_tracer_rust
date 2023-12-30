@@ -2,7 +2,7 @@
 use crate::canvas::Canvas;
 use crate::colors::Color;
 use crate::light::{Light, PointLight};
-use crate::material::material;
+use crate::material::{Material};
 use crate::math::{Float, SQRT2};
 use crate::object::build_sphere;
 use crate::pattern::{Pattern};
@@ -11,7 +11,7 @@ use crate::tuple::{point, vector};
 
 #[test]
 fn default_material_test() {
-    let default_material = material();
+    let default_material = Material::new();
     assert_eq!(default_material.color, Color { r: 1.0, g: 1.0, b: 1.0 });
     assert_eq!(default_material.ambient, 0.1);
     assert_eq!(default_material.diffuse, 0.9);
@@ -21,7 +21,7 @@ fn default_material_test() {
 
 #[test]
 fn lighting_with_the_eye_between_the_light_and_the_surface_test() {
-    let m = material();
+    let m = Material::new();
     let position = point(0.0, 0.0, 0.0);
     let eyev = vector(0.0, 0.0, -1.0);
     let normalv = vector(0.0, 0.0, -1.0);
@@ -33,7 +33,7 @@ fn lighting_with_the_eye_between_the_light_and_the_surface_test() {
 
 #[test]
 fn lighting_with_the_eye_between_light_and_surface_eye_offset_45_degrees_test() {
-    let m = material();
+    let m = Material::new();
     let position = point(0.0, 0.0, 0.0);
 
     let eyev = vector(0.0, SQRT2 / 2.0, -SQRT2 / 2.0);
@@ -46,7 +46,7 @@ fn lighting_with_the_eye_between_light_and_surface_eye_offset_45_degrees_test() 
 
 #[test]
 fn lighting_with_eye_opposite_surface_light_offset_45_degrees_test() {
-    let m = material();
+    let m = Material::new();
     let position = point(0.0, 0.0, 0.0);
 
     let eyev = vector(0.0, 0.0, -1.0);
@@ -59,7 +59,7 @@ fn lighting_with_eye_opposite_surface_light_offset_45_degrees_test() {
 
 #[test]
 fn lighting_with_eye_in_the_path_of_the_reflection_vector_test() {
-    let m = material();
+    let m = Material::new();
     let position = point(0.0, 0.0, 0.0);
 
     let eyev = vector(0.0, -SQRT2 / 2.0, -SQRT2 / 2.0);
@@ -72,7 +72,7 @@ fn lighting_with_eye_in_the_path_of_the_reflection_vector_test() {
 
 #[test]
 fn lighting_with_the_light_behind_the_surface_test() {
-    let m = material();
+    let m = Material::new();
     let position = point(0.0, 0.0, 0.0);
 
     let eyev = vector(0.0, 0.0, -1.0);
@@ -86,7 +86,7 @@ fn lighting_with_the_light_behind_the_surface_test() {
 
 #[test]
 fn putting_it_together_test() {
-    let mut m = material();
+    let mut m = Material::new();
     m.color = Color::new(1.0, 0.2, 1.0);
 
     let light = PointLight::new(point(-10.0, 10.0, -10.0), Color::new(1.0, 1.0, 1.0));
@@ -138,7 +138,7 @@ fn putting_it_together_test() {
 
 #[test]
 fn lighting_with_the_surface_in_shadow_test() {
-    let m = material();
+    let m = Material::new();
     let position = point(0.0, 0.0, 0.0);
 
     let eyev = vector(0.0, 0.0, -1.0);
@@ -153,7 +153,7 @@ fn lighting_with_the_surface_in_shadow_test() {
 
 #[test]
 fn lighting_with_a_pattern_applied_test() {
-    let mut m = material();
+    let mut m = Material::new();
     m.set_pattern(Pattern::stripe(Color::white(), Color::black()));
     m.ambient = 1.0;
     m.diffuse = 0.0;
