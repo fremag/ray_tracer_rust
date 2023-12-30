@@ -11,7 +11,7 @@ I'm learning Rust while working my way through Jamis Buck's
 <details open>
 <summary>Chapter 10: Patterns</summary>
 
-![PatterStripeScene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/pattern_stripe_scene.png)
+![AllPatternStripeScene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/all_patterns_scene.png)
 
 </details>
 
