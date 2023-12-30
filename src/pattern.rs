@@ -6,13 +6,12 @@ use crate::tuple::Tuple;
 #[derive(Debug, Copy, Clone)]
 pub struct Pattern {
     pub(crate) pattern : Patterns,
-    transform : Matrix<4>,
-    inverse_transform : Matrix<4>,
+    pub inverse_transform : Matrix<4>,
 }
 
 impl Pattern {
     pub fn new() -> Pattern {
-        Pattern { pattern: Patterns::None, transform : Matrix::<4>::identity(), inverse_transform: Matrix::<4>::identity()}
+        Pattern { pattern: Patterns::None, inverse_transform: Matrix::<4>::identity()}
     }
 
     pub fn from(pattern : Patterns) -> Self {
@@ -25,17 +24,21 @@ impl Pattern {
         Self::from(Patterns::Stripe(StripePattern::new(color_a, color_b)))
     }
 
-    pub(crate) fn stripe_at_object(&self, object: &Object, world_point: Tuple) -> Color {
+    pub(crate) fn test() -> Pattern {
+        Self::from(Patterns::Test)
+    }
+
+    pub(crate) fn pattern_at_object(&self, object: &Object, world_point: Tuple) -> Color {
         let object_point = object.transformation_inverse() * &world_point;
         let pattern_point = &self.inverse_transform * &object_point;
         match self.pattern {
             Patterns::None => {object.material().color}
             Patterns::Stripe(stripes) => {stripes.stripe_at(&pattern_point)}
+            Patterns::Test => {Color::new(pattern_point.x, pattern_point.y, pattern_point.z)}
         }
     }
 
-    pub(crate) fn set_pattern_transform(&mut self, transform: Matrix<4>) {
-        self.transform = transform;
+    pub(crate) fn set_pattern_transform(&mut self, transform: &Matrix<4>) {
         self.inverse_transform = transform.inverse();
     }
 }
@@ -43,7 +46,8 @@ impl Pattern {
 #[derive(Debug, Copy, Clone)]
 pub enum Patterns {
     None,
-    Stripe(StripePattern)
+    Stripe(StripePattern),
+    Test
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -66,3 +70,4 @@ impl StripePattern {
         self.b
     }
 }
+

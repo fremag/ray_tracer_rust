@@ -29,7 +29,7 @@ impl Material {
     }
 
     pub(crate) fn lighting(&self, object: &Object, light: &Light, point: Tuple, eyev: Tuple, normalv: Tuple, in_shadow : bool) -> Color {
-        let color =self.pattern.stripe_at_object(object, point);
+        let color =self.pattern.pattern_at_object(object, point);
 
         // combine the surface color with the light's color/intensity
         let effective_color = color * light.intensity();
