@@ -41,3 +41,10 @@ fn hadamard_product_colors_test() {
     let color = Color { r: 0.9, g: 0.2, b: 0.04 };
     assert_eq!(c == color, true)
 }
+
+#[test]
+fn dummy_test() {
+    assert_eq!(Color::red().r, 1.0);
+    assert_eq!(Color::green().r, 0.0);
+    assert_eq!(Color::blue().r, 0.0);
+}
