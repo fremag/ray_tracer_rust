@@ -5,7 +5,7 @@ use crate::light::{Light, PointLight};
 use crate::material::material;
 use crate::math::{Float, SQRT2};
 use crate::object::build_sphere;
-use crate::pattern::{Pattern, StripePattern};
+use crate::pattern::{Pattern};
 use crate::ray::ray;
 use crate::tuple::{point, vector};
 
@@ -149,7 +149,7 @@ fn lighting_with_the_surface_in_shadow_test() {
 #[test]
 fn lighting_with_a_pattern_applied_test() {
     let mut m = material();
-    m.set_pattern(Pattern::Stripe(StripePattern::new(Color::white(), Color::black())));
+    m.set_pattern(Pattern::stripe(Color::white(), Color::black()));
     m.ambient = 1.0;
     m.diffuse = 0.0;
     m.specular = 0.0;

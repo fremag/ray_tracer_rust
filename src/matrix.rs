@@ -14,7 +14,7 @@ pub trait Determinant {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct Matrix<const N: usize> {
     data: [[Float; N]; N]
 }

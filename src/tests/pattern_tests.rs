@@ -50,7 +50,7 @@ fn putting_it_together_test() {
     let mut material = material();
     material.color = Color::new(1.0, 0.5, 0.5);
     material.specular = 0.0;
-    material.pattern = Pattern::Stripe(StripePattern::new(Color::white(), material.color));
+    material.pattern = Pattern::stripe(Color::white(), material.color);
 
     let mut floor = build_plane();
     floor.set_material(material.clone());

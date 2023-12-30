@@ -1,7 +1,7 @@
 use crate::colors::Color;
 use crate::light::Light;
 use crate::math::{equals, Float};
-use crate::pattern::{Pattern};
+use crate::pattern::{Pattern, Patterns};
 use crate::tuple::Tuple;
 
 #[derive(Debug, Copy, Clone)]
@@ -27,9 +27,9 @@ impl Material {
 
     pub(crate) fn lighting(&self, light: &Light, point: Tuple, eyev: Tuple, normalv: Tuple, in_shadow : bool) -> Color {
         let color : Color;
-        match self.pattern {
-            Pattern::None => color = self.color,
-            Pattern::Stripe(stripe_pattern) => color = stripe_pattern.stripe_at(&point)
+        match self.pattern.pattern {
+            Patterns::None => color = self.color,
+            Patterns::Stripe(stripe_pattern) => color = stripe_pattern.stripe_at(&point)
         }
 
         // combine the surface color with the light's color/intensity
@@ -85,6 +85,6 @@ impl PartialEq for Material {
 }
 
 pub fn material() -> Material {
-    Material { color: Color { r: 1.0, g: 1.0, b: 1.0 }, ambient: 0.1, diffuse: 0.9, specular: 0.9, shininess: 200.0, pattern: Pattern::None }
+    Material { color: Color { r: 1.0, g: 1.0, b: 1.0 }, ambient: 0.1, diffuse: 0.9, specular: 0.9, shininess: 200.0, pattern: Pattern::new() }
 }
 

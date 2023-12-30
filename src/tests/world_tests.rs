@@ -5,7 +5,7 @@ use crate::intersection::Intersection;
 use crate::light::PointLight;
 use crate::material::Material;
 use crate::object::build_sphere;
-use crate::pattern::Pattern;
+use crate::pattern::{Pattern};
 use crate::ray::ray;
 use crate::transform::{scaling, translation};
 use crate::tuple::{point, vector};
@@ -20,7 +20,7 @@ fn the_default_world_test() {
         specular: 0.2,
         shininess: 200.0,
         ambient: 0.1,
-        pattern: Pattern::None
+        pattern: Pattern::new()
     });
 
     let mut sphere_2 = build_sphere();
