@@ -4,7 +4,8 @@ use crate::comps::prepare_computations;
 use crate::intersection::Intersection;
 use crate::light::PointLight;
 use crate::material::Material;
-use crate::object::build_sphere;
+use crate::math::SQRT2;
+use crate::object::{build_plane, build_sphere};
 use crate::pattern::{Pattern};
 use crate::ray::ray;
 use crate::transform::{scaling, translation};
@@ -20,7 +21,8 @@ fn the_default_world_test() {
         specular: 0.2,
         shininess: 200.0,
         ambient: 0.1,
-        pattern: Pattern::new()
+        reflective: 0.0,
+        pattern: Pattern::new(),
     });
 
     let mut sphere_2 = build_sphere();
@@ -140,4 +142,39 @@ fn shade_hit_is_given_an_intersection_in_shadow_test() {
     let comps = prepare_computations(&i, &r);
     let c = w.shade_hit(&comps);
     assert_eq!(c, Color::new(0.1, 0.1, 0.1));
+}
+
+#[test]
+fn the_reflected_color_for_a_non_reflective_material_test() {
+    let mut w = build_world();
+    let r = ray(point(0.0, 0.0, 0.0), vector(0.0, 0.0, 1.0));
+
+    {
+        let object = &mut w.objects[1];
+        let mut mat = object.material().clone();
+        mat.set_ambient(1.0);
+        object.set_material(mat);
+    }
+
+    let i = Intersection { t: 1.0, object: &w.objects[1] };
+    let comps = prepare_computations(&i, &r);
+    let color = w.reflected_color(&comps);
+    assert_eq!(color, Color::new(0.0, 0.0, 0.0));
+}
+
+#[test]
+fn the_reflected_color_for_a_reflective_material_test() {
+    let mut w = build_world();
+    let mut shape = build_plane();
+    let mut material = Material::new();
+    material.reflective = 0.5;
+    shape.set_transformation(translation(0.0, -1.0, 0.0));
+    shape.set_material(material);
+
+    w.objects.push(shape);
+    let r = ray(point(0.0, 0.0, -3.0), vector(0.0, -SQRT2 / 2.0, SQRT2 / 2.0));
+    let i = Intersection { t: SQRT2, object: &w.objects[2] };
+    let comps = prepare_computations(&i, &r);
+    let color = w.reflected_color(&comps);
+    assert_eq!(color, Color::new(0.19032, 0.2379, 0.14274));
 }

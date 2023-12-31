@@ -170,3 +170,9 @@ fn lighting_with_a_pattern_applied_test() {
     assert_eq!( c2, Color::black());
 }
 
+
+#[test]
+fn reflectivity_for_the_default_material_test() {
+    let m = Material::new();
+    assert_eq!(m.reflective, 0.0);
+}

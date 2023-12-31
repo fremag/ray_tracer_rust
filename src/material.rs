@@ -12,12 +12,13 @@ pub struct Material {
     pub diffuse: Float,
     pub specular: Float,
     pub shininess: Float,
+    pub reflective: Float,
     pub(crate) pattern: Pattern,
 }
 
 impl Material {
     pub fn new() -> Material {
-        Material { color: Color { r: 1.0, g: 1.0, b: 1.0 }, ambient: 0.1, diffuse: 0.9, specular: 0.9, shininess: 200.0, pattern: Pattern::new() }
+        Material { color: Color { r: 1.0, g: 1.0, b: 1.0 }, ambient: 0.1, diffuse: 0.9, specular: 0.9, shininess: 200.0, reflective: 0.0, pattern: Pattern::new() }
     }
 
     pub(crate) fn set_pattern(&mut self, pattern: Pattern) {
@@ -80,6 +81,7 @@ impl PartialEq for Material {
             && equals(self.diffuse, other.diffuse)
             && equals(self.specular, other.specular)
             && equals(self.shininess, other.shininess)
+            && equals(self.reflective, other.reflective)
     }
 }
 

@@ -83,12 +83,22 @@ impl World {
                 }
         }
     }
+
+    pub(crate) fn reflected_color(&self, comps: &Comps) -> Color {
+        if comps.object.material().reflective == 0.0 {
+            return Color::new(0.0, 0.0, 0.0);
+        }
+
+        let reflect_ray = ray(comps.over_point, comps.reflectv);
+        let color = self.color_at(&reflect_ray);
+        return color * comps.object.material().reflective;
+    }
 }
 
 pub fn build_world() -> World {
     let mut sphere_1 = build_sphere();
     sphere_1.set_material(Material {color: Color::new(0.8, 1.0, 0.6),
-    diffuse: 0.7, specular: 0.2, shininess: 200.0, ambient: 0.1, pattern: Pattern::new()});
+    diffuse: 0.7, specular: 0.2, shininess: 200.0, ambient: 0.1, reflective: 0.0, pattern: Pattern::new()});
 
     let mut sphere_2 = build_sphere();
     sphere_2.set_transformation(scaling(0.5, 0.5, 0.5));
