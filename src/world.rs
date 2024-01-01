@@ -34,13 +34,15 @@ impl World {
         intersections(intersection_vec)
     }
 
-    pub fn shade_hit(&self, comps : &Comps) -> Color {
+    pub fn shade_hit(&self, comps : &Comps, remaining: i32) -> Color {
         let mut color = Color::new(0.0, 0.0, 0.0);
         let material = comps.object.material();
 
         for light in self.lights.iter() {
             let in_shadow = self.is_shadowed(light, comps.over_point);
-            color = color + material.lighting(comps.object, &light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
+            let surface = material.lighting(comps.object, &light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
+            let reflected = self.reflected_color(comps, remaining);
+            color = color + surface + reflected;
         }
 
         color
@@ -54,14 +56,14 @@ impl World {
         self.objects = objects;
     }
 
-    pub fn color_at(&self, ray: &Ray) -> Color {
+    pub fn color_at(&self, ray: &Ray, remaining : i32) -> Color {
         let intersections = self.intersect_world(ray);
         let hit = intersections.hit();
         match hit {
             None => Color::new(0.0, 0.0, 0.0),
             Some(intersection) => {
                 let comps = prepare_computations(intersection, ray);
-                self.shade_hit(&comps)
+                self.shade_hit(&comps, remaining)
             }
         }
     }
@@ -84,13 +86,13 @@ impl World {
         }
     }
 
-    pub(crate) fn reflected_color(&self, comps: &Comps) -> Color {
-        if comps.object.material().reflective == 0.0 {
+    pub(crate) fn reflected_color(&self, comps: &Comps, remaining: i32) -> Color {
+        if comps.object.material().reflective == 0.0 || remaining == 0 {
             return Color::new(0.0, 0.0, 0.0);
         }
 
         let reflect_ray = ray(comps.over_point, comps.reflectv);
-        let color = self.color_at(&reflect_ray);
+        let color = self.color_at(&reflect_ray, remaining-1);
         return color * comps.object.material().reflective;
     }
 }
