@@ -8,7 +8,7 @@ This is a personal project.
 I'm learning Rust while working my way through Jamis Buck's 
 [The Ray Tracer Challenge](https://pragprog.com/book/jbtracer/the-ray-tracer-challenge)
 
-<details>
+<details open>
 <summary>Chapter 11: Reflection and refraction</summary>
 
 ![basic_refraction_sphere_scene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/basic_refraction_sphere_scene.png)
