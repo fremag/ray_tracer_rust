@@ -8,7 +8,15 @@ This is a personal project.
 I'm learning Rust while working my way through Jamis Buck's 
 [The Ray Tracer Challenge](https://pragprog.com/book/jbtracer/the-ray-tracer-challenge)
 
-<details open>
+<details>
+<summary>Chapter 11: Reflection and refraction</summary>
+
+![basic_refraction_sphere_scene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/basic_refraction_sphere_scene.png)
+![refraction_sphere_scene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/refraction_sphere_scene.png)
+
+</details>
+
+<details>
 <summary>Chapter 10: Patterns</summary>
 
 ![AllPatternStripeScene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/all_patterns_scene.png)

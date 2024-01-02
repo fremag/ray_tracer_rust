@@ -5,7 +5,7 @@ use crate::comps::prepare_computations;
 use crate::intersection::Intersection;
 use crate::intersections::{intersections, Intersections};
 use crate::material::Material;
-use crate::math::{EPSILON, Float};
+use crate::math::{EPSILON, equals, Float, SQRT2};
 use crate::object::{build_glass_sphere, build_sphere};
 use crate::ray::{ray, Ray};
 use crate::transform::{scaling, translation};
@@ -198,4 +198,34 @@ fn the_under_point_is_offset_below_the_surface_test() {
     let comps = prepare_computations(&i, &r, &xs);
     assert!(comps.under_point.z > EPSILON / 2.0);
     assert!(comps.point.z < comps.under_point.z);
+}
+
+#[test]
+fn the_schlick_approximation_under_total_internal_reflection_test() {
+    let shape = build_glass_sphere();
+    let r = ray(point(0.0, 0.0, SQRT2 / 2.0), vector(0.0, 1.0, 0.0));
+    let xs = intersections(vec!(Intersection { t: -SQRT2 / 2.0, object: &shape }, Intersection { t: SQRT2 / 2.0, object: &shape }));
+    let comps = prepare_computations(&xs.intersections[1], &r, &xs);
+    let reflectance = comps.schlick();
+    assert_eq!(reflectance, 1.0);
+}
+
+#[test]
+fn the_schlick_approximation_with_a_perpendicular_viewing_angle_test() {
+    let shape = build_glass_sphere();
+    let r = ray(point(0.0, 0.0, 0.0), vector(0.0, 1.0, 0.0));
+    let xs = intersections(vec![Intersection { t: -1.0, object: &shape }, Intersection { t: 1.0, object: &shape }]);
+    let comps = prepare_computations(&xs[1], &r, &xs);
+    let reflectance = comps.schlick();
+    assert!(equals(reflectance, 0.04));
+}
+
+#[test]
+fn the_schlick_approximation_with_small_angle_and_n2_greater_than_n1() {
+    let shape = build_glass_sphere();
+    let r = ray(point(0.0, 0.99, -2.0), vector(0.0, 0.0, 1.0));
+    let xs = intersections(vec![Intersection { t: 1.8589, object: &shape }]);
+    let comps = prepare_computations(&xs.intersections[0], &r, &xs);
+    let reflectance = comps.schlick();
+    assert!(equals(reflectance, 0.48873));
 }

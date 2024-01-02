@@ -41,9 +41,15 @@ impl World {
         for light in self.lights.iter() {
             let in_shadow = self.is_shadowed(light, comps.over_point);
             let surface = material.lighting(comps.object, &light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
-            let reflected = self.reflected_color(comps, remaining);
-            let refracted = self.refracted_color(comps, remaining);
-            color = color + surface + reflected + refracted;
+            let reflected= self.reflected_color(comps, remaining);
+            let refracted= self.refracted_color(comps, remaining);
+
+            if material.reflective > 0.0 && material.transparency > 0.0 {
+                let reflectance = comps.schlick();
+                color = color + surface + reflected * reflectance + refracted * (1.0 - reflectance);
+            } else {
+                color = color + surface + reflected + refracted;
+            }
         }
 
         color

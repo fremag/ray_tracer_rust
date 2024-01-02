@@ -371,21 +371,20 @@ fn refraction_putting_it_together_test() {
     material_floor.reflective = 0.0;
     material_floor.diffuse = 0.0;
     material_floor.shininess = 0.0;
-    let scale = 0.650;
-    material_floor.pattern.set_pattern_transform(&scaling(scale, scale, scale));
+    material_floor.pattern.set_pattern_transform(&(&translation(0.0, 0.1, 0.0) * &scaling(2.0, 2.0, 2.0)));
 
     let mut floor = build_plane();
     floor.set_material(material_floor);
-    floor.set_transformation(translation(0.0, -1.0, 0.0));
+    floor.set_transformation(translation(0.0, -10.1, 0.0));
 
     let mut material_sphere = Material::new();
     material_sphere.color = Color::white();
     material_sphere.diffuse = 0.4;
     material_sphere.shininess = 300.0;
-    material_sphere.specular = 0.9;
+    material_sphere.specular = 0.0;
     material_sphere.reflective = 1.0;
     material_sphere.ambient = 0.0;
-    material_sphere.transparency = 0.9;
+    material_sphere.transparency = 1.0;
     material_sphere.refractive_index = 1.5;
 
     let mut sphere = build_sphere();
@@ -393,19 +392,19 @@ fn refraction_putting_it_together_test() {
 
     let mut material_bubble = Material::new();
     material_bubble.color = Color::red();
-    material_bubble.diffuse = 0.0;
-    material_bubble.shininess = 0.0;
+    material_bubble.diffuse = 0.4;
+    material_bubble.shininess = 300.0;
     material_bubble.specular = 0.0;
-    material_bubble.reflective = 0.0;
+    material_bubble.reflective = 1.0;
     material_bubble.ambient = 0.0;
-    material_bubble.transparency = 0.9;
+    material_bubble.transparency = 1.0;
     material_bubble.refractive_index = 1.0;
     let mut bubble = build_sphere();
     bubble.set_transformation(scaling(0.5, 0.5, 0.5));
     bubble.set_material(material_bubble);
 
     let mut world = World::new();
-    let lights = vec!(PointLight::new(point(-2.0, 10.0, 2.0), Color::white()));
+    let lights = vec!(PointLight::new(point(20.0, 10.0, 0.0), Color::white()*0.7));
     world.set_lights(lights);
     world.set_objects(vec![
         floor,
@@ -414,7 +413,7 @@ fn refraction_putting_it_together_test() {
     ]);
 
     let mut camera = Camera::new(400, 400, PI / 3.0);
-    camera.set_transform(view_transform(point( 0.0, 2.0, -0.0),
+    camera.set_transform(view_transform(point( 0.0, 2.5, 0.0),
                                         point(0.0, 0.0, 0.0),
                                         vector(0.0, 0.0, 1.0)));
 
@@ -457,7 +456,7 @@ fn basic_refraction_putting_it_together_test() {
     sphere.set_material(material_sphere);
 
     let mut world = World::new();
-    let lights = vec!(PointLight::new(point(-100.0, 0.0, 50.0), Color::white()));
+    let lights = vec!(PointLight::new(point(-100.0, 0.0, -50.0), Color::white()));
     world.set_lights(lights);
     world.set_objects(vec![
         floor,
@@ -475,4 +474,35 @@ fn basic_refraction_putting_it_together_test() {
         Ok(_) => { print!("Ok") }
         Err(error) => { print!("Error: {}", error) }
     }
+}
+
+#[test]
+fn shade_hit_with_a_reflective_transparent_material_test() {
+    let mut w = build_world();
+
+    let mut floor = build_plane();
+    floor.set_transformation(translation(0.0, -1.0, 0.0));
+    let mut mat = floor.material().clone();
+    mat.reflective = 0.5;
+    mat.transparency = 0.5;
+    mat.refractive_index = 1.5;
+    floor.set_material(mat);
+    w.objects.push(floor);
+
+    let mut ball = build_sphere();
+    ball.set_transformation(translation(0.0, -3.5, -0.5));
+
+    let mut mat = ball.material().clone();
+    mat.color = Color::new(1.0, 0.0, 0.0);
+    mat.ambient = 0.5;
+    ball.set_material(mat);
+
+    w.objects.push(ball);
+
+    let r = ray(point(0.0, 0.0, -3.0), vector(0.0, -SQRT2 / 2.0, SQRT2 / 2.0));
+    let xs = intersections(vec!(Intersection { t: SQRT2, object: &w.objects[2] }));
+
+    let comps = prepare_computations(&xs[0], &r, &xs);
+    let color = w.shade_hit(&comps, 5);
+    assert_eq!(color, Color::new(0.93391, 0.69643, 0.69243));
 }
