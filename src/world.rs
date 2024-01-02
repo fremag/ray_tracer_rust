@@ -42,7 +42,8 @@ impl World {
             let in_shadow = self.is_shadowed(light, comps.over_point);
             let surface = material.lighting(comps.object, &light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
             let reflected = self.reflected_color(comps, remaining);
-            color = color + surface + reflected;
+            let refracted = self.refracted_color(comps, remaining);
+            color = color + surface + reflected + refracted;
         }
 
         color
@@ -62,7 +63,7 @@ impl World {
         match hit {
             None => Color::new(0.0, 0.0, 0.0),
             Some(intersection) => {
-                let comps = prepare_computations(intersection, ray);
+                let comps = prepare_computations(intersection, ray, &intersections);
                 self.shade_hit(&comps, remaining)
             }
         }
@@ -88,19 +89,47 @@ impl World {
 
     pub(crate) fn reflected_color(&self, comps: &Comps, remaining: i32) -> Color {
         if comps.object.material().reflective == 0.0 || remaining == 0 {
-            return Color::new(0.0, 0.0, 0.0);
+            return Color::black();
         }
 
         let reflect_ray = ray(comps.over_point, comps.reflectv);
         let color = self.color_at(&reflect_ray, remaining-1);
         return color * comps.object.material().reflective;
     }
+
+    pub(crate) fn refracted_color(&self, comps: &Comps, remaining: i32) -> Color {
+        if comps.object.material().transparency == 0.0 || remaining == 0 {
+            return Color::black();
+        }
+
+        let n_ratio = comps.n1 / comps.n2;
+        // cos(theta_i) is the same as the dot product of the two vectors
+        let cos_i = comps.eyev.dot(&comps.normalv);
+        // Find sin(theta_t)^2 via trigonometric identity
+        let sin2_t = n_ratio * n_ratio * (1.0 - cos_i * cos_i);
+        if sin2_t > 1.0 {
+            return Color::black();
+        }
+
+        // Find cos(theta_t) via trigonometric identity
+        let cos_t = (1.0 - sin2_t).sqrt();
+        // Compute the direction of the refracted ray
+        let direction = comps.normalv * (n_ratio * cos_i - cos_t) - comps.eyev * n_ratio;
+        // Create the refracted ray
+        let refract_ray = ray(comps.under_point, direction);
+
+        // Find the color of the refracted ray, making sure to multiply
+        // by the transparency value to account for any opacity
+        let color = self.color_at(&refract_ray, remaining - 1) * comps.object.material().transparency;
+        return color;
+    }
 }
 
 pub fn build_world() -> World {
     let mut sphere_1 = build_sphere();
     sphere_1.set_material(Material {color: Color::new(0.8, 1.0, 0.6),
-    diffuse: 0.7, specular: 0.2, shininess: 200.0, ambient: 0.1, reflective: 0.0, pattern: Pattern::new()});
+    diffuse: 0.7, specular: 0.2, shininess: 200.0, ambient: 0.1, reflective: 0.0,
+        transparency: 0.0, refractive_index: 1.0, pattern: Pattern::new()});
 
     let mut sphere_2 = build_sphere();
     sphere_2.set_transformation(scaling(0.5, 0.5, 0.5));

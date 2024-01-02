@@ -3,11 +3,12 @@ use crate::canvas::Canvas;
 use crate::colors::Color;
 use crate::comps::prepare_computations;
 use crate::intersection::Intersection;
-use crate::intersections::{intersections};
+use crate::intersections::{intersections, Intersections};
+use crate::material::Material;
 use crate::math::{EPSILON, Float};
-use crate::object::build_sphere;
-use crate::ray::ray;
-use crate::transform::translation;
+use crate::object::{build_glass_sphere, build_sphere};
+use crate::ray::{ray, Ray};
+use crate::transform::{scaling, translation};
 use crate::tuple::{point, vector};
 
 #[test]
@@ -132,14 +133,69 @@ fn putting_it_together_test() {
         Err(error) => { print!("Error: {}", error) }
     }
 }
+
 #[test]
 fn the_hit_should_offset_the_point_test() {
     let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
     let mut shape = build_sphere();
     shape.set_transformation(translation(0.0, 0.0, 1.0));
     let i = Intersection::new(5.0, &shape);
-    let comps = prepare_computations(&i, &r);
+    let comps = prepare_computations(&i, &r, &intersections(vec!(i)));
     assert!(comps.over_point.z < -EPSILON / 2.0);
     assert!(comps.point.z > comps.over_point.z);
 }
 
+
+#[test]
+fn finding_n1_and_n2_at_various_intersections_test() {
+    let mut a = build_glass_sphere();
+    let mut b = build_glass_sphere();
+    let mut c = build_glass_sphere();
+    a.set_transformation(scaling(2.0, 2.0, 2.0));
+    let mut mat_a = Material::new();
+    mat_a.refractive_index = 1.5;
+    a.set_material(mat_a);
+
+    b.set_transformation(translation(0.0, 0.0, -0.25));
+    let mut mat_b = Material::new();
+    mat_b.refractive_index = 2.0;
+    b.set_material(mat_b);
+    c.set_transformation(translation(0.0, 0.0, 0.25));
+    let mut mat_c = Material::new();
+    mat_c.refractive_index = 2.5;
+    c.set_material(mat_c);
+
+    let r = ray(point(0.0, 0.0, -4.0), vector(0.0, 0.0, 1.0));
+    let xs = intersections(vec!(
+        Intersection { t: 2.0, object: &a },
+        Intersection { t: 2.75, object: &b },
+        Intersection { t: 3.25, object: &c },
+        Intersection { t: 4.75, object: &b },
+        Intersection { t: 5.25, object: &c },
+        Intersection { t: 6.00, object: &a }));
+
+    check_n1_n2(&xs, &r, 0, 1.0, 1.5);
+    check_n1_n2(&xs, &r, 1, 1.5, 2.0);
+    check_n1_n2(&xs, &r, 2, 2.0, 2.5);
+    check_n1_n2(&xs, &r, 3, 2.5, 2.5);
+    check_n1_n2(&xs, &r, 4, 2.5, 1.5);
+    check_n1_n2(&xs, &r, 5, 1.5, 1.0);
+}
+
+fn check_n1_n2(xs: &Intersections, r: &Ray, index: usize, n1: Float, n2: Float) {
+    let comps = prepare_computations(&xs.intersections[index], &r, &xs);
+    assert_eq!(comps.n1, n1);
+    assert_eq!(comps.n2, n2);
+}
+
+#[test]
+fn the_under_point_is_offset_below_the_surface_test() {
+    let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
+    let mut shape = build_glass_sphere();
+    shape.set_transformation(translation(0.0, 0.0, 1.0));
+    let i = Intersection { t: 5.0, object: &shape };
+    let xs = intersections(vec![i]);
+    let comps = prepare_computations(&i, &r, &xs);
+    assert!(comps.under_point.z > EPSILON / 2.0);
+    assert!(comps.point.z < comps.under_point.z);
+}

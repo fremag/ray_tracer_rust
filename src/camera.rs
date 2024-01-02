@@ -65,7 +65,7 @@ impl Camera {
         for y in 0..self.v_size {
             for x in 0..self.h_size {
                 let ray = self.ray_for_pixel(x, y);
-                let color = world.color_at(&ray, 1);
+                let color = world.color_at(&ray, 5);
                 image.write_pixel(x, y, color);
             }
         }

@@ -83,3 +83,11 @@ pub fn build_plane() -> Object {
     let plane = Shape::Plane(Plane::new());
     Object::new(plane)
 }
+pub fn build_glass_sphere() -> Object {
+    let mut sphere = build_sphere();
+    let mut material = Material::new();
+    material.transparency = 1.0;
+    material.refractive_index = 1.5;
+    sphere.set_material(material);
+    sphere
+}

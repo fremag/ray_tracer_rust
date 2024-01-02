@@ -4,7 +4,7 @@ use crate::colors::Color;
 use crate::light::{Light, PointLight};
 use crate::material::{Material};
 use crate::math::{Float, SQRT2};
-use crate::object::build_sphere;
+use crate::object::{build_glass_sphere, build_sphere};
 use crate::pattern::{Pattern};
 use crate::ray::ray;
 use crate::tuple::{point, vector};
@@ -175,4 +175,19 @@ fn lighting_with_a_pattern_applied_test() {
 fn reflectivity_for_the_default_material_test() {
     let m = Material::new();
     assert_eq!(m.reflective, 0.0);
+}
+
+#[test]
+fn transparency_and_refractive_index_for_the_default_material_test() {
+    let m = Material::new();
+    assert_eq!(m.transparency, 0.0);
+    assert_eq!(m.refractive_index, 1.0);
+}
+
+#[test]
+fn a_helper_for_producing_a_sphere_with_a_glassy_material_test() {
+    let s = build_glass_sphere();
+    let m = s.material();
+    assert_eq!(m.transparency, 1.0);
+    assert_eq!(m.refractive_index, 1.5);
 }
