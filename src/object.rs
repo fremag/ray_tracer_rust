@@ -1,7 +1,9 @@
 use crate::cube::{Cube};
+use crate::cylinder::Cylinder;
 use crate::intersection::Intersection;
 use crate::intersections::{Intersections, intersections};
 use crate::material::{Material};
+use crate::math::Float;
 use crate::matrix::Matrix;
 use crate::plane::Plane;
 use crate::ray::Ray;
@@ -86,6 +88,11 @@ pub fn build_plane() -> Object {
 }
 pub fn build_cube() -> Object {
     let cube = Shape::Cube(Cube::new());
+    Object::new(cube)
+}
+
+pub fn build_cylinder(min : Float, max : Float ) -> Object {
+    let cube = Shape::Cylinder(Cylinder::from(min, max, true));
     Object::new(cube)
 }
 

@@ -22,6 +22,7 @@ mod camera;
 mod plane;
 mod pattern;
 mod cube;
+mod cylinder;
 
 fn main() {
     println!("Hello, world!");

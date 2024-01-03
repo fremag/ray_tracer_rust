@@ -17,3 +17,4 @@ mod camera_tests;
 mod plane_tests;
 mod pattern_tests;
 mod cube_tests;
+mod cylinder_tests;
