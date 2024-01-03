@@ -1,7 +1,7 @@
+#[cfg(test)]
 use rand::{Rng, SeedableRng};
 use crate::camera::Camera;
 use crate::colors::Color;
-#[cfg(test)]
 use crate::cylinder::Cylinder;
 use crate::light::PointLight;
 use crate::material::Material;
