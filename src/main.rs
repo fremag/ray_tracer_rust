@@ -21,6 +21,7 @@ mod comps;
 mod camera;
 mod plane;
 mod pattern;
+mod cube;
 
 fn main() {
     println!("Hello, world!");

@@ -1,3 +1,4 @@
+use crate::cube::{Cube};
 use crate::intersection::Intersection;
 use crate::intersections::{Intersections, intersections};
 use crate::material::{Material};
@@ -83,6 +84,11 @@ pub fn build_plane() -> Object {
     let plane = Shape::Plane(Plane::new());
     Object::new(plane)
 }
+pub fn build_cube() -> Object {
+    let cube = Shape::Cube(Cube::new());
+    Object::new(cube)
+}
+
 pub fn build_glass_sphere() -> Object {
     let mut sphere = build_sphere();
     let mut material = Material::new();

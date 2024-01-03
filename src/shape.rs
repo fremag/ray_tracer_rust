@@ -1,4 +1,5 @@
 use std::fmt::Debug;
+use crate::cube::Cube;
 use crate::math::Float;
 use crate::plane::Plane;
 use crate::ray::Ray;
@@ -6,13 +7,14 @@ use crate::sphere::Sphere;
 use crate::tuple::Tuple;
 
 #[derive(Debug, Copy, Clone)]
-pub enum Shape {Sphere(Sphere), Plane(Plane)}
+pub enum Shape {Sphere(Sphere), Plane(Plane), Cube(Cube)}
 
 impl Shape {
     pub(crate) fn normal_at(&self, p: Tuple) -> Tuple {
         match self {
             Shape::Sphere(sphere) => sphere.normal_at(p),
             Shape::Plane(plane) => plane.normal_at(p),
+            Shape::Cube(cube) => cube.normal_at(p),
         }
     }
 }
@@ -32,6 +34,7 @@ impl Shape {
         match self {
             Shape::Sphere(sphere) => sphere.intersect(ray),
             Shape::Plane(plane) => plane.intersect(ray),
+            Shape::Cube(cube) => cube.intersect(ray),
         }
     }
 }
