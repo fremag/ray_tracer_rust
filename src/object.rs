@@ -55,7 +55,7 @@ impl Object {
     pub fn transformation_inverse(&self) -> &Matrix<4> {
         &self.transformation_inverse
     }
-    pub fn shape(&self) -> Shape { self.shape }
+    pub fn shape(&self) -> &Shape { &self.shape }
     pub fn material(&self) -> &Material { &(self.material) }
     pub fn set_material(&mut self, material : Material) -> &Self {
         self.material = material;

@@ -15,7 +15,7 @@ fn a_sphere_s_default_transformation_test() {
     let obj_s = build_sphere();
     assert_eq!(obj_s.transformation(), &Matrix::<4>::identity());
     assert_eq!(obj_s.transformation_inverse(), &Matrix::<4>::identity());
-    assert_eq!(obj_s.shape(), sphere());
+    assert_eq!(obj_s.shape(), &sphere());
 }
 
 #[test]
