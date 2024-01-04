@@ -23,6 +23,7 @@ mod plane;
 mod pattern;
 mod cube;
 mod cylinder;
+mod cone;
 
 fn main() {
     println!("Hello, world!");

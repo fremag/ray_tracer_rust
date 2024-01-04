@@ -114,9 +114,8 @@ fn the_normal_vector_on_a_cylinder_s_end_caps_test() {
     assert_eq!(cyl.normal_at(&point(0.0, 2.0, 0.5)), vector(0.0, 1.0, 0.0));
 }
 
-
 #[test]
-fn cube_putting_it_together_test() {
+fn cylinder_putting_it_together_test() {
     let mut world = World::new();
     let lights = vec!(
         PointLight::new(point(0.0, 50.0, -50.0), Color::white() ),

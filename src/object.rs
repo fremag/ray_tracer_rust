@@ -1,3 +1,4 @@
+use crate::cone::Cone;
 use crate::cube::{Cube};
 use crate::cylinder::Cylinder;
 use crate::intersection::Intersection;
@@ -92,8 +93,13 @@ pub fn build_cube() -> Object {
 }
 
 pub fn build_cylinder(min : Float, max : Float ) -> Object {
-    let cube = Shape::Cylinder(Cylinder::from(min, max, true));
-    Object::new(cube)
+    let cyl = Shape::Cylinder(Cylinder::from(min, max, true));
+    Object::new(cyl)
+}
+
+pub fn build_cone(min : Float, max : Float ) -> Object {
+    let cone = Shape::Cone(Cone::from(min, max, true));
+    Object::new(cone)
 }
 
 pub fn build_glass_sphere() -> Object {

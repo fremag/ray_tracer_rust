@@ -18,3 +18,4 @@ mod plane_tests;
 mod pattern_tests;
 mod cube_tests;
 mod cylinder_tests;
+mod cone_tests;

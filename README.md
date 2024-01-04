@@ -9,9 +9,11 @@ I'm learning Rust while working my way through Jamis Buck's
 [The Ray Tracer Challenge](https://pragprog.com/book/jbtracer/the-ray-tracer-challenge)
 
 <details open>
-<summary>Chapter 13: Cylinders</summary>
+<summary>Chapter 13: Cylinders and cones</summary>
 
 ![cylinders_scene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/cylinders_scene.png)
+
+![cones_scene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/cones_scene.png)
 
 </details>
 

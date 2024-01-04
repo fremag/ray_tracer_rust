@@ -1,4 +1,5 @@
 use std::fmt::Debug;
+use crate::cone::Cone;
 use crate::cube::Cube;
 use crate::cylinder::Cylinder;
 use crate::math::Float;
@@ -8,7 +9,7 @@ use crate::sphere::Sphere;
 use crate::tuple::Tuple;
 
 #[derive(Debug, Copy, Clone)]
-pub enum Shape {Sphere(Sphere), Plane(Plane), Cube(Cube), Cylinder(Cylinder)}
+pub enum Shape {Sphere(Sphere), Plane(Plane), Cube(Cube), Cylinder(Cylinder), Cone(Cone)}
 
 impl Shape {
     pub(crate) fn normal_at(&self, p: Tuple) -> Tuple {
@@ -16,7 +17,8 @@ impl Shape {
             Shape::Sphere(sphere) => sphere.normal_at(p),
             Shape::Plane(plane) => plane.normal_at(p),
             Shape::Cube(cube) => cube.normal_at(p),
-            Shape::Cylinder(cylinder) => cylinder.normal_at(&p)
+            Shape::Cylinder(cylinder) => cylinder.normal_at(&p),
+            Shape::Cone(cone) => cone.normal_at(&p),
         }
     }
 }
@@ -28,6 +30,7 @@ impl PartialEq for Shape {
             (Shape::Plane(_), Shape::Plane(_)) => true,
             (Shape::Cube(_), Shape::Cube(_)) => true,
             (Shape::Cylinder(cyl1), Shape::Cylinder(cyl2)) => cyl1.eq(cyl2),
+            (Shape::Cone(cone1), Shape::Cone(cone2)) => cone1.eq(cone2),
             _ => false
         }
     }
@@ -40,6 +43,7 @@ impl Shape {
             Shape::Plane(plane) => plane.intersect(ray),
             Shape::Cube(cube) => cube.intersect(ray),
             Shape::Cylinder(cyl) => cyl.intersect(ray),
+            Shape::Cone(cone) => cone.intersect(ray),
         }
     }
 }
