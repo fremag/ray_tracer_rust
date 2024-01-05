@@ -33,6 +33,6 @@ impl Sphere {
     }
 }
 
-pub fn sphere() -> Shape<'static> {
+pub fn sphere() -> Shape {
     Shape::Sphere(Sphere { })
 }

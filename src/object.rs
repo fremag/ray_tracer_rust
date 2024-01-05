@@ -14,13 +14,14 @@ use crate::tuple::Tuple;
 
 #[derive(Debug)]
 pub struct Object<'a> {
-    shape: Shape<'a>,
+    shape: Shape,
     parent: Option<&'a Object<'a>>,
     material: Material,
     transformation: Matrix<4>,
     transformation_inverse: Matrix<4>,
     // optimization: keep inverse transformation
     transformation_inverse_transpose: Matrix<4>, // optimization: keep inverse transformation transpose
+    children : Vec<&'a Object<'a>>,
 }
 
 impl<'a> Object<'a> {
@@ -33,15 +34,12 @@ impl<'a> Object<'a> {
         n
     }
 
-    pub fn set_parent(&'a mut self, parent: &'a Object<'a>) {
-        self.parent = Some(&parent);
-    }
-
-    pub fn add(&'a mut self, mut child: Object<'a>) {
+    pub fn add(mut self, child: &'a Object<'a>) {
         let shape = &mut self.shape;
+
         match shape {
+            Shape::Group(_) => { self.children.push(child)},
             _ => {}
-            Shape::Group(ref mut group) => { group.add(child)}
         }
     }
 
@@ -72,11 +70,12 @@ impl<'a> Object<'a> {
         self
     }
 
-    pub fn new(shape: Shape<'a>) -> Object<'a> {
+    pub fn new(shape: Shape) -> Object<'a> {
         Object {
             shape,
             material: Material::new(),
             parent: None,
+            children: vec![],
             transformation: Matrix::<4>::identity(),
             transformation_inverse: Matrix::<4>::identity(),
             transformation_inverse_transpose: Matrix::<4>::identity(),
