@@ -10,14 +10,14 @@ use crate::ray::{Ray, ray};
 use crate::transform::scaling;
 use crate::tuple::{point, Tuple};
 
-pub struct World {
-    pub objects : Vec<Object>,
+pub struct World<'a> {
+    pub objects : Vec<Object<'a>>,
     pub lights : Vec<Light>
 }
 
-impl World {
+impl<'a> World<'a> {
 
-    pub(crate) fn new() -> World {
+    pub(crate) fn new() -> World<'static> {
         World {objects: vec![], lights: vec!()}
     }
 
@@ -59,7 +59,7 @@ impl World {
         self.lights = lights;
     }
 
-    pub fn set_objects(&mut self, objects : Vec<Object>) {
+    pub fn set_objects(&mut self, objects : Vec<Object<'a>>) {
         self.objects = objects;
     }
 
@@ -131,7 +131,7 @@ impl World {
     }
 }
 
-pub fn build_world() -> World {
+pub fn build_world() -> World<'static> {
     let mut sphere_1 = build_sphere();
     sphere_1.set_material(Material {color: Color::new(0.8, 1.0, 0.6),
     diffuse: 0.7, specular: 0.2, shininess: 200.0, ambient: 0.1, reflective: 0.0,

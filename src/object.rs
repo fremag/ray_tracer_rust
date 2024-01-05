@@ -13,35 +13,45 @@ use crate::sphere::sphere;
 use crate::tuple::Tuple;
 
 #[derive(Debug)]
-pub struct Object {
-    shape : Shape,
-    material : Material,
+pub struct Object<'a> {
+    shape: Shape<'a>,
+    parent: Option<&'a Object<'a>>,
+    material: Material,
     transformation: Matrix<4>,
-    transformation_inverse: Matrix<4>, // optimization: keep inverse transformation
+    transformation_inverse: Matrix<4>,
+    // optimization: keep inverse transformation
     transformation_inverse_transpose: Matrix<4>, // optimization: keep inverse transformation transpose
 }
 
-impl Object {
+impl<'a> Object<'a> {
     pub(crate) fn normal_at(&self, world_point: Tuple) -> Tuple {
-        let object_point = &self.transformation_inverse * &world_point;
+        let object_point = &(self.transformation_inverse) * &world_point;
         let object_normal = self.shape.normal_at(object_point);
-        let mut world_normal = &self.transformation_inverse_transpose * &object_normal;
+        let mut world_normal = &(self.transformation_inverse_transpose) * &object_normal;
         world_normal.w = 0.0;
         let n = world_normal.normalize();
         n
     }
-}
 
-impl Object {
-    pub(crate) fn intersect(&self, ray: &Ray) -> Intersections {
-        let ray2 = ray.transform( &self.transformation_inverse);
-        let vec= self.shape.intersect(&ray2).iter().map(|t| Intersection { t: *t, object: &self }).collect();
-        intersections(vec )
+    pub fn set_parent(&'a mut self, parent: &'a Object<'a>) {
+        self.parent = Some(&parent);
     }
-}
 
-impl Object {
-    pub fn set_transformation(&mut self, transformation : Matrix<4> ) -> &Self {
+    pub fn add(&'a mut self, mut child: Object<'a>) {
+        let shape = &mut self.shape;
+        match shape {
+            _ => {}
+            Shape::Group(ref mut group) => { group.add(child)}
+        }
+    }
+
+    pub(crate) fn intersect(&self, ray: &Ray) -> Intersections {
+        let ray2 = ray.transform(&self.transformation_inverse);
+        let vec = self.shape.intersect(&ray2).iter().map(|t| Intersection { t: *t, object: &self }).collect();
+        intersections(vec)
+    }
+
+    pub fn set_transformation(&mut self, transformation: Matrix<4>) -> &Self {
         self.transformation = transformation;
         self.transformation_inverse = self.transformation.inverse();
         self.transformation_inverse_transpose = self.transformation_inverse.transpose();
@@ -57,15 +67,16 @@ impl Object {
     }
     pub fn shape(&self) -> &Shape { &self.shape }
     pub fn material(&self) -> &Material { &(self.material) }
-    pub fn set_material(&mut self, material : Material) -> &Self {
+    pub fn set_material(&mut self, material: Material) -> &Self {
         self.material = material;
         self
     }
 
-    pub fn new(shape : Shape) -> Object {
+    pub fn new(shape: Shape<'a>) -> Object<'a> {
         Object {
             shape,
             material: Material::new(),
+            parent: None,
             transformation: Matrix::<4>::identity(),
             transformation_inverse: Matrix::<4>::identity(),
             transformation_inverse_transpose: Matrix::<4>::identity(),
@@ -73,36 +84,38 @@ impl Object {
     }
 }
 
-impl PartialEq for Object {
+impl PartialEq for Object<'_> {
     fn eq(&self, other: &Self) -> bool {
         self.shape == other.shape && self.transformation == other.transformation && self.material == other.material
     }
 }
 
-pub fn build_sphere() -> Object {
+pub fn build_sphere() -> Object<'static> {
     let sphere = sphere();
     Object::new(sphere)
 }
-pub fn build_plane() -> Object {
+
+pub fn build_plane() -> Object<'static> {
     let plane = Shape::Plane(Plane::new());
     Object::new(plane)
 }
-pub fn build_cube() -> Object {
+
+pub fn build_cube() -> Object<'static> {
     let cube = Shape::Cube(Cube::new());
     Object::new(cube)
 }
 
-pub fn build_cylinder(min : Float, max : Float ) -> Object {
+pub fn build_cylinder(min: Float, max: Float) -> Object<'static> {
     let cyl = Shape::Cylinder(Cylinder::from(min, max, true));
     Object::new(cyl)
 }
 
-pub fn build_cone(min : Float, max : Float ) -> Object {
+pub fn build_cone(min: Float, max: Float) -> Object<'static> {
     let cone = Shape::Cone(Cone::from(min, max, true));
     Object::new(cone)
 }
 
-pub fn build_glass_sphere() -> Object {
+pub fn build_glass_sphere() -> Object<'static> {
     let mut sphere = build_sphere();
     let mut material = Material::new();
     material.transparency = 1.0;
