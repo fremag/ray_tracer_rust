@@ -18,8 +18,7 @@ pub struct Object<'a> {
     parent: Option<&'a Object<'a>>,
     material: Material,
     transformation: Matrix<4>,
-    transformation_inverse: Matrix<4>,
-    // optimization: keep inverse transformation
+    transformation_inverse: Matrix<4>,    // optimization: keep inverse transformation
     transformation_inverse_transpose: Matrix<4>, // optimization: keep inverse transformation transpose
     children : Vec<&'a Object<'a>>,
 }
@@ -34,10 +33,8 @@ impl<'a> Object<'a> {
         n
     }
 
-    pub fn add(mut self, child: &'a Object<'a>) {
-        let shape = &mut self.shape;
-
-        match shape {
+    pub fn add(&mut self, child: &'a Object<'a>) {
+        match self.shape {
             Shape::Group(_) => { self.children.push(child)},
             _ => {}
         }
