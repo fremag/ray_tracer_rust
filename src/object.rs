@@ -42,18 +42,20 @@ impl<'a> Object<'a> {
 
     pub(crate) fn intersect(&self, ray: &Ray) -> Intersections {
         let ray2 = ray.transform(&self.transformation_inverse);
-        let vec = match &self.object_type {
-            ObjectShape(shape) => shape.intersect(&ray2),
+        return match &self.object_type {
+            ObjectShape(shape) => intersections(shape.intersect(&ray2).iter().map(|t| Intersection { t: *t, object: &self }).collect()),
             ObjectGroup(group) => group.intersect(&ray2),
         };
-        let all_intersections = vec.iter().map(|t| Intersection { t: *t, object: &self }).collect();
-        intersections(all_intersections)
     }
 
     pub fn set_transformation(&mut self, transformation: Matrix<4>) -> &Self {
         self.transformation = transformation;
         self.transformation_inverse = self.transformation.inverse();
         self.transformation_inverse_transpose = self.transformation_inverse.transpose();
+        match &self.object_type {
+            ObjectGroup(group) => group.set_transformation(transformation),
+            _ => {}
+        }
         self
     }
 
