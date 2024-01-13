@@ -120,7 +120,7 @@ fn putting_it_together_test() {
                 Some(hit) => {
                     let point = r.position(hit.t);
                     let object = hit.object;
-                    let normal = object.shape().normal_at(point);
+                    let normal = object.shape().unwrap().normal_at(point);
                     let eye = -r.direction;
                     let color = object.material().lighting(&object, &light, point, eye, normal, false);
                     canvas.write_pixel(x, y, color);

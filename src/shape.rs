@@ -2,15 +2,14 @@ use std::fmt::Debug;
 use crate::cone::Cone;
 use crate::cube::Cube;
 use crate::cylinder::Cylinder;
-use crate::group::Group;
 use crate::math::Float;
 use crate::plane::Plane;
 use crate::ray::Ray;
 use crate::sphere::Sphere;
-use crate::tuple::{Tuple, vector};
+use crate::tuple::{Tuple};
 
 #[derive(Debug)]
-pub enum Shape {Sphere(Sphere), Plane(Plane), Cube(Cube), Cylinder(Cylinder), Cone(Cone), Group(Group)}
+pub enum Shape {Sphere(Sphere), Plane(Plane), Cube(Cube), Cylinder(Cylinder), Cone(Cone)}
 
 impl Shape {
     pub(crate) fn normal_at(&self, p: Tuple) -> Tuple {
@@ -20,7 +19,6 @@ impl Shape {
             Shape::Cube(cube) => cube.normal_at(p),
             Shape::Cylinder(cylinder) => cylinder.normal_at(&p),
             Shape::Cone(cone) => cone.normal_at(&p),
-            _ => vector(0.0, 0.0, 0.0),
         }
     }
 }
@@ -46,7 +44,6 @@ impl Shape {
             Shape::Cube(cube) => cube.intersect(ray),
             Shape::Cylinder(cyl) => cyl.intersect(ray),
             Shape::Cone(cone) => cone.intersect(ray),
-            _ => vec![],
         }
     }
 }
