@@ -52,10 +52,6 @@ impl<'a> Object<'a> {
         self.transformation = transformation;
         self.transformation_inverse = self.transformation.inverse();
         self.transformation_inverse_transpose = self.transformation_inverse.transpose();
-        match &self.object_type {
-            ObjectGroup(group) => group.set_transformation(transformation),
-            _ => {}
-        }
         self
     }
 

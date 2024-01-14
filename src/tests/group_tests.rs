@@ -65,12 +65,34 @@ fn intersecting_a_ray_with_a_nonempty_group_test() {
 
 #[test]
 fn intersecting_a_transformed_group_test() {
-    let mut g = Group::new();
-    g.set_transformation(scaling(2.0, 2.0, 2.0));
     let mut s = build_sphere();
     s.set_transformation(translation(5.0, 0.0, 0.0));
-    g.add(&s);
+    let trans = scaling(2.0, 2.0, 2.0);
+    let group = build(&mut s, trans);
     let r = ray(point(10.0, 0.0, -10.0), vector(0.0, 0.0, 1.0));
-    let xs = g.intersect(&r);
+    let xs = group.intersect(&r);
     assert_eq!(xs.intersections.len(), 2);
+}
+
+#[test]
+fn intersecting_a_transformed_group_bis_test() {
+    let mut s1 = build_sphere();
+    s1.set_transformation(translation(5.0, 0.0, 0.0));
+    let mut s2 = build_sphere();
+    s2.set_transformation(translation(5.0, 1000.0, 0.0));
+    let mut objects = vec![];
+    objects.push(&mut s1);
+    let trans = scaling(2.0, 2.0, 2.0);
+    let group = Group::from(&mut objects, trans);
+
+    let r = ray(point(10.0, 0.0, -10.0), vector(0.0, 0.0, 1.0));
+    let xs = group.intersect(&r);
+    assert_eq!(xs.intersections.len(), 2);
+}
+
+fn build<'a>(object: &'a mut Object<'a>, transformation: Matrix<4>) -> Group<'a>{
+    let mut group = Group::new();
+    object.set_transformation(&transformation * object.transformation());
+    group.add(object);
+    group
 }

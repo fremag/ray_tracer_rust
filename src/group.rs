@@ -10,6 +10,16 @@ pub struct Group<'a> {
 }
 
 impl<'a> Group<'a> {
+
+    pub fn from(objects: &'a mut Vec<&'a mut Object<'a>>, transformation: Matrix<4>) -> Object<'a>{
+        let mut group = Group::new();
+        for object in objects.iter_mut() {
+            object.set_transformation(&transformation * object.transformation());
+            group.add(object);
+        }
+        Object::new_group(group)
+    }
+
     pub(crate) fn intersect(&self, ray: &Ray) -> Intersections {
 
         let mut xs = intersections(vec![]);
@@ -26,10 +36,6 @@ impl<'a> Group<'a> {
     pub(crate) fn normal_at(&self, object_point: Tuple) -> Tuple {
         // TODO
         vector(0.0, 0.0, 0.0)
-    }
-
-    pub(crate) fn set_transformation(&self, transformation: Matrix<4>) {
-        // TODO
     }
 
     pub fn add(&mut self, child: &'a Object<'a>) {
