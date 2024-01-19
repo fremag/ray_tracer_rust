@@ -1,8 +1,9 @@
 use std::mem;
+use crate::bounds::Bounds;
 use crate::math;
 use crate::math::{EPSILON, Float};
 use crate::ray::Ray;
-use crate::tuple::{Tuple, vector};
+use crate::tuple::{point, Tuple, vector};
 
 #[derive(Debug, Copy, Clone)]
 pub struct Cube {}
@@ -55,5 +56,9 @@ impl Cube {
             mem::swap(&mut tmin, &mut tmax);
         }
         return (tmin, tmax);
+    }
+
+    pub(crate) fn bounds(&self) -> Bounds {
+        Bounds::from( point(-1.0, -1.0, -1.0),  point(1.0, 1.0, 1.0))
     }
 }

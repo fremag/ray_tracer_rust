@@ -87,8 +87,7 @@ mod group_tests {
         s1.set_transformation(translation(5.0, 0.0, 0.0));
         let mut s2 = build_sphere();
         s2.set_transformation(translation(5.0, 1000.0, 0.0));
-        let mut objects = vec![];
-        objects.push(s1);
+        let objects = vec![s1];
         let trans = scaling(2.0, 2.0, 2.0);
         let group = Group::from(objects, trans);
 

@@ -1,4 +1,5 @@
 use ObjectType::ObjectGroup;
+use crate::bounds::Bounds;
 use crate::cone::Cone;
 use crate::cube::{Cube};
 use crate::cylinder::Cylinder;
@@ -56,14 +57,23 @@ impl Object {
         };
     }
 
+    pub(crate) fn bounds(&self) -> Bounds {
+        return match &self.object_type {
+            ObjectShape(shape) => shape.bounds().transform(&self.transformation),
+            ObjectGroup(group) => group.bounds(),
+        };
+    }
+
     pub fn set_transformation(&mut self, transformation: Matrix<4>) -> &Self {
         self.transformation = transformation;
         self.transformation_inverse = self.transformation.inverse();
         self.transformation_inverse_transpose = self.transformation_inverse.transpose();
 
         match &mut self.object_type {
-            ObjectGroup(group) => group.set_transformation(transformation),
-            _ => {}
+            ObjectGroup(group) => {
+                group.set_transformation(transformation);
+            },
+            ObjectShape(_) => {}
         }
         self
     }

@@ -1,3 +1,4 @@
+use crate::bounds::Bounds;
 use crate::math::Float;
 use crate::ray::Ray;
 use crate::shape::Shape;
@@ -30,6 +31,10 @@ impl Sphere {
     pub(crate) fn normal_at(&self, p: Tuple) -> Tuple {
         let inv_mag = 1.0/p.magnitude();
         vector(p.x * inv_mag, p.y * inv_mag, p.z * inv_mag)
+    }
+
+    pub(crate) fn bounds(&self) -> Bounds {
+        Bounds::from( point(-1.0, -1.0, -1.0),  point(1.0, 1.0, 1.0))
     }
 }
 

@@ -1,7 +1,8 @@
 use std::mem;
+use crate::bounds::Bounds;
 use crate::math::{EPSILON, equals, Float, INFINITY};
 use crate::ray::Ray;
-use crate::tuple::{Tuple, vector};
+use crate::tuple::{point, Tuple, vector};
 
 #[derive(Debug, Copy, Clone)]
 pub struct Cone {
@@ -116,5 +117,9 @@ impl Cone {
         if self.check_cap(ray, t, self.max) {
             xs.push(t);
         }
+    }
+
+    pub(crate) fn bounds(&self) -> Bounds {
+        Bounds::from( point(self.min, self.min, self.min),  point(self.max, self.max, self.max))
     }
 }

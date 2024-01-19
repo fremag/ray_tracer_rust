@@ -25,6 +25,7 @@ mod cube;
 mod cylinder;
 mod cone;
 mod group;
+mod bounds;
 
 fn main() {
     println!("Hello, world!");

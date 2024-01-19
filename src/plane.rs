@@ -1,6 +1,7 @@
+use crate::bounds::Bounds;
 use crate::math::{EPSILON, Float};
 use crate::ray::Ray;
-use crate::tuple::{Tuple, vector};
+use crate::tuple::{point, Tuple, vector};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Plane {
@@ -23,5 +24,9 @@ impl Plane {
 
     pub(crate) fn normal_at(&self, _ : Tuple) -> Tuple {
         vector(0.0, 1.0, 0.0)
+    }
+
+    pub(crate) fn bounds(&self) -> Bounds {
+        Bounds::from(point(-Float::INFINITY, 0.0, -Float::INFINITY), point(Float::INFINITY, 0.0, Float::INFINITY))
     }
 }
