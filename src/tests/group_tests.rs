@@ -3,9 +3,10 @@ mod group_tests {
     use crate::matrix::Matrix;
     use crate::object::{build_glass_sphere, build_sphere, Object};
     use crate::ray::ray;
-    use crate::transform::{scaling, translation};
+    use crate::transform::{rotation_y, scaling, translation};
     use crate::tuple::{point, vector};
     use crate::group::Group;
+    use crate::math::{Float, PI};
 
     #[test]
     fn creating_a_new_group_test() {
@@ -18,13 +19,13 @@ mod group_tests {
     #[test]
     fn adding_a_child_to_a_group_test() {
         let mut group = Group::new();
-        let mut sphere1 = build_glass_sphere();
-        let mut sphere2 = build_glass_sphere();
-        let mut sphere3 = build_glass_sphere();
+        let sphere1 = build_glass_sphere();
+        let sphere2 = build_glass_sphere();
+        let sphere3 = build_glass_sphere();
 
-        group.add(&mut sphere1);
-        group.add(&mut sphere2);
-        group.add(&mut sphere3);
+        group.add(sphere1);
+        group.add(sphere2);
+        group.add(sphere3);
 
         assert_eq!(group.len(), 3)
     }
@@ -45,9 +46,13 @@ mod group_tests {
         s2.set_transformation(translation(0.0, 0.0, -3.0));
         let mut s3 = build_sphere();
         s3.set_transformation(translation(5.0, 0.0, 0.0));
-        g.add(&s1);
-        g.add(&s2);
-        g.add(&s3);
+
+        let s1_clone = s1.clone();
+        let s2_clone = s2.clone();
+
+        g.add(s1);
+        g.add(s2);
+        g.add(s3);
 
         let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
         let xs = g.intersect(&r);
@@ -57,19 +62,20 @@ mod group_tests {
         assert_eq!(xs.intersections[2].t, 4.0);
         assert_eq!(xs.intersections[3].t, 6.0);
 
-        assert_eq!(xs.intersections[0].object, &s2);
-        assert_eq!(xs.intersections[1].object, &s2);
-        assert_eq!(xs.intersections[2].object, &s1);
-        assert_eq!(xs.intersections[3].object, &s1);
+        assert_eq!(xs.intersections[0].object, &s2_clone);
+        assert_eq!(xs.intersections[1].object, &s2_clone);
+        assert_eq!(xs.intersections[2].object, &s1_clone);
+        assert_eq!(xs.intersections[3].object, &s1_clone);
     }
-
 
     #[test]
     fn intersecting_a_transformed_group_test() {
         let mut s = build_sphere();
         s.set_transformation(translation(5.0, 0.0, 0.0));
         let trans = scaling(2.0, 2.0, 2.0);
-        let group = build(&mut s, trans);
+        let mut group = Group::new();
+        s.set_transformation(&trans * s.transformation());
+        group.add(s);
         let r = ray(point(10.0, 0.0, -10.0), vector(0.0, 0.0, 1.0));
         let xs = group.intersect(&r);
         assert_eq!(xs.intersections.len(), 2);
@@ -82,19 +88,39 @@ mod group_tests {
         let mut s2 = build_sphere();
         s2.set_transformation(translation(5.0, 1000.0, 0.0));
         let mut objects = vec![];
-        objects.push(&mut s1);
+        objects.push(s1);
         let trans = scaling(2.0, 2.0, 2.0);
-        let group = Group::from(&mut objects, trans);
+        let group = Group::from(objects, trans);
 
         let r = ray(point(10.0, 0.0, -10.0), vector(0.0, 0.0, 1.0));
         let xs = group.intersect(&r);
         assert_eq!(xs.intersections.len(), 2);
     }
 
-    fn build<'a>(object: &'a mut Object<'a>, transformation: Matrix<4>) -> Group<'a> {
-        let mut group = Group::new();
-        object.set_transformation(&transformation * object.transformation());
-        group.add(object);
-        group
+    #[test]
+    fn converting_a_point_from_world_to_object_space_test() {
+        let mut s = build_sphere();
+        s.set_transformation(translation(5.0, 0.0, 0.0));
+        let g2 = Group::from(vec![s], scaling(2.0, 2.0, 2.0));
+        let g1 = Group::from(vec![g2], rotation_y(PI / 2.0));
+
+        let g2_ref = g1.group().unwrap().child(0);
+        let s_ref = g2_ref.group().unwrap().child(0);
+        let p = s_ref.world_to_object(&point(-2.0, 0.0, -10.0));
+        assert_eq!(&p, &point(0.0, 0.0, -1.0));
+    }
+
+    #[test]
+    fn converting_a_normal_from_object_to_world_space_test() {
+        let mut s = build_sphere();
+        s.set_transformation(translation(5.0, 0.0, 0.0));
+        let g2 = Group::from(vec![s], scaling(1.0, 2.0, 3.0));
+        let g1 = Group::from(vec![g2], rotation_y(PI / 2.0));
+
+        let g2_ref = g1.group().unwrap().child(0);
+        let s_ref = g2_ref.group().unwrap().child(0);
+        let sqrt3div3 = (3.0 as Float).sqrt() / 3.0;
+        let n = s_ref.normal_to_world(&vector(sqrt3div3, sqrt3div3, sqrt3div3));
+        assert_eq!(&n, &vector(0.2857, 0.4286, -0.8571));
     }
 }

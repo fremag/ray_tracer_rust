@@ -15,28 +15,36 @@ use crate::shape::Shape;
 use crate::sphere::sphere;
 use crate::tuple::Tuple;
 
-#[derive(Debug)]
-pub struct Object<'a> {
-    object_type: ObjectType<'a>,
+#[derive(Debug, Clone)]
+pub struct Object {
+    object_type: ObjectType,
     material: Material,
     transformation: Matrix<4>,
     transformation_inverse: Matrix<4>,    // optimization: keep inverse transformation
     transformation_inverse_transpose: Matrix<4>, // optimization: keep inverse transformation transpose
 }
 
-#[derive(Debug)]
-pub enum ObjectType<'a> { ObjectShape(Shape), ObjectGroup(Group<'a>)}
+#[derive(Debug, Clone)]
+pub enum ObjectType { ObjectShape(Shape), ObjectGroup(Group)}
 
-impl<'a> Object<'a> {
+impl Object {
+    pub(crate) fn normal_to_world(&self, normal: &Tuple) -> Tuple {
+        let mut n = &self.transformation_inverse_transpose * normal;
+        n.w = 0.0;
+        n.normalize()
+    }
+
+    pub(crate) fn world_to_object(&self, point: &Tuple) -> Tuple {
+        &(self.transformation_inverse) * point
+    }
+
     pub(crate) fn normal_at(&self, world_point: Tuple) -> Tuple {
-        let object_point = &(self.transformation_inverse) * &world_point;
-        let object_normal = match &self.object_type {
-            ObjectShape(shape) => shape.normal_at(object_point),
-            ObjectGroup(group) => group.normal_at(object_point),
+        let local_point = self.world_to_object(&world_point);
+        let local_normal = match &self.object_type {
+            ObjectShape(shape) => shape.normal_at(local_point),
+            ObjectGroup(_) => panic!("No !"),
         };
-        let mut world_normal = &(self.transformation_inverse_transpose) * &object_normal;
-        world_normal.w = 0.0;
-        let n = world_normal.normalize();
+        let n = self.normal_to_world(&local_normal);
         n
     }
 
@@ -52,6 +60,11 @@ impl<'a> Object<'a> {
         self.transformation = transformation;
         self.transformation_inverse = self.transformation.inverse();
         self.transformation_inverse_transpose = self.transformation_inverse.transpose();
+
+        match &mut self.object_type {
+            ObjectGroup(group) => group.set_transformation(transformation),
+            _ => {}
+        }
         self
     }
 
@@ -76,7 +89,7 @@ impl<'a> Object<'a> {
         self
     }
 
-    pub fn new(shape: Shape) -> Object<'a> {
+    pub fn new(shape: Shape) -> Object {
         Object {
             object_type: ObjectShape(shape),
             material: Material::new(),
@@ -86,7 +99,7 @@ impl<'a> Object<'a> {
         }
     }
 
-    pub fn new_group(group: Group<'a>) -> Object<'a> {
+    pub fn new_group(group: Group) -> Object {
         Object {
             object_type: ObjectGroup(group),
             material: Material::new(),
@@ -97,7 +110,7 @@ impl<'a> Object<'a> {
     }
 }
 
-impl PartialEq for Object<'_> {
+impl PartialEq for Object {
     fn eq(&self, other: &Self) -> bool {
         if ! (self.transformation == other.transformation && self.material == other.material) {
             return false;
@@ -109,32 +122,32 @@ impl PartialEq for Object<'_> {
     }
 }
 
-pub fn build_sphere() -> Object<'static> {
+pub fn build_sphere() -> Object {
     let sphere = sphere();
     Object::new(sphere)
 }
 
-pub fn build_plane() -> Object<'static> {
+pub fn build_plane() -> Object {
     let plane = Shape::Plane(Plane::new());
     Object::new(plane)
 }
 
-pub fn build_cube() -> Object<'static> {
+pub fn build_cube() -> Object {
     let cube = Shape::Cube(Cube::new());
     Object::new(cube)
 }
 
-pub fn build_cylinder(min: Float, max: Float) -> Object<'static> {
+pub fn build_cylinder(min: Float, max: Float) -> Object {
     let cyl = Shape::Cylinder(Cylinder::from(min, max, true));
     Object::new(cyl)
 }
 
-pub fn build_cone(min: Float, max: Float) -> Object<'static> {
+pub fn build_cone(min: Float, max: Float) -> Object {
     let cone = Shape::Cone(Cone::from(min, max, true));
     Object::new(cone)
 }
 
-pub fn build_glass_sphere() -> Object<'static> {
+pub fn build_glass_sphere() -> Object {
     let mut sphere = build_sphere();
     let mut material = Material::new();
     material.transparency = 1.0;

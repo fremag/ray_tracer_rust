@@ -5,7 +5,7 @@ use crate::object::Object;
 #[derive(Debug, Copy, Clone)]
 pub struct Intersection<'a> {
     pub t : Float,
-    pub object: &'a Object<'a>
+    pub object: &'a Object
 }
 
 impl<'a> Intersection<'a> {

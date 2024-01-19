@@ -8,7 +8,7 @@ use crate::ray::Ray;
 use crate::sphere::Sphere;
 use crate::tuple::{Tuple};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Shape {Sphere(Sphere), Plane(Plane), Cube(Cube), Cylinder(Cylinder), Cone(Cone)}
 
 impl Shape {

@@ -6,7 +6,7 @@ use crate::ray::Ray;
 use crate::tuple::{Tuple};
 
 pub struct Comps<'a> {
-    pub object: &'a Object<'a>,
+    pub object: &'a Object,
     pub t: Float,
     pub point: Tuple,
     pub eyev: Tuple,

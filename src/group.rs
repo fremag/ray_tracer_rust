@@ -2,20 +2,37 @@ use crate::intersections::{Intersections, intersections};
 use crate::matrix::Matrix;
 use crate::object::Object;
 use crate::ray::Ray;
-use crate::tuple::{Tuple, vector};
 
-#[derive(Debug)]
-pub struct Group<'a> {
-    children : Vec<&'a Object<'a>>,
+#[derive(Debug, Clone)]
+pub struct Group {
+    children : Vec<Object>,
 }
 
-impl<'a> Group<'a> {
+impl Group {
+    pub(crate) fn child(&self, p0: usize) -> &Object {
+        &self.children[p0]
+    }
+}
 
-    pub fn from(objects: &'a mut Vec<&'a mut Object<'a>>, transformation: Matrix<4>) -> Object<'a>{
+impl Group {
+    pub(crate) fn set_transformation(&mut self, transformation: Matrix<4>) {
+        let mut transformed_children : Vec<Object> = vec![];
+        for object in self.children.iter_mut() {
+            object.set_transformation(&transformation * object.transformation());
+            transformed_children.push(object.clone());
+        }
+
+        self.children = transformed_children;
+    }
+}
+
+impl Group {
+
+    pub fn from(mut objects: Vec<Object>, transformation: Matrix<4>) -> Object {
         let mut group = Group::new();
         for object in objects.iter_mut() {
             object.set_transformation(&transformation * object.transformation());
-            group.add(object);
+            group.add(object.clone());
         }
         Object::new_group(group)
     }
@@ -33,12 +50,7 @@ impl<'a> Group<'a> {
         xs
     }
 
-    pub(crate) fn normal_at(&self, object_point: Tuple) -> Tuple {
-        // TODO
-        vector(0.0, 0.0, 0.0)
-    }
-
-    pub fn add(&mut self, child: &'a Object<'a>) {
+    pub fn add(&mut self, child: Object) {
         self.children.push(child);
     }
 
