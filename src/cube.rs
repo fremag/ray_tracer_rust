@@ -1,7 +1,6 @@
-use std::mem;
 use crate::bounds::Bounds;
 use crate::math;
-use crate::math::{EPSILON, Float};
+use crate::math::{Float};
 use crate::ray::Ray;
 use crate::tuple::{point, Tuple, vector};
 
@@ -18,44 +17,13 @@ impl Cube {
         }
         vector(0.0, 0.0, point.z)
     }
-}
 
-impl Cube {
     pub fn new() -> Self {
         Cube {}
     }
 
     pub(crate) fn intersect(&self, ray: &Ray) -> Vec<Float> {
-        let (x_t_min, x_t_max) = self.check_axis(ray.origin.x, ray.direction.x);
-        let (y_t_min, y_t_max) = self.check_axis(ray.origin.y, ray.direction.y);
-        let (z_t_min, z_t_max) = self.check_axis(ray.origin.z, ray.direction.z);
-        let t_min = math::max(x_t_min, y_t_min, z_t_min);
-        let t_max = math::min(x_t_max, y_t_max, z_t_max);
-        if t_min > t_max {
-            return vec![];
-        }
-
-        vec![t_min, t_max]
-    }
-
-    pub fn check_axis(&self, origin: Float, direction: Float) -> (Float, Float) {
-        let tmin_numerator = -1.0 - origin;
-        let tmax_numerator = 1.0 - origin;
-        let mut tmin: Float;
-        let mut tmax: Float;
-
-        if direction.abs() >= EPSILON {
-            tmin = tmin_numerator / direction;
-            tmax = tmax_numerator / direction;
-        } else {
-            tmin = tmin_numerator * math::INFINITY;
-            tmax = tmax_numerator * math::INFINITY;
-        }
-
-        if tmin > tmax {
-            mem::swap(&mut tmin, &mut tmax);
-        }
-        return (tmin, tmax);
+        self.bounds().intersect(&ray)
     }
 
     pub(crate) fn bounds(&self) -> Bounds {

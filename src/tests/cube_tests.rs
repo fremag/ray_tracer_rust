@@ -1,3 +1,4 @@
+#[cfg(test)]
 use rand::{Rng, SeedableRng};
 use crate::camera::Camera;
 use crate::colors::Color;
@@ -11,7 +12,6 @@ use crate::transform::{scaling, translation, view_transform};
 use crate::tuple::{point, vector};
 use crate::world::World;
 
-#[cfg(test)]
 #[test]
 fn a_ray_intersects_a_cube_test() {
     a_ray_intersects_a_cube(5.0, 0.5, 0.0, -1.0, 0.0, 0.0, 4.0, 6.0);
