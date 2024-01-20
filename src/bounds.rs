@@ -19,7 +19,10 @@ impl Bounds {
         let p7 = point(self.max.x, self.max.y, self.min.z);
         let p8 = self.max;
 
-        let mut bounds = Self::new();
+        let mut bounds = Self::from(
+            point(Float::INFINITY, Float::INFINITY, Float::INFINITY),
+            point(Float::NEG_INFINITY, Float::NEG_INFINITY, Float::NEG_INFINITY)
+        );
         bounds.add(&(transform * &p1));
         bounds.add(&(transform * &p2));
         bounds.add(&(transform * &p3));
