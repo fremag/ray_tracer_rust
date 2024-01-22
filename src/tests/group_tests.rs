@@ -145,19 +145,24 @@ mod group_tests {
         edge.set_transformation(transformation);
         return edge;
     }
-    fn hexagon_side() -> Object {
+
+    fn hexagon_side(material : Material) -> Object {
 
         let mut side = Group::new();
-        side.add(hexagon_corner());
-        side.add(hexagon_edge());
+        let mut corner = hexagon_corner();
+        corner.set_material(material);
+        side.add(corner);
+        let mut edge = hexagon_edge();
+        edge.set_material(material);
+        side.add(edge);
         Object::new_group(side)
     }
 
-    fn hexagon() -> Object {
+    fn hexagon(material: Material) -> Object {
         let mut hex = Group::new();
         const N: i32 = 6;
         for i in 0..N {
-            let mut side = hexagon_side();
+            let mut side = hexagon_side(material);
             let alpha = i as Float * (2.0 * PI / (N as Float));
             let rot_y = rotation_y(alpha);
             side.set_transformation(rot_y);
@@ -185,15 +190,22 @@ mod group_tests {
         floor.set_material(material_floor.clone());
         world.objects.push(floor);
 
-        let mut hex = hexagon();
+        let mut hex = hexagon(Material::new());
         hex.set_transformation(translation(0.0, 1.0, -0.5));
         world.objects.push(hex);
 
-        let mut hex2 = hexagon();
-        hex2.set_transformation(translation(1.5, 1.5, 1.0));
+        let mut material_hex_2 = Material::new();
+        material_hex_2.color = Color::black();
+        material_hex_2.reflective = 0.5;
+        material_hex_2.ambient = 0.0;
+        let mut hex2 = hexagon(material_hex_2);
+        hex2.set_transformation(translation(1.0, 2.0, 1.0));
         world.objects.push(hex2);
 
-        let mut hex3 = hexagon();
+        let mut material_hex_3 = Material::new();
+        material_hex_3.color = Color::red();
+        material_hex_3.shininess = 500.0;
+        let mut hex3 = hexagon(material_hex_3);
         hex3.set_transformation(translation(-1.5, 1.0, 1.0));
         world.objects.push(hex3);
 
