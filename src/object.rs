@@ -65,15 +65,16 @@ impl Object {
     }
 
     pub fn set_transformation(&mut self, transformation: Matrix<4>) -> &Self {
-        self.transformation = transformation;
-        self.transformation_inverse = self.transformation.inverse();
-        self.transformation_inverse_transpose = self.transformation_inverse.transpose();
 
         match &mut self.object_type {
             ObjectGroup(group) => {
                 group.set_transformation(transformation);
             },
-            ObjectShape(_) => {}
+            ObjectShape(_) => {
+                self.transformation = transformation;
+                self.transformation_inverse = self.transformation.inverse();
+                self.transformation_inverse_transpose = self.transformation_inverse.transpose();
+            }
         }
         self
     }

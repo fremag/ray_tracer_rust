@@ -112,6 +112,6 @@ impl Cylinder {
     }
 
     pub(crate) fn bounds(&self) -> Bounds {
-        Bounds::from( point(self.min, self.min, self.min),  point(self.max, self.max, self.max))
+        Bounds::from( point(-1.0, self.min, -1.0),  point(1.0, self.max, 1.0))
     }
 }

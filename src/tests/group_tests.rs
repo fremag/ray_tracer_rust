@@ -1,12 +1,18 @@
 #[cfg(test)]
 mod group_tests {
+    use crate::camera::Camera;
+    use crate::colors::Color;
     use crate::matrix::Matrix;
-    use crate::object::{build_glass_sphere, build_sphere, Object};
+    use crate::object::{build_cylinder, build_glass_sphere, build_plane, build_sphere, Object};
     use crate::ray::ray;
-    use crate::transform::{rotation_y, scaling, translation};
+    use crate::transform::{rotation_y, rotation_z, scaling, translation, view_transform};
     use crate::tuple::{point, vector};
     use crate::group::Group;
+    use crate::light::PointLight;
+    use crate::material::Material;
     use crate::math::{Float, PI};
+    use crate::pattern::Pattern;
+    use crate::world::World;
 
     #[test]
     fn creating_a_new_group_test() {
@@ -121,5 +127,81 @@ mod group_tests {
         let sqrt3div3 = (3.0 as Float).sqrt() / 3.0;
         let n = s_ref.normal_to_world(&vector(sqrt3div3, sqrt3div3, sqrt3div3));
         assert_eq!(&n, &vector(0.2857, 0.4286, -0.8571));
+    }
+
+    fn hexagon_corner() -> Object {
+        let mut corner = build_sphere();
+        corner.set_transformation(&translation(0.0, 0.0, -1.0) * &scaling(0.25, 0.25, 0.25));
+        corner
+    }
+
+    fn hexagon_edge() -> Object {
+        let mut edge = build_cylinder(0.0, 1.0);
+        let t = &translation(0.0, 0.0, -1.0);
+        let ry = &rotation_y(-PI / 6.0);
+        let rz = &rotation_z(-PI / 2.0);
+        let s = &scaling(0.25, 1.0, 0.25);
+        let transformation = t * &(ry * &(rz * s));
+        edge.set_transformation(transformation);
+        return edge;
+    }
+    fn hexagon_side() -> Object {
+
+        let mut side = Group::new();
+        side.add(hexagon_corner());
+        side.add(hexagon_edge());
+        Object::new_group(side)
+    }
+
+    fn hexagon() -> Object {
+        let mut hex = Group::new();
+        const N: i32 = 6;
+        for i in 0..N {
+            let mut side = hexagon_side();
+            let alpha = i as Float * (2.0 * PI / (N as Float));
+            let rot_y = rotation_y(alpha);
+            side.set_transformation(rot_y);
+            hex.add(side);
+        }
+        Object::new_group(hex)
+    }
+
+    #[test]
+    fn group_putting_it_together_test() {
+        let mut world = World::new();
+        let lights = vec!(
+            PointLight::new(point(0.0, 10.5, -10.0), Color::white() ),
+        );
+        world.set_lights(lights);
+        let mut camera = Camera::new(400, 400, PI / 3.0);
+        camera.set_transform(view_transform(point(0.0, 3.0, -2.0),
+                                            point(0.0, 0.0, 0.0),
+                                            vector(0.0, 1.0, 0.0)));
+
+        let mut material_floor = Material::new();
+        material_floor.pattern = Pattern::checker(Color::white(), Color::black());
+
+        let mut floor = build_plane();
+        floor.set_material(material_floor.clone());
+        world.objects.push(floor);
+
+        let mut hex = hexagon();
+        hex.set_transformation(translation(0.0, 1.0, -0.5));
+        world.objects.push(hex);
+
+        let mut hex2 = hexagon();
+        hex2.set_transformation(translation(1.5, 1.5, 1.0));
+        world.objects.push(hex2);
+
+        let mut hex3 = hexagon();
+        hex3.set_transformation(translation(-1.5, 1.0, 1.0));
+        world.objects.push(hex3);
+
+        let canvas = camera.render(&world);
+        let result = canvas.save("e:\\tmp\\group_scene.ppm");
+        match result {
+            Ok(_) => { print!("Ok") }
+            Err(error) => { print!("Error: {}", error) }
+        }
     }
 }

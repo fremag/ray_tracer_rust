@@ -9,6 +9,13 @@ I'm learning Rust while working my way through Jamis Buck's
 [The Ray Tracer Challenge](http://raytracerchallenge.com/)
 
 <details open>
+<summary>Chapter 14: Groups</summary>
+
+![group_scene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/group_scene.png)
+
+</details>
+
+<details>
 <summary>Chapter 13: Cylinders and cones</summary>
 
 ![cylinders_scene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/cylinders_scene.png)

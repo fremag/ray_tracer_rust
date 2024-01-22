@@ -51,12 +51,21 @@ impl Group {
     pub fn add(&mut self, child: Object) {
         let mut transformed_children = child.clone();
         transformed_children.set_transformation(&self.transformation * child.transformation());
+        if self.children.is_empty() {
+            self.bounds = transformed_children.bounds();
+        } else {
+            self.bounds.extend(&transformed_children.bounds());
+        }
         self.children.push(transformed_children);
+
     }
 
     pub(crate) fn intersect(&self, ray: &Ray) -> Intersections {
-
         let mut xs = intersections(vec![]);
+        if self.bounds.intersect(&ray).is_empty() {
+            return xs;
+        }
+
         for child in self.children.iter() {
             let child_xs = child.intersect(ray);
             for x in child_xs.intersections.iter() {
