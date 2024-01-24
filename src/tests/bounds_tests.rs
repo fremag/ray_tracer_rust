@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod bounds_tests {
+mod tests {
     use crate::bounds::Bounds;
     use crate::math::Float;
     use crate::ray::ray;

@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod camera_tests {
+mod tests {
     use crate::camera::Camera;
     use crate::colors::Color;
     use crate::light::PointLight;

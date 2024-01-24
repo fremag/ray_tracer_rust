@@ -23,13 +23,9 @@ mod material;
 mod world;
 mod comps;
 mod camera;
-mod plane;
 mod pattern;
-mod cube;
-mod cylinder;
-mod cone;
-mod group;
 mod bounds;
+mod shapes;
 
 fn main() {
     println!("Start...");

@@ -1,10 +1,10 @@
 use std::fmt::Debug;
 use crate::bounds::Bounds;
-use crate::cone::Cone;
-use crate::cube::Cube;
-use crate::cylinder::Cylinder;
+use crate::shapes::cone::Cone;
+use crate::shapes::cube::Cube;
+use crate::shapes::cylinder::Cylinder;
 use crate::math::Float;
-use crate::plane::Plane;
+use crate::shapes::plane::Plane;
 use crate::ray::Ray;
 use crate::sphere::Sphere;
 use crate::tuple::{Tuple};

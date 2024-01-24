@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod group_tests {
+mod tests {
     use crate::camera::Camera;
     use crate::colors::Color;
     use crate::matrix::Matrix;
@@ -7,7 +7,7 @@ mod group_tests {
     use crate::ray::ray;
     use crate::transform::{rotation_y, rotation_z, scaling, translation, view_transform};
     use crate::tuple::{point, vector};
-    use crate::group::Group;
+    use crate::shapes::group::Group;
     use crate::light::PointLight;
     use crate::material::Material;
     use crate::math::{Float, PI};
