@@ -1,4 +1,4 @@
-use std::ops::{Index, Mul};
+use std::ops::{Index, Mul, Add};
 use crate::math::{equals, Float};
 use crate::tuple::Tuple;
 
@@ -205,6 +205,37 @@ impl<const N : usize> Mul<&Matrix<N>> for &Matrix<N> {
     }
 }
 
+impl<const N : usize> Add<&Matrix<N>> for &Matrix<N> {
+    type Output = Matrix<N>;
+
+    fn add(self, rhs: &Matrix<N>) -> Matrix<N> {
+        let mut data = [[0.0; N]; N];
+        for row in 0..N {
+            for col in 0..N {
+                data[row][col] = self[row][col] + rhs[row][col];
+            }
+        }
+        let matrix : Matrix<N> = Matrix {data};
+        matrix
+    }
+}
+
+impl<const N : usize> Mul<Float> for &Matrix<N> {
+    type Output = Matrix<N>;
+
+    fn mul(self, rhs: Float) -> Matrix<N> {
+        let mut data = [[0.0; N]; N];
+        for row in 0..N {
+            for col in 0..N {
+                data[row][col] = rhs * self.data[row][col];
+            }
+        }
+        let matrix : Matrix<N> = Matrix {data};
+        matrix
+    }
+}
+
+
 impl<const N : usize> Mul<&Tuple> for &Matrix<N> {
     type Output = Tuple;
 
@@ -221,3 +252,5 @@ impl<const N : usize> Mul<&Tuple> for &Matrix<N> {
         tuple
     }
 }
+
+
