@@ -5,9 +5,9 @@ mod tests {
     use crate::matrix::Matrix;
     use crate::object::{build_sphere, Object};
     use crate::ray::ray;
-    use crate::shape::Shape;
-    use crate::sphere;
-    use crate::sphere::sphere;
+    use crate::shapes::shape::Shape;
+    use crate::shapes::sphere;
+    use crate::shapes::sphere::sphere;
     use crate::transform::{rotation_z, scaling, translation};
     use crate::tuple::{point, vector};
 

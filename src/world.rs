@@ -1,11 +1,11 @@
 use crate::colors::Color;
 use crate::comps::{Comps, prepare_computations};
 use crate::intersections::{Intersections, intersections};
-use crate::light::Light;
-use crate::light::PointLight;
+use crate::lights::light::Light;
+use crate::lights::point_light::PointLight;
 use crate::material::{Material};
 use crate::object::{build_sphere, Object};
-use crate::pattern::{Pattern};
+use crate::patterns::pattern::{Pattern};
 use crate::ray::{Ray, ray};
 use crate::transform::scaling;
 use crate::tuple::{point, Tuple};

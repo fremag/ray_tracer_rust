@@ -1,10 +1,10 @@
 use crate::camera::Camera;
 use crate::colors::Color;
-use crate::light::PointLight;
+use crate::lights::point_light::PointLight;
 use crate::material::Material;
 use crate::math::{Float, PI, rotation};
 use crate::object::{build_cylinder, build_plane, Object};
-use crate::pattern::Pattern;
+use crate::patterns::pattern::Pattern;
 use crate::shapes::group::Group;
 use crate::transform::{scaling, translation, view_transform};
 use crate::tuple::{point, Tuple, vector};

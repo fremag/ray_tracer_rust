@@ -2,7 +2,7 @@
 mod tests {
     use crate::camera::Camera;
     use crate::colors::Color;
-    use crate::light::PointLight;
+    use crate::lights::point_light::PointLight;
     use crate::material::Material;
     use crate::math::PI;
     use crate::object::{build_plane, build_sphere};

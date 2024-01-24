@@ -4,7 +4,9 @@ use crate::tuple::{point, Tuple};
 
 mod ray_tracer;
 mod tests;
-mod core;
+mod shapes;
+mod patterns;
+mod lights;
 mod math;
 mod tuple;
 mod projectile;
@@ -13,19 +15,14 @@ mod canvas;
 mod matrix;
 mod transform;
 mod ray;
-mod sphere;
 mod intersection;
-mod shape;
 mod intersections;
 mod object;
-mod light;
 mod material;
 mod world;
 mod comps;
 mod camera;
-mod pattern;
 mod bounds;
-mod shapes;
 
 fn main() {
     println!("Start...");

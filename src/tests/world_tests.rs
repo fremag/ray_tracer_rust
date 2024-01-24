@@ -5,11 +5,11 @@ mod tests {
     use crate::comps::prepare_computations;
     use crate::intersection::Intersection;
     use crate::intersections::intersections;
-    use crate::light::PointLight;
+    use crate::lights::point_light::PointLight;
     use crate::material::Material;
     use crate::math::{PI, SQRT2};
     use crate::object::{build_plane, build_sphere};
-    use crate::pattern::{Pattern};
+    use crate::patterns::pattern::{Pattern};
     use crate::ray::ray;
     use crate::transform::{scaling, translation, view_transform};
     use crate::tuple::{point, vector};

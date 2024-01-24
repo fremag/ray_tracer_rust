@@ -12,8 +12,8 @@ use crate::matrix::Matrix;
 use crate::object::ObjectType::ObjectShape;
 use crate::shapes::plane::Plane;
 use crate::ray::Ray;
-use crate::shape::Shape;
-use crate::sphere::sphere;
+use crate::shapes::shape::Shape;
+use crate::shapes::sphere::sphere;
 use crate::tuple::Tuple;
 
 #[derive(Debug, Clone)]

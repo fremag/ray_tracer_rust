@@ -3,7 +3,7 @@ mod tests {
     use crate::math::{Float, PI, SQRT2};
     use crate::object::build_sphere;
     use crate::ray::ray;
-    use crate::sphere::sphere;
+    use crate::shapes::sphere::sphere;
     use crate::transform::{rotation_z, scaling, translation};
     use crate::tuple::{point, vector};
 

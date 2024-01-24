@@ -1,8 +1,8 @@
 use crate::colors::Color;
-use crate::light::Light;
+use crate::lights::light::Light;
 use crate::math::{equals, Float};
 use crate::object::Object;
-use crate::pattern::{Pattern};
+use crate::patterns::pattern::{Pattern};
 use crate::tuple::Tuple;
 
 #[derive(Debug, Copy, Clone)]

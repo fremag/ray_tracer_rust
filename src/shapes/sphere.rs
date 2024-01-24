@@ -1,7 +1,7 @@
 use crate::bounds::Bounds;
 use crate::math::Float;
 use crate::ray::Ray;
-use crate::shape::Shape;
+use crate::shapes::shape::Shape;
 use crate::tuple::{point, Tuple, vector};
 
 #[derive(Debug, Clone, Copy)]

@@ -3,8 +3,8 @@ mod tests {
     use rand::{Rng, SeedableRng};
     use crate::camera::Camera;
     use crate::colors::Color;
+    use crate::lights::point_light::PointLight;
     use crate::shapes::cylinder::Cylinder;
-    use crate::light::PointLight;
     use crate::material::Material;
     use crate::math::{equals, Float, INFINITY, PI};
     use crate::object::{build_cylinder};

@@ -4,7 +4,7 @@ mod tests {
     use crate::camera::Camera;
     use crate::colors::Color;
     use crate::shapes::cube::Cube;
-    use crate::light::PointLight;
+    use crate::lights::point_light::PointLight;
     use crate::material::Material;
     use crate::math::{Float, PI};
     use crate::object::build_cube;

@@ -6,7 +6,7 @@ use crate::shapes::cylinder::Cylinder;
 use crate::math::Float;
 use crate::shapes::plane::Plane;
 use crate::ray::Ray;
-use crate::sphere::Sphere;
+use crate::shapes::sphere::Sphere;
 use crate::tuple::{Tuple};
 
 #[derive(Debug, Clone)]

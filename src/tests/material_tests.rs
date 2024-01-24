@@ -2,11 +2,12 @@
 mod tests {
     use crate::canvas::Canvas;
     use crate::colors::Color;
-    use crate::light::{Light, PointLight};
+    use crate::lights::light::Light;
+    use crate::lights::point_light::PointLight;
     use crate::material::{Material};
     use crate::math::{Float, SQRT2};
     use crate::object::{build_glass_sphere, build_sphere};
-    use crate::pattern::{Pattern};
+    use crate::patterns::pattern::{Pattern};
     use crate::ray::ray;
     use crate::tuple::{point, vector};
 

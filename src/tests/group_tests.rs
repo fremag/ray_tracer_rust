@@ -2,16 +2,16 @@
 mod tests {
     use crate::camera::Camera;
     use crate::colors::Color;
+    use crate::lights::point_light::PointLight;
     use crate::matrix::Matrix;
     use crate::object::{build_cylinder, build_glass_sphere, build_plane, build_sphere, Object};
     use crate::ray::ray;
     use crate::transform::{rotation_y, rotation_z, scaling, translation, view_transform};
     use crate::tuple::{point, vector};
     use crate::shapes::group::Group;
-    use crate::light::PointLight;
     use crate::material::Material;
     use crate::math::{Float, PI};
-    use crate::pattern::Pattern;
+    use crate::patterns::pattern::Pattern;
     use crate::world::World;
 
     #[test]

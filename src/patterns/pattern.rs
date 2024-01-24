@@ -1,6 +1,10 @@
 use crate::colors::Color;
 use crate::matrix::Matrix;
 use crate::object::Object;
+use crate::patterns::checker::CheckerPattern;
+use crate::patterns::gradient::GradientPattern;
+use crate::patterns::ring::RingPattern;
+use crate::patterns::stripe::StripePattern;
 use crate::tuple::Tuple;
 
 #[derive(Debug, Copy, Clone)]
@@ -66,82 +70,4 @@ pub enum Patterns {
     Gradient(GradientPattern),
     Ring(RingPattern),
     Checker(CheckerPattern)
-}
-
-#[derive(Debug, Copy, Clone)]
-pub struct StripePattern {
-    pub a : Color,
-    pub b : Color,
-}
-
-impl StripePattern {
-    pub fn new(a: Color, b : Color) -> Self {
-        Self {a, b}
-    }
-
-    pub fn pattern_at(&self, point: &Tuple) -> Color {
-        let x = point.x.floor() as i32 % 2;
-        if x == 0 {
-            return self.a
-        }
-
-        self.b
-    }
-}
-
-#[derive(Debug, Copy, Clone)]
-pub struct GradientPattern {
-    pub a : Color,
-    pub b : Color,
-}
-
-impl GradientPattern {
-    pub fn new(a: Color, b: Color) -> Self { Self {a, b} }
-
-    pub(crate) fn pattern_at(&self, point: &Tuple) -> Color {
-        let fraction = point.x - point.x.floor();
-        Color::new(
-            self.a.r + (self.b.r - self.a.r) * fraction,
-            self.a.g + (self.b.g - self.a.g) * fraction,
-            self.a.b + (self.b.b - self.a.b) * fraction
-        )
-    }
-}
-
-#[derive(Debug, Copy, Clone)]
-pub struct RingPattern {
-    pub a : Color,
-    pub b : Color,
-}
-
-impl RingPattern {
-    pub fn new(a: Color, b: Color) -> Self { Self {a, b} }
-
-    pub(crate) fn pattern_at(&self, point: &Tuple) -> Color {
-        let dist = (point.x * point.x + point.z * point.z).sqrt().floor() as i32;
-        if dist % 2 == 0 {
-            return self.a
-        }
-
-        self.b
-    }
-}
-
-#[derive(Debug, Copy, Clone)]
-pub struct CheckerPattern {
-    pub a : Color,
-    pub b : Color,
-}
-
-impl CheckerPattern {
-    pub fn new(a: Color, b: Color) -> Self { Self {a, b} }
-
-    pub(crate) fn pattern_at(&self, point: &Tuple) -> Color {
-        let sum_floor_coord = point.x.floor() as i32  + point.y.floor() as i32 + point.z.floor()  as i32;
-        if sum_floor_coord % 2 == 0 {
-            return self.a
-        }
-
-        self.b
-    }
 }

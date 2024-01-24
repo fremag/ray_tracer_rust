@@ -4,8 +4,8 @@ mod tests {
     use rand::{Rng, SeedableRng};
     use crate::camera::Camera;
     use crate::colors::Color;
+    use crate::lights::point_light::PointLight;
     use crate::shapes::cone::Cone;
-    use crate::light::PointLight;
     use crate::material::Material;
     use crate::math::{equals, Float, PI, SQRT2};
     use crate::object::build_cone;
