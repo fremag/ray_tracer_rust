@@ -123,7 +123,7 @@ pub fn build_mesh(mesh: &Mesh, r: Float, close_u: bool, close_v: bool) -> Object
             sub_group.add(c1);
         }
 
-        if (close_u)
+        if close_u
         {
             let c1 = make_cylinder(mesh.points[0][i], mesh.points[mesh.n - 1][i], r);
             sub_group.add(c1);

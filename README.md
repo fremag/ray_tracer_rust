@@ -8,7 +8,7 @@ This is a personal project.
 I'm learning Rust while working my way through Jamis Buck's 
 [The Ray Tracer Challenge](http://raytracerchallenge.com/)
 
-<details>
+<details open>
 <summary>Demo #1</summary>
 
 ![demo_1_scene](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/clover.png)
