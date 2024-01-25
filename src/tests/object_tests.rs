@@ -1,15 +1,15 @@
 #[cfg(test)]
 mod tests {
     use crate::material::Material;
-    use crate::math::{PI, SQRT2};
-    use crate::matrix::Matrix;
+    use crate::core::math::{PI, SQRT2};
+    use crate::core::matrix::Matrix;
     use crate::object::{build_sphere, Object};
-    use crate::ray::ray;
+    use crate::core::ray::ray;
     use crate::shapes::shape::Shape;
     use crate::shapes::sphere;
     use crate::shapes::sphere::sphere;
-    use crate::transform::{rotation_z, scaling, translation};
-    use crate::tuple::{point, vector};
+    use crate::core::transform::{rotation_z, scaling, translation};
+    use crate::core::tuple::{point, vector};
 
     #[test]
     fn a_sphere_s_default_transformation_test() {

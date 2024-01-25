@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod tests {
-    use crate::bounds::Bounds;
-    use crate::math::Float;
-    use crate::ray::ray;
-    use crate::transform::{scaling, translation};
-    use crate::tuple::{point, vector};
+    use crate::core::bounds::Bounds;
+    use crate::core::math::Float;
+    use crate::core::ray::ray;
+    use crate::core::transform::{scaling, translation};
+    use crate::core::tuple::{point, vector};
 
     #[test]
     fn transform_scaling_test() {

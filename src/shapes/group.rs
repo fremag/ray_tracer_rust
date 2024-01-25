@@ -1,8 +1,8 @@
-use crate::bounds::Bounds;
-use crate::intersections::{Intersections, intersections};
-use crate::matrix::Matrix;
+use crate::core::bounds::Bounds;
+use crate::core::intersections::{Intersections, intersections};
+use crate::core::matrix::Matrix;
 use crate::object::Object;
-use crate::ray::Ray;
+use crate::core::ray::Ray;
 
 #[derive(Debug, Clone)]
 pub struct Group {

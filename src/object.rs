@@ -1,20 +1,20 @@
 use ObjectType::ObjectGroup;
-use crate::bounds::Bounds;
+use crate::core::bounds::Bounds;
 use crate::shapes::cone::Cone;
 use crate::shapes::cube::{Cube};
 use crate::shapes::cylinder::Cylinder;
 use crate::shapes::group::Group;
-use crate::intersection::Intersection;
-use crate::intersections::{Intersections, intersections};
+use crate::core::intersection::Intersection;
+use crate::core::intersections::{Intersections, intersections};
 use crate::material::{Material};
-use crate::math::Float;
-use crate::matrix::Matrix;
+use crate::core::math::Float;
+use crate::core::matrix::Matrix;
 use crate::object::ObjectType::ObjectShape;
 use crate::shapes::plane::Plane;
-use crate::ray::Ray;
+use crate::core::ray::Ray;
 use crate::shapes::shape::Shape;
 use crate::shapes::sphere::sphere;
-use crate::tuple::Tuple;
+use crate::core::tuple::Tuple;
 
 #[derive(Debug, Clone)]
 pub struct Object {

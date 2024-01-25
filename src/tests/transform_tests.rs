@@ -2,11 +2,10 @@
 mod tests {
     use crate::canvas::Canvas;
     use crate::colors::Color;
-    use crate::math::{Float, SQRT2};
-    use crate::math::PI;
-    use crate::matrix::Matrix;
-    use crate::transform::{rotation_x, rotation_y, rotation_z, scaling, shearing, translation, view_transform};
-    use crate::tuple::{point, vector};
+    use crate::core::math::{Float, SQRT2, PI};
+    use crate::core::matrix::Matrix;
+    use crate::core::transform::{rotation_x, rotation_y, rotation_z, scaling, shearing, translation, view_transform};
+    use crate::core::tuple::{point, vector};
 
     #[test]
     fn multiplying_by_a_translation_matrix_test() {

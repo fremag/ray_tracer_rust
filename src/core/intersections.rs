@@ -1,5 +1,5 @@
 use std::ops::Index;
-use crate::intersection::Intersection;
+use crate::core::intersection::Intersection;
 use sorted_vec::SortedVec;
 
 pub struct Intersections<'a> {

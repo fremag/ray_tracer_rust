@@ -1,28 +1,21 @@
-use crate::math::{Float, PI};
-use crate::ray_tracer::{build_mesh, curve_sweep_mesh, init_camera, init_world, render};
-use crate::tuple::{point, Tuple};
 
+mod core;
 mod ray_tracer;
 mod tests;
 mod shapes;
 mod patterns;
 mod lights;
-mod math;
-mod tuple;
 mod projectile;
 mod colors;
 mod canvas;
-mod matrix;
-mod transform;
-mod ray;
-mod intersection;
-mod intersections;
 mod object;
 mod material;
 mod world;
-mod comps;
 mod camera;
-mod bounds;
+
+use crate::core::math::{Float, PI};
+use crate::ray_tracer::{build_mesh, curve_sweep_mesh, init_camera, init_world, render};
+use crate::core::tuple::{point, Tuple};
 
 fn main() {
     println!("Start...");

@@ -1,8 +1,8 @@
 use crate::canvas::Canvas;
-use crate::math::Float;
-use crate::matrix::Matrix;
-use crate::ray::{Ray, ray};
-use crate::tuple::point;
+use crate::core::math::Float;
+use crate::core::matrix::Matrix;
+use crate::core::ray::{Ray, ray};
+use crate::core::tuple::point;
 use crate::world::World;
 
 pub struct Camera {

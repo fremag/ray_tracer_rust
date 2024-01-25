@@ -6,11 +6,11 @@ mod tests {
     use crate::lights::point_light::PointLight;
     use crate::shapes::cylinder::Cylinder;
     use crate::material::Material;
-    use crate::math::{equals, Float, INFINITY, PI};
+    use crate::core::math::{equals, Float, INFINITY, PI};
     use crate::object::{build_cylinder};
-    use crate::ray::ray;
-    use crate::transform::{scaling, translation, view_transform};
-    use crate::tuple::{point, Tuple, vector};
+    use crate::core::ray::ray;
+    use crate::core::transform::{scaling, translation, view_transform};
+    use crate::core::tuple::{point, Tuple, vector};
     use crate::world::World;
 
     #[test]

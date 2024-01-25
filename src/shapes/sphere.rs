@@ -1,8 +1,8 @@
-use crate::bounds::Bounds;
-use crate::math::Float;
-use crate::ray::Ray;
+use crate::core::bounds::Bounds;
+use crate::core::math::Float;
+use crate::core::ray::Ray;
 use crate::shapes::shape::Shape;
-use crate::tuple::{point, Tuple, vector};
+use crate::core::tuple::{point, Tuple, vector};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Sphere {

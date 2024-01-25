@@ -1,23 +1,23 @@
-use crate::matrix::Matrix;
-use crate::tuple::Tuple;
+use crate::core::matrix::Matrix;
+use crate::core::tuple::Tuple;
 
-pub(crate) type Float = f64;
+pub type Float = f64;
 
-pub(crate) const EPSILON: Float = 0.0001;
-pub(crate) const INFINITY: Float = f64::INFINITY;
-pub(crate) const PI: Float = std::f64::consts::PI;
-pub(crate) const SQRT2: Float = std::f64::consts::SQRT_2 as Float;
+pub const EPSILON: Float = 0.0001;
+pub const INFINITY: Float = f64::INFINITY;
+pub const PI: Float = std::f64::consts::PI;
+pub const SQRT2: Float = std::f64::consts::SQRT_2 as Float;
 
 pub fn equals(a: Float, b: Float) -> bool {
     let delta_abs: Float = (a - b).abs();
     delta_abs < EPSILON
 }
 
-pub(crate) fn max(a: Float, b: Float, c: Float) -> Float {
+pub fn max(a: Float, b: Float, c: Float) -> Float {
     f64::max(f64::max(a, b), c)
 }
 
-pub(crate) fn min(a: Float, b: Float, c: Float) -> Float {
+pub fn min(a: Float, b: Float, c: Float) -> Float {
     f64::min(f64::min(a, b), c)
 }
 

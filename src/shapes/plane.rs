@@ -1,7 +1,7 @@
-use crate::bounds::Bounds;
-use crate::math::{EPSILON, Float};
-use crate::ray::Ray;
-use crate::tuple::{point, Tuple, vector};
+use crate::core::bounds::Bounds;
+use crate::core::math::{EPSILON, Float};
+use crate::core::ray::Ray;
+use crate::core::tuple::{point, Tuple, vector};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Plane {

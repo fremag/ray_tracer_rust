@@ -1,5 +1,5 @@
 use crate::colors::Color;
-use crate::tuple::Tuple;
+use crate::core::tuple::Tuple;
 
 #[derive(Debug, Copy, Clone)]
 pub struct GradientPattern {

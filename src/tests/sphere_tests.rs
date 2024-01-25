@@ -1,11 +1,11 @@
 #[cfg(test)]
 mod tests {
-    use crate::math::{Float, PI, SQRT2};
+    use crate::core::math::{Float, PI, SQRT2};
     use crate::object::build_sphere;
-    use crate::ray::ray;
+    use crate::core::ray::ray;
     use crate::shapes::sphere::sphere;
-    use crate::transform::{rotation_z, scaling, translation};
-    use crate::tuple::{point, vector};
+    use crate::core::transform::{rotation_z, scaling, translation};
+    use crate::core::tuple::{point, vector};
 
     #[test]
     fn a_ray_intersects_a_sphere_at_two_points_test() {

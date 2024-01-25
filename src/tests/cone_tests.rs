@@ -7,11 +7,11 @@ mod tests {
     use crate::lights::point_light::PointLight;
     use crate::shapes::cone::Cone;
     use crate::material::Material;
-    use crate::math::{equals, Float, PI, SQRT2};
+    use crate::core::math::{equals, Float, PI, SQRT2};
     use crate::object::build_cone;
-    use crate::ray::ray;
-    use crate::transform::{scaling, translation, view_transform};
-    use crate::tuple::{point, Tuple, vector};
+    use crate::core::ray::ray;
+    use crate::core::transform::{scaling, translation, view_transform};
+    use crate::core::tuple::{point, Tuple, vector};
     use crate::world::World;
 
     fn intersecting_a_cone_with_a_ray(origin: Tuple, direction: Tuple, t0: Float, t1: Float) {

@@ -1,9 +1,9 @@
 use crate::colors::Color;
 use crate::lights::light::Light;
-use crate::math::{equals, Float};
+use crate::core::math::{equals, Float};
 use crate::object::Object;
 use crate::patterns::pattern::{Pattern};
-use crate::tuple::Tuple;
+use crate::core::tuple::Tuple;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Material {

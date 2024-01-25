@@ -1,12 +1,12 @@
 #[cfg(test)]
 mod tests {
-    use crate::comps::prepare_computations;
-    use crate::intersection::Intersection;
-    use crate::intersections::intersections;
-    use crate::math::SQRT2;
+    use crate::core::comps::prepare_computations;
+    use crate::core::intersection::Intersection;
+    use crate::core::intersections::intersections;
+    use crate::core::math::SQRT2;
     use crate::object::{build_plane, build_sphere};
-    use crate::ray::ray;
-    use crate::tuple::{point, vector};
+    use crate::core::ray::ray;
+    use crate::core::tuple::{point, vector};
 
     #[test]
     pub fn precomputing_the_state_of_an_intersection_test() {

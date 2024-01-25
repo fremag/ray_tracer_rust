@@ -1,12 +1,12 @@
-use crate::math::{equals, Float};
+use crate::core::math::{equals, Float};
 use std::ops::{Add, Sub, Neg, Mul, Div, Index};
 
 #[derive(Debug, Copy, Clone)]
 pub struct Tuple {
-    pub(crate) x : Float,
-    pub(crate) y : Float,
-    pub(crate) z : Float,
-    pub(crate) w : Float
+    pub x : Float,
+    pub y : Float,
+    pub z : Float,
+    pub w : Float
 }
 
 impl Tuple {

@@ -1,9 +1,9 @@
-use crate::intersection::Intersection;
-use crate::intersections::Intersections;
-use crate::math::{EPSILON, Float};
+use crate::core::intersection::Intersection;
+use crate::core::intersections::Intersections;
+use crate::core::math::{EPSILON, Float};
 use crate::object::Object;
-use crate::ray::Ray;
-use crate::tuple::{Tuple};
+use crate::core::ray::Ray;
+use crate::core::tuple::{Tuple};
 
 pub struct Comps<'a> {
     pub object: &'a Object,
@@ -20,7 +20,7 @@ pub struct Comps<'a> {
 }
 
 impl<'a> Comps<'a> {
-    pub(crate) fn schlick(&self) -> Float {
+    pub fn schlick(&self) -> Float {
         // find the cosine of the angle between the eye and normal vectors
         let mut cos = self.eyev.dot(&self.normalv);
         // total internal reflection can only occur if n1 > n2

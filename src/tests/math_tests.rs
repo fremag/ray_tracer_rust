@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::math::equals;
+    use crate::core::math::equals;
 
     #[test]
     pub fn equals_test() {

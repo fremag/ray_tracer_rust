@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{Write, Error};
 use crate::colors::Color;
-use crate::math::Float;
+use crate::core::math::Float;
 
 #[derive(Debug)]
 pub struct Canvas {

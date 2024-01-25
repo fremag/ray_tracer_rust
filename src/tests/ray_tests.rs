@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
-    use crate::ray::ray;
-    use crate::transform::{scaling, translation};
-    use crate::tuple::{point, vector};
+    use crate::core::ray::ray;
+    use crate::core::transform::{scaling, translation};
+    use crate::core::tuple::{point, vector};
 
     #[test]
     fn creating_and_querying_a_ray_test() {

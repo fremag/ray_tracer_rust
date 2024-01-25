@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
-    use crate::math::Float;
+    use crate::core::math::Float;
     use crate::projectile::{Environment, Projectile};
-    use crate::tuple::{point, vector};
+    use crate::core::tuple::{point, vector};
 
     #[test]
     fn projectile_test() {

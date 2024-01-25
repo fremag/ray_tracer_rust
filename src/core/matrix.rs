@@ -1,6 +1,6 @@
 use std::ops::{Index, Mul, Add};
-use crate::math::{equals, Float};
-use crate::tuple::Tuple;
+use crate::core::math::{equals, Float};
+use crate::core::tuple::Tuple;
 
 pub trait Determinant {
     fn determinant(&self) -> Float;

@@ -4,11 +4,11 @@ mod tests {
     use crate::colors::Color;
     use crate::lights::point_light::PointLight;
     use crate::material::Material;
-    use crate::math::{equals, PI, SQRT2};
-    use crate::matrix::Matrix;
+    use crate::core::math::{equals, PI, SQRT2};
+    use crate::core::matrix::Matrix;
     use crate::object::build_sphere;
-    use crate::transform::{rotation_x, rotation_y, scaling, translation, view_transform};
-    use crate::tuple::{point, vector};
+    use crate::core::transform::{rotation_x, rotation_y, scaling, translation, view_transform};
+    use crate::core::tuple::{point, vector};
     use crate::world::{build_world, World};
 
     #[test]

@@ -4,16 +4,16 @@ mod tests {
     use crate::colors::Color;
     use crate::lights::point_light::PointLight;
     use crate::material::Material;
-    use crate::math::PI;
-    use crate::matrix::Matrix;
+    use crate::core::math::PI;
+    use crate::core::matrix::Matrix;
     use crate::object::{build_plane, build_sphere};
     use crate::patterns::checker::CheckerPattern;
     use crate::patterns::gradient::GradientPattern;
     use crate::patterns::pattern::{Pattern};
     use crate::patterns::ring::RingPattern;
     use crate::patterns::stripe::StripePattern;
-    use crate::transform::{rotation_x, rotation_z, scaling, translation, view_transform};
-    use crate::tuple::{point, vector};
+    use crate::core::transform::{rotation_x, rotation_z, scaling, translation, view_transform};
+    use crate::core::tuple::{point, vector};
     use crate::world::World;
 
     #[test]

@@ -6,11 +6,11 @@ mod tests {
     use crate::shapes::cube::Cube;
     use crate::lights::point_light::PointLight;
     use crate::material::Material;
-    use crate::math::{Float, PI};
+    use crate::core::math::{Float, PI};
     use crate::object::build_cube;
-    use crate::ray::ray;
-    use crate::transform::{scaling, translation, view_transform};
-    use crate::tuple::{point, vector};
+    use crate::core::ray::ray;
+    use crate::core::transform::{scaling, translation, view_transform};
+    use crate::core::tuple::{point, vector};
     use crate::world::World;
 
     #[test]

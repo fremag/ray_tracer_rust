@@ -1,5 +1,5 @@
 use std::cmp::Ordering;
-use crate::math::Float;
+use crate::core::math::Float;
 use crate::object::Object;
 
 #[derive(Debug, Copy, Clone)]

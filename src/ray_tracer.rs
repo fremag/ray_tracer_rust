@@ -2,12 +2,12 @@ use crate::camera::Camera;
 use crate::colors::Color;
 use crate::lights::point_light::PointLight;
 use crate::material::Material;
-use crate::math::{Float, PI, rotation};
+use crate::core::math::{Float, PI, rotation};
 use crate::object::{build_cylinder, build_plane, Object};
 use crate::patterns::pattern::Pattern;
 use crate::shapes::group::Group;
-use crate::transform::{scaling, translation, view_transform};
-use crate::tuple::{point, Tuple, vector};
+use crate::core::transform::{scaling, translation, view_transform};
+use crate::core::tuple::{point, Tuple, vector};
 use crate::world::World;
 
 pub fn init_world() -> World {

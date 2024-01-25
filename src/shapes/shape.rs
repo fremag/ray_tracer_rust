@@ -1,13 +1,13 @@
 use std::fmt::Debug;
-use crate::bounds::Bounds;
+use crate::core::bounds::Bounds;
 use crate::shapes::cone::Cone;
 use crate::shapes::cube::Cube;
 use crate::shapes::cylinder::Cylinder;
-use crate::math::Float;
+use crate::core::math::Float;
 use crate::shapes::plane::Plane;
-use crate::ray::Ray;
+use crate::core::ray::Ray;
 use crate::shapes::sphere::Sphere;
-use crate::tuple::{Tuple};
+use crate::core::tuple::{Tuple};
 
 #[derive(Debug, Clone)]
 pub enum Shape {Sphere(Sphere), Plane(Plane), Cube(Cube), Cylinder(Cylinder), Cone(Cone)}

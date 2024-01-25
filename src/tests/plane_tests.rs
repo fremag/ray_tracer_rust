@@ -4,12 +4,12 @@ mod tests {
     use crate::colors::Color;
     use crate::lights::point_light::PointLight;
     use crate::material::Material;
-    use crate::math::PI;
+    use crate::core::math::PI;
     use crate::object::{build_plane, build_sphere};
     use crate::shapes::plane::Plane;
-    use crate::ray::ray;
-    use crate::transform::{scaling, translation, view_transform};
-    use crate::tuple::{point, vector};
+    use crate::core::ray::ray;
+    use crate::core::transform::{scaling, translation, view_transform};
+    use crate::core::tuple::{point, vector};
     use crate::world::World;
 
     #[test]

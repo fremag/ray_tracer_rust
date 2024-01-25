@@ -1,8 +1,8 @@
-use crate::bounds::Bounds;
-use crate::math;
-use crate::math::{Float};
-use crate::ray::Ray;
-use crate::tuple::{point, Tuple, vector};
+use crate::core::bounds::Bounds;
+use crate::core::math;
+use crate::core::math::{Float};
+use crate::core::ray::Ray;
+use crate::core::tuple::{point, Tuple, vector};
 
 #[derive(Debug, Copy, Clone)]
 pub struct Cube {}

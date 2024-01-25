@@ -1,9 +1,9 @@
 use std::mem;
-use crate::math;
-use crate::math::{EPSILON, Float};
-use crate::matrix::Matrix;
-use crate::ray::Ray;
-use crate::tuple::{point, Tuple};
+use crate::core::math;
+use crate::core::math::{EPSILON, Float};
+use crate::core::matrix::Matrix;
+use crate::core::ray::Ray;
+use crate::core::tuple::{point, Tuple};
 
 #[derive(Debug, Clone)]
 pub struct Bounds {
@@ -12,7 +12,7 @@ pub struct Bounds {
 }
 
 impl Bounds {
-    pub(crate) fn transform(&self, transform: &Matrix<4>) -> Bounds {
+    pub fn transform(&self, transform: &Matrix<4>) -> Bounds {
         let p1 = self.min;
         let p2 = point(self.min.x, self.min.y, self.max.z);
         let p3 = point(self.min.x, self.max.y, self.min.z);
@@ -37,11 +37,11 @@ impl Bounds {
         bounds
     }
 
-    pub(crate) fn from(min: Tuple, max: Tuple) -> Bounds {
+    pub fn from(min: Tuple, max: Tuple) -> Bounds {
         Bounds {min, max}
     }
 
-    pub(crate) fn new() -> Bounds {
+    pub fn new() -> Bounds {
         Bounds {min: point(0.0, 0.0, 0.0), max: point(0.0, 0.0, 0.0)}
     }
 
@@ -65,7 +65,7 @@ impl Bounds {
         self.max.z = Float::max(self.max.z, bounds.max.z);
     }
 
-    pub(crate) fn intersect(&self, ray: &Ray) -> Vec<Float> {
+    pub fn intersect(&self, ray: &Ray) -> Vec<Float> {
         let (x_t_min, x_t_max) = self.check_axis(ray.origin.x, ray.direction.x, self.min.x, self.max.x);
         let (y_t_min, y_t_max) = self.check_axis(ray.origin.y, ray.direction.y, self.min.y, self.max.y);
         let (z_t_min, z_t_max) = self.check_axis(ray.origin.z, ray.direction.z, self.min.z, self.max.z);

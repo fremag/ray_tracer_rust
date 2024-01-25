@@ -1,17 +1,17 @@
-use crate::math::Float;
-use crate::matrix::Matrix;
-use crate::tuple::Tuple;
+use crate::core::math::Float;
+use crate::core::matrix::Matrix;
+use crate::core::tuple::Tuple;
 
 pub struct Ray  {
-    pub(crate) origin: Tuple,
-    pub(crate) direction : Tuple
+    pub origin: Tuple,
+    pub direction : Tuple
 }
 
 impl Ray {
-    pub(crate) fn position(&self, t: Float) -> Tuple {
+    pub fn position(&self, t: Float) -> Tuple {
         self.origin + t * self.direction
     }
-    pub(crate) fn transform(&self, transformation: &Matrix<4>) -> Ray {
+    pub fn transform(&self, transformation: &Matrix<4>) -> Ray {
         Ray {
             origin: transformation * &self.origin,
             direction: transformation * &self.direction,

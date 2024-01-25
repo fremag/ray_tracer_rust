@@ -1,11 +1,11 @@
 use crate::colors::Color;
-use crate::matrix::Matrix;
+use crate::core::matrix::Matrix;
 use crate::object::Object;
 use crate::patterns::checker::CheckerPattern;
 use crate::patterns::gradient::GradientPattern;
 use crate::patterns::ring::RingPattern;
 use crate::patterns::stripe::StripePattern;
-use crate::tuple::Tuple;
+use crate::core::tuple::Tuple;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Pattern {

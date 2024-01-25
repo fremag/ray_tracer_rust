@@ -1,4 +1,4 @@
-use crate::math::{equals, Float};
+use crate::core::math::{equals, Float};
 use std::ops::{Add, Sub, Mul};
 
 #[derive(Debug, Clone, Copy)]

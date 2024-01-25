@@ -2,17 +2,17 @@
 mod tests {
     use crate::camera::Camera;
     use crate::colors::Color;
-    use crate::comps::prepare_computations;
-    use crate::intersection::Intersection;
-    use crate::intersections::intersections;
+    use crate::core::comps::prepare_computations;
+    use crate::core::intersection::Intersection;
+    use crate::core::intersections::intersections;
     use crate::lights::point_light::PointLight;
     use crate::material::Material;
-    use crate::math::{PI, SQRT2};
+    use crate::core::math::{PI, SQRT2};
     use crate::object::{build_plane, build_sphere};
     use crate::patterns::pattern::{Pattern};
-    use crate::ray::ray;
-    use crate::transform::{scaling, translation, view_transform};
-    use crate::tuple::{point, vector};
+    use crate::core::ray::ray;
+    use crate::core::transform::{scaling, translation, view_transform};
+    use crate::core::tuple::{point, vector};
     use crate::world::{build_world, World};
 
     #[test]

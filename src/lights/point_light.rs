@@ -1,6 +1,6 @@
 use crate::colors::Color;
 use crate::lights::light::Light;
-use crate::tuple::Tuple;
+use crate::core::tuple::Tuple;
 
 pub struct PointLight {
     pub position: Tuple,

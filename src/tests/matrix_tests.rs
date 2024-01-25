@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
-    use crate::math::equals;
-    use crate::matrix::{Determinant, Matrix};
-    use crate::tuple::Tuple;
+    use crate::core::math::equals;
+    use crate::core::matrix::{Determinant, Matrix};
+    use crate::core::tuple::Tuple;
 
     #[test]
     fn matrix4_test() {

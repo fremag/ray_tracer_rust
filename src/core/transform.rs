@@ -1,6 +1,6 @@
-use crate::math::Float;
-use crate::matrix::Matrix;
-use crate::tuple::Tuple;
+use crate::core::math::Float;
+use crate::core::matrix::Matrix;
+use crate::core::tuple::Tuple;
 
 pub fn translation(x : Float , y: Float, z : Float) -> Matrix<4> {
     Matrix::new4(1.0, 0.0, 0.0, x,

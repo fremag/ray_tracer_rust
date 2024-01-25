@@ -5,11 +5,11 @@ mod tests {
     use crate::lights::light::Light;
     use crate::lights::point_light::PointLight;
     use crate::material::{Material};
-    use crate::math::{Float, SQRT2};
+    use crate::core::math::{Float, SQRT2};
     use crate::object::{build_glass_sphere, build_sphere};
     use crate::patterns::pattern::{Pattern};
-    use crate::ray::ray;
-    use crate::tuple::{point, vector};
+    use crate::core::ray::ray;
+    use crate::core::tuple::{point, vector};
 
     #[test]
     fn default_material_test() {

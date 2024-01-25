@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
-    use crate::math;
-    use crate::math::{Float, SQRT2};
-    use crate::tuple::{Tuple, vector, point};
+    use crate::core::math;
+    use crate::core::math::{Float, SQRT2};
+    use crate::core::tuple::{Tuple, vector, point};
 
     #[test]
     pub fn a_tuple_with_w_1_is_point_test() {

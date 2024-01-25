@@ -3,7 +3,7 @@ mod tests {
     use crate::colors::Color;
     use crate::lights::light::Light;
     use crate::lights::point_light::PointLight;
-    use crate::tuple::point;
+    use crate::core::tuple::point;
 
     #[test]
     fn a_point_light_has_a_position_and_intensity_test() {

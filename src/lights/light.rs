@@ -1,6 +1,6 @@
 use crate::colors::Color;
 use crate::lights::point_light::PointLight;
-use crate::tuple::Tuple;
+use crate::core::tuple::Tuple;
 
 pub enum Light {PointLight(PointLight)}
 

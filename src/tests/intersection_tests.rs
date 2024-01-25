@@ -2,15 +2,15 @@
 mod tests {
     use crate::canvas::Canvas;
     use crate::colors::Color;
-    use crate::comps::prepare_computations;
-    use crate::intersection::Intersection;
-    use crate::intersections::{intersections, Intersections};
+    use crate::core::comps::prepare_computations;
+    use crate::core::intersection::Intersection;
+    use crate::core::intersections::{intersections, Intersections};
     use crate::material::Material;
-    use crate::math::{EPSILON, equals, Float, SQRT2};
+    use crate::core::math::{EPSILON, equals, Float, SQRT2};
     use crate::object::{build_glass_sphere, build_sphere};
-    use crate::ray::{ray, Ray};
-    use crate::transform::{scaling, translation};
-    use crate::tuple::{point, vector};
+    use crate::core::ray::{ray, Ray};
+    use crate::core::transform::{scaling, translation};
+    use crate::core::tuple::{point, vector};
 
     #[test]
     fn an_intersection_encapsulates_t_and_object_test() {
