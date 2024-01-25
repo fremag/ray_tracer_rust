@@ -1,48 +1,8 @@
-use crate::camera::Camera;
-use crate::colors::Color;
-use crate::lights::point_light::PointLight;
-use crate::material::Material;
-use crate::core::math::{Float, PI, rotation};
-use crate::object::{build_cylinder, build_plane, Object};
-use crate::patterns::pattern::Pattern;
+use crate::core::math::{Float, rotation};
+use crate::object::{build_cylinder, Object};
 use crate::shapes::group::Group;
-use crate::core::transform::{scaling, translation, view_transform};
+use crate::core::transform::{scaling, translation};
 use crate::core::tuple::{point, Tuple, vector};
-use crate::world::World;
-
-pub fn init_world() -> World {
-    let mut world = World::new();
-    let lights = vec!(
-        PointLight::new(point(0.0, 10.5, -10.0), Color::white()),
-    );
-    world.set_lights(lights);
-
-    let mut material_floor = Material::new();
-    material_floor.pattern = Pattern::checker(Color::white(), Color::black());
-
-    let mut floor = build_plane();
-    floor.set_material(material_floor.clone());
-    //world.objects.push(floor);
-
-    world
-}
-
-pub fn init_camera(h_size: usize, v_size : usize, from_x : Float, from_y : Float, from_z : Float) -> Camera {
-    let mut camera = Camera::new(h_size, v_size, PI / 3.0);
-    camera.set_transform(view_transform(point(from_x, from_y, from_z),
-                                        point(0.0, 0.0, 0.0),
-                                        vector(0.0, 1.0, 0.0)));
-    camera
-}
-
-pub fn render(camera: Camera, world: &World, file: &str) {
-    let canvas = camera.render(world);
-    let result = canvas.save(file);
-    match result {
-        Ok(_) => { print!("Ok") }
-        Err(error) => { print!("Error: {}", error) }
-    }
-}
 
 pub fn make_cylinder(p1: Tuple, p2: Tuple, radius: Float) -> Object {
     let v = p2 - p1;

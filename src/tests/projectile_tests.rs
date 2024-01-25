@@ -1,8 +1,7 @@
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use crate::core::math::Float;
-    use crate::projectile::{Environment, Projectile};
-    use crate::core::tuple::{point, vector};
+    use crate::core::tuple::{point, Tuple, vector};
 
     #[test]
     fn projectile_test() {
@@ -19,5 +18,31 @@ mod tests {
         }
 
         assert_eq!(i < 1_000, true)
+    }
+
+    pub struct Projectile {
+        pub position : Tuple,
+        velocity : Tuple
+    }
+
+    pub struct Environment {
+        gravity : Tuple,
+        wind: Tuple
+    }
+
+    impl Projectile {
+        pub fn new(position : Tuple, velocity : Tuple) -> Projectile {
+            Projectile {position, velocity}
+        }
+
+        pub fn tick(&self, environment: &Environment) -> Projectile {
+            Projectile::new(self.position+self.velocity, self.velocity+environment.gravity+environment.wind)
+        }
+    }
+
+    impl Environment  {
+        pub fn new(gravity : Tuple, wind: Tuple) -> Environment {
+            Environment{gravity, wind}
+        }
     }
 }

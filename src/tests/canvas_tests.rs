@@ -2,8 +2,8 @@
 mod tests {
     use crate::canvas::Canvas;
     use crate::colors::Color;
-    use crate::projectile::{Environment, Projectile};
     use crate::core::tuple::{point, vector};
+    use crate::tests::projectile_tests::tests::{Environment, Projectile};
 
     #[test]
     fn creating_a_canvas_test() {
