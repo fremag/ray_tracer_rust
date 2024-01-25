@@ -1,17 +1,9 @@
 #[cfg(test)]
 mod tests {
-    use rand::{Rng, SeedableRng};
-    use crate::camera::Camera;
-    use crate::colors::Color;
     use crate::shapes::cube::Cube;
-    use crate::lights::point_light::PointLight;
-    use crate::material::Material;
-    use crate::core::math::{Float, PI};
-    use crate::object::build_cube;
+    use crate::core::math::Float;
     use crate::core::ray::ray;
-    use crate::core::transform::{scaling, translation, view_transform};
     use crate::core::tuple::{point, vector};
-    use crate::world::World;
 
     #[test]
     fn a_ray_intersects_a_cube_test() {
@@ -48,51 +40,5 @@ mod tests {
         let r = ray(point(px, py, pz), vector(dx, dy, dz));
         let xs = c.intersect(&r);
         assert_eq!(xs.len(), 0);
-    }
-
-    #[test]
-    fn cube_putting_it_together_test() {
-        let mut world = World::new();
-        let lights = vec!(
-            PointLight::new(point(0.0, 50.0, -50.0), Color::white()),
-        );
-        world.set_lights(lights);
-        const N: i32 = 9;
-        let h_n = N as Float / 2.0;
-        let mut mat = Material::new();
-        let mut rng = rand::rngs::StdRng::seed_from_u64(2);
-
-        for i in 0..N {
-            for j in 0..N {
-                let mut cube = build_cube();
-                let t_x = (i as Float - h_n) / 2.0;
-                let t_z = (j as Float - h_n) / 2.0;
-
-                let s_y = rng.gen::<Float>() * 0.8 + 0.2;
-                let t_y = s_y;
-
-                let translation = translation(t_x, t_y, t_z);
-                let scaling = scaling(0.25, s_y, 0.25);
-                mat.color = Color::new(rng.gen(), rng.gen(), rng.gen());
-                mat.reflective = 0.3 + 0.5 * rng.gen::<Float>();
-
-                let matrix = &translation * &scaling;
-                cube.set_transformation(matrix);
-                cube.set_material(mat);
-                world.objects.push(cube);
-            }
-        }
-
-        let mut camera = Camera::new(400, 400, PI / 3.0);
-        camera.set_transform(view_transform(point(-0.5, 4.0, -2.0),
-                                            point(0.0, 0.0, 0.0),
-                                            vector(0.0, 1.0, 0.0)));
-
-        let canvas = camera.render(&world);
-        let result = canvas.save("e:\\tmp\\cubes_scene.ppm");
-        match result {
-            Ok(_) => { print!("Ok") }
-            Err(error) => { print!("Error: {}", error) }
-        }
     }
 }

@@ -1,17 +1,9 @@
 #[cfg(test)]
 mod tests {
-    use rand::{Rng, SeedableRng};
-    use crate::camera::Camera;
-    use crate::colors::Color;
-    use crate::lights::point_light::PointLight;
     use crate::shapes::cylinder::Cylinder;
-    use crate::material::Material;
-    use crate::core::math::{equals, Float, INFINITY, PI};
-    use crate::object::{build_cylinder};
+    use crate::core::math::{equals, Float, INFINITY};
     use crate::core::ray::ray;
-    use crate::core::transform::{scaling, translation, view_transform};
     use crate::core::tuple::{point, Tuple, vector};
-    use crate::world::World;
 
     #[test]
     fn a_ray_misses_a_cylinder_test() {
@@ -113,49 +105,5 @@ mod tests {
         assert_eq!(cyl.normal_at(&point(0.0, 2.0, 0.0)), vector(0.0, 1.0, 0.0));
         assert_eq!(cyl.normal_at(&point(0.5, 2.0, 0.0)), vector(0.0, 1.0, 0.0));
         assert_eq!(cyl.normal_at(&point(0.0, 2.0, 0.5)), vector(0.0, 1.0, 0.0));
-    }
-
-    #[test]
-    fn cylinder_putting_it_together_test() {
-        let mut world = World::new();
-        let lights = vec!(
-            PointLight::new(point(0.0, 50.0, -50.0), Color::white()),
-        );
-        world.set_lights(lights);
-        const N: i32 = 9;
-        let h_n = N as Float / 2.0;
-        let mut mat = Material::new();
-        let mut rng = rand::rngs::StdRng::seed_from_u64(2);
-
-        for i in 0..N {
-            for j in 0..N {
-                let s_y = rng.gen::<Float>() * 0.8 + 0.2;
-                let mut cyl = build_cylinder(0.0, s_y);
-                let t_x = (i as Float - h_n) / 2.0;
-                let t_z = (j as Float - h_n) / 2.0;
-
-                let translation = translation(t_x, 0.0, t_z);
-                let scaling = scaling(0.25, s_y, 0.25);
-                mat.color = Color::new(rng.gen(), rng.gen(), rng.gen());
-                mat.reflective = 0.3 + 0.5 * rng.gen::<Float>();
-
-                let matrix = &translation * &scaling;
-                cyl.set_transformation(matrix);
-                cyl.set_material(mat);
-                world.objects.push(cyl);
-            }
-        }
-
-        let mut camera = Camera::new(400, 400, PI / 3.0);
-        camera.set_transform(view_transform(point(-0.5, 4.0, -2.0),
-                                            point(0.0, 0.0, 0.0),
-                                            vector(0.0, 1.0, 0.0)));
-
-        let canvas = camera.render(&world);
-        let result = canvas.save("e:\\tmp\\cylinders_scene.ppm");
-        match result {
-            Ok(_) => { print!("Ok") }
-            Err(error) => { print!("Error: {}", error) }
-        }
     }
 }
