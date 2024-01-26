@@ -109,8 +109,9 @@ mod tests {
                                             point(0.0, 1.0, 0.0),
                                             vector(0.0, 1.0, 0.0)));
 
-        let canvas = camera.render(&world);
-        let result = canvas.save("e:\\tmp\\plane_scene.ppm");
+        let file_path = "e:\\tmp\\plane_scene.ppm";
+        let canvas = camera.render(&world, file_path);
+        let result = canvas.save(file_path);
         match result {
             Ok(_) => { print!("Ok") }
             Err(error) => { print!("Error: {}", error) }

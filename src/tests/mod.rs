@@ -21,3 +21,4 @@ mod cylinder_tests;
 mod cone_tests;
 mod group_tests;
 mod bounds_tests;
+mod helper;

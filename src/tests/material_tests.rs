@@ -156,7 +156,7 @@ mod tests {
     #[test]
     fn lighting_with_a_pattern_applied_test() {
         let mut m = Material::new();
-        m.set_pattern(Pattern::stripe(Color::white(), Color::black()));
+        m.pattern = Pattern::stripe(Color::white(), Color::black());
         m.ambient = 1.0;
         m.diffuse = 0.0;
         m.specular = 0.0;

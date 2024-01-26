@@ -23,14 +23,6 @@ impl Material {
         Material { color: Color { r: 1.0, g: 1.0, b: 1.0 }, ambient: 0.1, diffuse: 0.9, specular: 0.9, shininess: 200.0, reflective: 0.0, transparency: 0.0, refractive_index: 1.0, pattern: Pattern::new() }
     }
 
-    pub(crate) fn set_pattern(&mut self, pattern: Pattern) {
-        self.pattern = pattern;
-    }
-
-    pub(crate) fn set_ambient(&mut self, ambient: Float) {
-        self.ambient = ambient;
-    }
-
     pub(crate) fn lighting(&self, object: &Object, light: &Light, point: Tuple, eyev: Tuple, normalv: Tuple, in_shadow : bool) -> Color {
         let color =self.pattern.pattern_at_object(object, point);
 

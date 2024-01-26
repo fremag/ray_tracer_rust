@@ -1,3 +1,6 @@
+use io::stdout;
+use std::io;
+use std::io::Write;
 use crate::canvas::Canvas;
 use crate::core::math::Float;
 use crate::core::matrix::Matrix;
@@ -60,17 +63,19 @@ impl Camera {
         ray(origin, direction)
     }
 
-    pub(crate) fn render(&self, world: &World) -> Canvas {
+    pub(crate) fn render(&self, world: &World, file_path: &str) -> Canvas {
         let mut image = Canvas::new(self.h_size, self.v_size);
         for y in 0..self.v_size {
-            println!("{}", y);
+            let pct= (y+1) as f32 / self.v_size as f32 * 100.0;
+            print!("\r{:3.2} % - {} / {} - {}", pct, y+1, self.v_size, file_path);
+            let _ = stdout().flush();
             for x in 0..self.h_size {
                 let ray = self.ray_for_pixel(x, y);
                 let color = world.color_at(&ray, 5);
                 image.write_pixel(x, y, color);
             }
         }
-
+        println!();
         image
     }
 }

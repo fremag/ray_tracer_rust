@@ -12,7 +12,8 @@ mod tests {
     use crate::core::ray::ray;
     use crate::core::transform::{scaling, translation};
     use crate::core::tuple::{point, vector};
-    use crate::world::{build_world, World};
+    use crate::tests::helper::tests::build_world;
+    use crate::world::{World};
 
     #[test]
     fn the_default_world_test() {
@@ -94,12 +95,12 @@ mod tests {
         let mut w = build_world();
         let outer = &mut w.objects[0];
         let mut outer_material = outer.material().clone();
-        outer_material.set_ambient(1.0);
+        outer_material.ambient = 1.0;
         outer.set_material(outer_material);
 
         let inner = &mut w.objects[1];
         let mut inner_material = inner.material().clone();
-        inner_material.set_ambient(1.0);
+        inner_material.ambient = 1.0;
         inner.set_material(inner_material);
 
         let r = ray(point(0.0, 0.0, 0.75), vector(0.0, 0.0, -1.0));
@@ -156,7 +157,7 @@ mod tests {
         {
             let object = &mut w.objects[1];
             let mut mat = object.material().clone();
-            mat.set_ambient(1.0);
+            mat.ambient = 1.0;
             object.set_material(mat);
         }
 

@@ -9,7 +9,8 @@ mod tests {
     use crate::object::build_sphere;
     use crate::core::transform::{rotation_x, rotation_y, scaling, translation, view_transform};
     use crate::core::tuple::{point, vector};
-    use crate::world::{build_world, World};
+    use crate::tests::helper::tests::build_world;
+    use crate::world::World;
 
     #[test]
     fn constructing_a_camera_test() {
@@ -69,7 +70,7 @@ mod tests {
         let to = point(0.0, 0.0, 0.0);
         let up = vector(0.0, 1.0, 0.0);
         c.set_transform(view_transform(from, to, up));
-        let image = c.render(&w);
+        let image = c.render(&w, "");
         assert_eq!(image.pixel_at(5, 5), Color::new(0.38066, 0.47583, 0.2855));
     }
 
@@ -141,8 +142,9 @@ mod tests {
                                           point(0.0, 1.0, 0.0),
                                           vector(0.0, 1.0, 0.0)));
 
-        let canvas = camera.render(&world);
-        let result = canvas.save("e:\\tmp\\first_scene.ppm");
+        let file_path = "e:\\tmp\\first_scene.ppm";
+        let canvas = camera.render(&world, file_path);
+        let result = canvas.save(file_path);
         match result {
             Ok(_) => { print!("Ok")}
             Err(error) => { print!("Error: {}", error)}
