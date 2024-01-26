@@ -46,6 +46,7 @@ pub fn rotation_z(r : Float) -> Matrix<4> {
                  0.0, 0.0, 0.0, 1.0 )
 }
 
+#[cfg(test)]
 pub fn shearing(xy : Float , xz: Float, yx : Float, yz : Float , zx: Float, zy : Float) -> Matrix<4> {
     Matrix::new4(1.0, xy, xz, 0.0,
                  yx, 1.0, yz, 0.0,

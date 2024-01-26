@@ -7,7 +7,7 @@ use crate::core::math::Float;
 pub struct Canvas {
     pub width : usize,
     pub height : usize,
-    pub pixels: Vec<Vec<Color>>
+    pixels: Vec<Vec<Color>>
 }
 
 impl Canvas {
@@ -40,7 +40,7 @@ impl Canvas {
         let mut line = String::new();
         for y in 0..self.height {
             for x in 0..self.width {
-                let c = self.pixels[y][x];
+                let c = self.pixel_at(x, y);
                 self.push(&mut line, &mut data, c.r);
                 self.push(&mut line, &mut data, c.g);
                 self.push(&mut line, &mut data, c.b);

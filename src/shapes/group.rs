@@ -15,6 +15,7 @@ impl Group {
     pub(crate) fn bounds(&self) -> Bounds {
         self.bounds.clone()
     }
+
     pub(crate) fn child(&self, p0: usize) -> &Object {
         &self.children[p0]
     }

@@ -56,7 +56,7 @@ mod tests {
 
         let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
         let xs = g.intersect(&r);
-        assert_eq!(xs.intersections.len(), 4);
+        assert_eq!(xs.count(), 4);
         assert_eq!(xs.intersections[0].t, 1.0);
         assert_eq!(xs.intersections[1].t, 3.0);
         assert_eq!(xs.intersections[2].t, 4.0);

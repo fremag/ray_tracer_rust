@@ -52,7 +52,7 @@ impl Object {
     pub(crate) fn intersect(&self, ray: &Ray) -> Intersections {
         let ray2 = ray.transform(&self.transformation_inverse);
         return match &self.object_type {
-            ObjectShape(shape) => intersections(shape.intersect(&ray2).iter().map(|t| Intersection { t: *t, object: &self }).collect()),
+            ObjectShape(shape) => intersections(shape.intersect(&ray2).iter().map(|t| Intersection::new(*t,  &self )).collect()),
             ObjectGroup(group) => group.intersect(&ray2),
         };
     }

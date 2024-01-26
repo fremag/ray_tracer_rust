@@ -6,6 +6,7 @@ pub type Float = f64;
 pub const EPSILON: Float = 0.0001;
 pub const INFINITY: Float = f64::INFINITY;
 pub const PI: Float = std::f64::consts::PI;
+#[cfg(test)]
 pub const SQRT2: Float = std::f64::consts::SQRT_2 as Float;
 
 pub fn equals(a: Float, b: Float) -> bool {
