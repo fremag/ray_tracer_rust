@@ -7,10 +7,11 @@ mod tests {
     use crate::core::intersections::{intersections, Intersections};
     use crate::material::Material;
     use crate::core::math::{EPSILON, equals, Float, SQRT2};
-    use crate::object::{build_glass_sphere, build_sphere};
+    use crate::object::build_sphere;
     use crate::core::ray::{ray, Ray};
     use crate::core::transform::{scaling, translation};
     use crate::core::tuple::{point, vector};
+    use crate::tests::helper::tests::build_glass_sphere;
 
     #[test]
     fn an_intersection_encapsulates_t_and_object_test() {

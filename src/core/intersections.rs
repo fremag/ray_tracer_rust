@@ -11,10 +11,6 @@ pub fn intersections<'a>(intersections: Vec<Intersection>) -> Intersections {
 }
 
 impl<'a> Intersections<'a> {
-    pub fn count(&self) -> usize {
-        self.intersections.len()
-    }
-
     pub fn hit(&self) -> Option<&Intersection> {
         for inter in self.intersections.iter() {
             if inter.t >= 0.0 {

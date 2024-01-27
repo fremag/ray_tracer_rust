@@ -1,6 +1,6 @@
 use std::mem;
 use crate::core::bounds::Bounds;
-use crate::core::math::{EPSILON, equals, Float, INFINITY};
+use crate::core::math::{EPSILON, equals, Float};
 use crate::core::ray::Ray;
 use crate::core::tuple::{point, Tuple, vector};
 
@@ -25,7 +25,7 @@ impl Cylinder {
         let mut xs = vec![];
 
         let a = ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z;
-        //  ray is parallel to the y axis
+        //  ray is parallel to the y-axis
         if ! equals(a, 0.0) {
             let b = 2.0 * ray.origin.x * ray.direction.x + 2.0 * ray.origin.z * ray.direction.z;
             let c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - 1.0;
@@ -58,10 +58,6 @@ impl Cylinder {
         self.intersect_caps(ray, &mut xs);
 
         xs
-    }
-
-    pub(crate) fn new() -> Self {
-        Cylinder {min: -INFINITY, max: INFINITY, closed: false}
     }
 
     pub(crate) fn from(min : Float, max : Float, closed : bool) -> Self {

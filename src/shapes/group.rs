@@ -6,7 +6,7 @@ use crate::core::ray::Ray;
 
 #[derive(Debug, Clone)]
 pub struct Group {
-    children : Vec<Object>,
+    pub children : Vec<Object>,
     bounds : Bounds,
     transformation : Matrix<4>
 }
@@ -14,10 +14,6 @@ pub struct Group {
 impl Group {
     pub(crate) fn bounds(&self) -> Bounds {
         self.bounds.clone()
-    }
-
-    pub(crate) fn child(&self, p0: usize) -> &Object {
-        &self.children[p0]
     }
 
     pub fn new() -> Self {
@@ -40,13 +36,6 @@ impl Group {
         self.transformation = transformation;
         self.children = transformed_objects;
         self.bounds = bounds;
-    }
-
-    pub fn from(objects: Vec<Object>, transformation: Matrix<4>) -> Object {
-        let mut group = Group::new();
-        group.set_transformation(transformation);
-        objects.iter().for_each( |a|  { group.add(a.clone())});
-        Object::new_group(group)
     }
 
     pub fn add(&mut self, child: Object) {
@@ -75,9 +64,5 @@ impl Group {
         }
 
         xs
-    }
-
-    pub fn len(&self) -> usize {
-        self.children.len()
     }
 }

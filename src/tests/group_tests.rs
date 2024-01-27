@@ -1,12 +1,13 @@
 #[cfg(test)]
 mod tests {
     use crate::core::matrix::Matrix;
-    use crate::object::{build_glass_sphere, build_sphere, Object};
+    use crate::object::{build_sphere, Object};
     use crate::core::ray::ray;
     use crate::core::transform::{rotation_y, scaling, translation};
     use crate::core::tuple::{point, vector};
     use crate::shapes::group::Group;
     use crate::core::math::{Float, PI};
+    use crate::tests::helper::tests::build_glass_sphere;
 
     #[test]
     fn creating_a_new_group_test() {

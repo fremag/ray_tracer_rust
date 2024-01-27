@@ -18,7 +18,7 @@ use crate::core::tuple::Tuple;
 
 #[derive(Debug, Clone)]
 pub struct Object {
-    object_type: ObjectType,
+    pub object_type: ObjectType,
     material: Material,
     transformation: Matrix<4>,
     transformation_inverse: Matrix<4>,    // optimization: keep inverse transformation
@@ -90,10 +90,6 @@ impl Object {
         ObjectShape(shape) => Some(&shape),
         _ => None,
     }}
-    pub fn group(&self) -> Option<&Group> { match &self.object_type {
-        ObjectGroup(group) => Some(&group),
-        _ => None,
-    }}
     pub fn material(&self) -> &Material { &(self.material) }
     pub fn set_material(&mut self, material: Material) -> &Self {
         self.material = material;
@@ -156,13 +152,4 @@ pub fn build_cylinder(min: Float, max: Float) -> Object {
 pub fn build_cone(min: Float, max: Float) -> Object {
     let cone = Shape::Cone(Cone::from(min, max, true));
     Object::new(cone)
-}
-
-pub fn build_glass_sphere() -> Object {
-    let mut sphere = build_sphere();
-    let mut material = Material::new();
-    material.transparency = 1.0;
-    material.refractive_index = 1.5;
-    sphere.set_material(material);
-    sphere
 }

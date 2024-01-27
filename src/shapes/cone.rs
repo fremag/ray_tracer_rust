@@ -1,6 +1,6 @@
 use std::mem;
 use crate::core::bounds::Bounds;
-use crate::core::math::{EPSILON, equals, Float, INFINITY};
+use crate::core::math::{EPSILON, equals, Float};
 use crate::core::ray::Ray;
 use crate::core::tuple::{point, Tuple, vector};
 
@@ -62,10 +62,6 @@ impl Cone {
         self.intersect_caps(ray, &mut xs);
 
         xs
-    }
-
-    pub(crate) fn new() -> Self {
-        Cone {min: -INFINITY, max: INFINITY, closed: false}
     }
 
     pub(crate) fn from(min : Float, max : Float, closed : bool) -> Self {
