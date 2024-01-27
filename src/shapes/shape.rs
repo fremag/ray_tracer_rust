@@ -8,9 +8,10 @@ use crate::shapes::plane::Plane;
 use crate::core::ray::Ray;
 use crate::shapes::sphere::Sphere;
 use crate::core::tuple::{Tuple};
+use crate::shapes::triangle::Triangle;
 
 #[derive(Debug, Clone)]
-pub enum Shape {Sphere(Sphere), Plane(Plane), Cube(Cube), Cylinder(Cylinder), Cone(Cone)}
+pub enum Shape {Sphere(Sphere), Plane(Plane), Cube(Cube), Cylinder(Cylinder), Cone(Cone), Triangle(Triangle)}
 
 impl PartialEq for Shape {
     fn eq(&self, other: &Self) -> bool {
@@ -20,6 +21,7 @@ impl PartialEq for Shape {
             (Shape::Cube(_), Shape::Cube(_)) => true,
             (Shape::Cylinder(cyl1), Shape::Cylinder(cyl2)) => cyl1.eq(cyl2),
             (Shape::Cone(cone1), Shape::Cone(cone2)) => cone1.eq(cone2),
+            (Shape::Triangle(triangle1), Shape::Triangle(triangle2)) => triangle1.eq(triangle2),
             _ => false
         }
     }
@@ -33,6 +35,7 @@ impl Shape {
             Shape::Cube(cube) => cube.bounds(),
             Shape::Cylinder(cylinder) => cylinder.bounds(),
             Shape::Cone(cone) => cone.bounds(),
+            Shape::Triangle(triangle) => triangle.bounds()
         }
     }
 
@@ -43,6 +46,7 @@ impl Shape {
             Shape::Cube(cube) => cube.normal_at(p),
             Shape::Cylinder(cylinder) => cylinder.normal_at(&p),
             Shape::Cone(cone) => cone.normal_at(&p),
+            Shape::Triangle(triangle) => triangle.normal_at(&p),
         }
     }
 
@@ -53,6 +57,7 @@ impl Shape {
             Shape::Cube(cube) => cube.intersect(ray),
             Shape::Cylinder(cyl) => cyl.intersect(ray),
             Shape::Cone(cone) => cone.intersect(ray),
+            Shape::Triangle(triangle) => triangle.intersect(ray),
         }
     }
 }

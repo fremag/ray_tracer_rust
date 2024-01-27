@@ -43,7 +43,7 @@ fn main() {
 }
 
 fn init() {
-    Pattern::test();
+    Pattern::test(); // just to avoid a warning
 }
 
 fn render_all() {
