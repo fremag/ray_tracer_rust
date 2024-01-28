@@ -3,6 +3,8 @@ use crate::object::{build_cylinder, Object};
 use crate::shapes::group::Group;
 use crate::core::transform::{scaling, translation};
 use crate::core::tuple::{point, Tuple, vector};
+use crate::shapes::shape::Shape;
+use crate::shapes::triangle::Triangle;
 
 pub fn make_cylinder(p1: Tuple, p2: Tuple, radius: Float) -> Object {
     let v = p2 - p1;
@@ -92,5 +94,42 @@ pub fn build_mesh(mesh: &Mesh, r: Float, close_u: bool, close_v: bool) -> Object
         group.add(sub_group_obj);
     }
 
+    Object::new_group(group)
+}
+
+pub fn build_mesh_tri(mesh: &Mesh, close_u: bool, close_v: bool) -> Object
+{
+    let mut group = Group::new();
+    let mut  m = mesh.m;
+    let mut n = mesh.n;
+    if !close_u
+    {
+        m -= 1;
+    }
+
+    if ! close_v
+    {
+        n -= 1;
+    }
+
+    for i in 0..n
+    {
+        let mut sub_group = Group::new();
+        for j in 0..m
+        {
+            let  p0 = mesh.points[i][j];
+            let next_i = (i + 1) % mesh.n;
+            let next_j = (j + 1) % mesh.m;
+            let p1 = mesh.points[next_i][next_j];
+            let tri1 = Triangle::new(p0, p1, mesh.points[i][next_j]);
+            let tri2 = Triangle::new(p0, p1, mesh.points[next_i][j]);
+            let object = Object::new(Shape::Triangle(tri1));
+            sub_group.add(object);
+            let object1 = Object::new(Shape::Triangle(tri2));
+            sub_group.add(object1);
+        }
+
+        group.add( Object::new_group(sub_group));
+    }
     Object::new_group(group)
 }

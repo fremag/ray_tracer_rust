@@ -1,0 +1,57 @@
+use crate::camera::Camera;
+use crate::core::math::{Float, PI};
+use crate::core::transform::view_transform;
+use crate::core::tuple::{point, Tuple, vector};
+use crate::ray_tracer::{build_mesh_tri, curve_sweep_mesh};
+use crate::scene::Scene;
+use crate::world::World;
+
+pub struct CloverTriangleScene {
+    from_x: Float,
+    from_y: Float,
+    from_z: Float,
+}
+
+impl CloverTriangleScene {
+    pub fn new(from_x: Float, from_y: Float, from_z: Float
+    ) -> Self {
+        Self {
+            from_x,
+            from_y,
+            from_z
+        }
+    }
+}
+
+impl Scene for CloverTriangleScene {
+    fn get_world(&self) -> World {
+        const R1: Float = 1.0;
+        const R2: Float = 0.25;
+        let mut world = Self::init_world(false);
+        fn path_clover(t: Float) -> Tuple {
+            let x = R1 * ((2.0 * PI * t).cos() + 2.0 * (2.0 * PI * 2.0 * t).cos());
+            let y = R1 * ((2.0 * PI * t).sin() - 2.0 * (2.0 * PI * 2.0 * t).sin());
+            let z = 2.0 * R2 * (2.0 * PI * 3.0 * t).sin();
+            point(x, y, z)
+        }
+
+        fn curve_circle(_u: Float, v: Float) -> (Float, Float) {
+            let x = R2 * (2.0 * PI * v).cos();
+            let y = R2 * (2.0 * PI * v).sin();
+            (x, y)
+        }
+
+        let mesh = curve_sweep_mesh(80, 8, path_clover, curve_circle);
+        let mesh_obj = build_mesh_tri(&mesh, true, true);
+        world.objects.push(mesh_obj);
+        world
+    }
+
+    fn get_camera(&self, h_size: usize, v_size: usize) -> Camera {
+        let mut camera = Camera::new(h_size, v_size, PI / 3.0);
+        camera.set_transform(view_transform(point(self.from_x, self.from_y, self.from_z),
+                                            point(0.0, 0.0 ,0.0 ),
+                                            vector(0.0, 1.0, 0.0)));
+        camera
+    }
+}

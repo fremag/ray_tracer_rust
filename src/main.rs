@@ -19,6 +19,7 @@ use scenes::clover_scene::CloverScene;
 use scene::Scene;
 use crate::patterns::pattern::Pattern;
 use crate::scenes::basic_refraction_scene::BasicRefractionScene;
+use crate::scenes::clover_triangles_scene::CloverTriangleScene;
 use crate::scenes::cone_scene::ConeScene;
 use crate::scenes::cube_scene::CubeScene;
 use crate::scenes::cylinder_scene::CylinderScene;
@@ -37,8 +38,8 @@ fn main() {
     }
 
     println!("Start...");
-    let scene = CloverScene::new(0.0, 0.0, -9.0);
-    scene.render(800, 600, "e:\\tmp\\clover.ppm");
+    let scene = CloverTriangleScene::new(0.0, 0.0, -9.0);
+    scene.render(800, 600, "e:\\tmp\\clover_triangle.ppm");
     println!("Done.")
 }
 
