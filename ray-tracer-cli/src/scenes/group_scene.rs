@@ -7,9 +7,9 @@ use ray_tracer_lib::lights::point_light::PointLight;
 use ray_tracer_lib::material::Material;
 use ray_tracer_lib::object::{build_cylinder, build_plane, build_sphere, Object};
 use ray_tracer_lib::patterns::pattern::Pattern;
-use crate::scene::Scene;
 use ray_tracer_lib::shapes::group::Group;
 use ray_tracer_lib::world::World;
+use crate::scene::Scene;
 
 pub struct GroupScene {
 

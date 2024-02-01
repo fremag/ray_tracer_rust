@@ -1,13 +1,13 @@
-mod ray_tracer;
-mod tests;
 mod scenes;
+mod ray_tracer;
 mod scene;
+mod tests;
 
 use std::env;
 use std::process::exit;
 use ray_tracer_lib::patterns::pattern::Pattern;
 use scenes::clover_scene::CloverScene;
-use scene::Scene;
+use crate::scene::Scene;
 use crate::scenes::basic_refraction_scene::BasicRefractionScene;
 use crate::scenes::clover_triangles_scene::CloverTriangleScene;
 use crate::scenes::cone_scene::ConeScene;

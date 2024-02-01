@@ -3,8 +3,8 @@ use ray_tracer_lib::core::math::{Float, PI};
 use ray_tracer_lib::core::transform::view_transform;
 use ray_tracer_lib::core::tuple::{point, Tuple, vector};
 use crate::ray_tracer::{build_mesh, curve_sweep_mesh};
-use crate::scene::Scene;
 use ray_tracer_lib::world::World;
+use crate::scene::Scene;
 
 pub struct CloverScene {
     from_x: Float,

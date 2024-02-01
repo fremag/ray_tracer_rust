@@ -62,14 +62,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ray-tracer-cli"
-version = "0.1.0"
-dependencies = [
- "rand",
- "ray-tracer-lib",
-]
-
-[[package]]
 name = "ray-tracer-lib"
 version = "0.1.0"
 dependencies = [
