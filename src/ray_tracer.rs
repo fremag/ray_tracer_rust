@@ -1,10 +1,10 @@
-use crate::core::math::{Float, rotation};
-use crate::object::{build_cylinder, Object};
-use crate::shapes::group::Group;
-use crate::core::transform::{scaling, translation};
-use crate::core::tuple::{point, Tuple, vector};
-use crate::shapes::shape::Shape;
-use crate::shapes::triangle::Triangle;
+use ray_tracer_lib::core::math::{Float, rotation};
+use ray_tracer_lib::core::transform::{scaling, translation};
+use ray_tracer_lib::core::tuple::{Tuple, vector, point};
+use ray_tracer_lib::object::{build_cylinder, Object};
+use ray_tracer_lib::shapes::group::Group;
+use ray_tracer_lib::shapes::shape::Shape;
+use ray_tracer_lib::shapes::triangle::Triangle;
 
 pub fn make_cylinder(p1: Tuple, p2: Tuple, radius: Float) -> Object {
     let v = p2 - p1;

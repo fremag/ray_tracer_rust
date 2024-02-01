@@ -1,7 +1,9 @@
 #[cfg(test)]
 pub mod tests {
-    use crate::core::math::Float;
-    use crate::core::tuple::{point, Tuple, vector};
+    use ray_tracer_lib::canvas::Canvas;
+    use ray_tracer_lib::colors::Color;
+    use ray_tracer_lib::core::math::Float;
+    use ray_tracer_lib::core::tuple::{point, Tuple, vector};
 
     #[test]
     fn projectile_test() {
@@ -45,4 +47,29 @@ pub mod tests {
             Environment{gravity, wind}
         }
     }
+
+
+    #[test]
+    fn putting_it_together_test() {
+        let start = point(0.0, 1.0, 0.0);
+        let velocity = vector(1.0, 1.8, 0.0).normalize() * 11.25;
+        let mut p = Projectile::new(start, velocity);
+        let gravity = vector(0.0, -0.1, 0.0);
+        let wind = vector(-0.01, 0.0, 0.0);
+        let e = Environment::new(gravity, wind);
+        let red = Color::new(1.0, 0.0, 0.0);
+
+        let mut canvas = Canvas::new(900, 550);
+        while p.position.y > 0.0 {
+            p = p.tick(&e);
+            canvas.write_pixel(p.position.x as usize, canvas.height - p.position.y as usize, red);
+        }
+
+        let result = canvas.save("e:\\tmp\\projectile.ppm");
+        match result {
+            Ok(_) => { print!("Ok") }
+            Err(error) => { print!("Error: {}", error) }
+        }
+    }
+
 }

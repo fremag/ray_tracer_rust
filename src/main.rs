@@ -1,23 +1,13 @@
-mod core;
 mod ray_tracer;
 mod tests;
-mod shapes;
-mod patterns;
-mod lights;
-mod colors;
-mod canvas;
-mod object;
-mod material;
-mod world;
-mod camera;
 mod scenes;
 mod scene;
 
 use std::env;
 use std::process::exit;
+use ray_tracer_lib::patterns::pattern::Pattern;
 use scenes::clover_scene::CloverScene;
 use scene::Scene;
-use crate::patterns::pattern::Pattern;
 use crate::scenes::basic_refraction_scene::BasicRefractionScene;
 use crate::scenes::clover_triangles_scene::CloverTriangleScene;
 use crate::scenes::cone_scene::ConeScene;

@@ -1,15 +1,15 @@
-use crate::camera::Camera;
-use crate::colors::Color;
-use crate::core::math::{Float, PI};
-use crate::core::transform::{rotation_y, rotation_z, scaling, translation, view_transform};
-use crate::core::tuple::{point, vector};
-use crate::lights::point_light::PointLight;
-use crate::material::Material;
-use crate::object::{build_cylinder, build_plane, build_sphere, Object};
-use crate::patterns::pattern::Pattern;
+use ray_tracer_lib::camera::Camera;
+use ray_tracer_lib::colors::Color;
+use ray_tracer_lib::core::math::{Float, PI};
+use ray_tracer_lib::core::transform::{rotation_y, rotation_z, scaling, translation, view_transform};
+use ray_tracer_lib::core::tuple::{point, vector};
+use ray_tracer_lib::lights::point_light::PointLight;
+use ray_tracer_lib::material::Material;
+use ray_tracer_lib::object::{build_cylinder, build_plane, build_sphere, Object};
+use ray_tracer_lib::patterns::pattern::Pattern;
 use crate::scene::Scene;
-use crate::shapes::group::Group;
-use crate::world::World;
+use ray_tracer_lib::shapes::group::Group;
+use ray_tracer_lib::world::World;
 
 pub struct GroupScene {
 

@@ -1,14 +1,14 @@
-use crate::camera::Camera;
-use crate::colors::Color;
-use crate::core::math::PI;
-use crate::core::transform::{scaling, translation, view_transform};
-use crate::core::tuple::{point, vector};
-use crate::lights::point_light::PointLight;
-use crate::material::Material;
-use crate::object::{build_plane, build_sphere};
-use crate::patterns::pattern::Pattern;
+use ray_tracer_lib::camera::Camera;
+use ray_tracer_lib::colors::Color;
+use ray_tracer_lib::core::math::PI;
+use ray_tracer_lib::core::transform::{scaling, translation, view_transform};
+use ray_tracer_lib::core::tuple::{point, vector};
+use ray_tracer_lib::lights::point_light::PointLight;
+use ray_tracer_lib::material::Material;
+use ray_tracer_lib::object::{build_plane, build_sphere};
+use ray_tracer_lib::patterns::pattern::Pattern;
 use crate::scene::Scene;
-use crate::world::World;
+use ray_tracer_lib::world::World;
 
 pub struct BasicRefractionScene {}
 

@@ -1,13 +1,13 @@
-use crate::camera::Camera;
-use crate::colors::Color;
-use crate::core::math::{Float, PI};
-use crate::core::transform::view_transform;
-use crate::core::tuple::{point, vector};
-use crate::lights::point_light::PointLight;
-use crate::material::Material;
-use crate::object::build_plane;
-use crate::patterns::pattern::Pattern;
-use crate::world::World;
+use ray_tracer_lib::camera::Camera;
+use ray_tracer_lib::colors::Color;
+use ray_tracer_lib::core::math::{Float, PI};
+use ray_tracer_lib::core::transform::view_transform;
+use ray_tracer_lib::core::tuple::{point, vector};
+use ray_tracer_lib::lights::point_light::PointLight;
+use ray_tracer_lib::material::Material;
+use ray_tracer_lib::object::build_plane;
+use ray_tracer_lib::patterns::pattern::Pattern;
+use ray_tracer_lib::world::World;
 
 pub trait Scene {
     fn get_world(&self) -> World;

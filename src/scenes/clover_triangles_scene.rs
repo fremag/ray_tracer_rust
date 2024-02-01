@@ -1,10 +1,10 @@
-use crate::camera::Camera;
-use crate::core::math::{Float, PI};
-use crate::core::transform::view_transform;
-use crate::core::tuple::{point, Tuple, vector};
+use ray_tracer_lib::camera::Camera;
+use ray_tracer_lib::core::math::{Float, PI};
+use ray_tracer_lib::core::transform::view_transform;
+use ray_tracer_lib::core::tuple::{point, Tuple, vector};
 use crate::ray_tracer::{build_mesh_tri, curve_sweep_mesh};
 use crate::scene::Scene;
-use crate::world::World;
+use ray_tracer_lib::world::World;
 
 pub struct CloverTriangleScene {
     from_x: Float,

@@ -62,11 +62,19 @@ dependencies = [
 ]
 
 [[package]]
-name = "ray_tracer_rust"
+name = "ray-tracer-lib"
 version = "0.1.0"
 dependencies = [
  "rand",
  "sorted-vec",
+]
+
+[[package]]
+name = "ray_tracer_rust"
+version = "0.1.0"
+dependencies = [
+ "rand",
+ "ray-tracer-lib",
 ]
 
 [[package]]
