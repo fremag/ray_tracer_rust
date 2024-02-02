@@ -32,14 +32,21 @@ fn main() {
 }
 
 fn render_all() {
-    CloverScene::new(0.0, 0.0, -9.0).render(800, 600, "e:\\tmp\\clover.png");
-    CloverTriangleScene::new(0.0, 0.0, -9.0).render(800, 600, "e:\\tmp\\clover_triangle.png");
-    CylinderScene{}.render(400, 400, "e:\\tmp\\cylinders_scene.png");
-    ConeScene{}.render(400, 400, "e:\\tmp\\cones_scene.png");
-    CubeScene{}.render(400, 400, "e:\\tmp\\cubes_scene.png");
-    GroupScene{}.render(400, 400, "e:\\tmp\\group_scene.png");
-    PatternsScene{}.render(400, 400, "e:\\tmp\\all_patterns_scene.png");
-    StripePatternScene{}.render(400, 400, "e:\\tmp\\pattern_stripe_scene.png");
-    BasicRefractionScene{}.render(640, 400, "e:\\tmp\\basic_refraction_sphere_scene.png");
-    RefractionSphereScene{}.render(400, 400, "e:\\tmp\\refraction_sphere_scene.png");
+    render(&CloverScene::new(0.0, 0.0, -9.0), 800, 600, "e:\\tmp\\clover.png");
+    render(&CloverTriangleScene::new(0.0, 0.0, -9.0),800, 600, "e:\\tmp\\clover_triangle.png");
+    render(&CylinderScene{},400, 400, "e:\\tmp\\cylinders_scene.png");
+    render(&ConeScene{},400, 400, "e:\\tmp\\cones_scene.png");
+    render(&CubeScene{},400, 400, "e:\\tmp\\cubes_scene.png");
+    render(&GroupScene{},400, 400, "e:\\tmp\\group_scene.png");
+    render(&PatternsScene{},400, 400, "e:\\tmp\\all_patterns_scene.png");
+    render(&StripePatternScene{},400, 400, "e:\\tmp\\pattern_stripe_scene.png");
+    render(&BasicRefractionScene{},640, 400, "e:\\tmp\\basic_refraction_sphere_scene.png");
+    render(&RefractionSphereScene{},400, 400, "e:\\tmp\\refraction_sphere_scene.png");
+}
+
+fn render(scene : &dyn Scene, h_size : usize, v_size : usize, file_path: &str) {
+    scene.render(h_size, v_size, file_path);
+    let image = image::open(file_path).expect("Failed to open image");
+    let ascii_art = artem::convert(image, &artem::config::ConfigBuilder::new().build());
+    println!("{}", ascii_art);
 }

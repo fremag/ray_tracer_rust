@@ -113,8 +113,8 @@ mod tests {
         let canvas = camera.render(&world, file_path);
         let result = canvas.save(file_path);
         match result {
-            Ok(_) => { print!("Ok") }
-            Err(error) => { print!("Error: {}", error) }
+            Ok(_) => { println!("Ok") }
+            Err(error) => { println!("Error: {}", error) }
         }
     }
 }

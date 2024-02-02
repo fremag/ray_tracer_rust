@@ -27,7 +27,7 @@ impl Scene for CloverTriangleScene {
     fn get_world(&self) -> World {
         const R1: Float = 1.0;
         const R2: Float = 0.25;
-        let mut world = Self::init_world(false);
+        let mut world = self.init_world(false);
         fn path_clover(t: Float) -> Tuple {
             let x = R1 * ((2.0 * PI * t).cos() + 2.0 * (2.0 * PI * 2.0 * t).cos());
             let y = R1 * ((2.0 * PI * t).sin() - 2.0 * (2.0 * PI * 2.0 * t).sin());

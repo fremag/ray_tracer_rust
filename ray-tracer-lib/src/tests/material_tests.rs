@@ -134,8 +134,8 @@ mod tests {
 
         let result = canvas.save("e:\\tmp\\phong.ppm");
         match result {
-            Ok(_) => { print!("Ok") }
-            Err(error) => { print!("Error: {}", error) }
+            Ok(_) => { println!("Ok") }
+            Err(error) => { println!("Error: {}", error) }
         }
     }
 

@@ -13,7 +13,7 @@ pub trait Scene {
     fn get_world(&self) -> World;
     fn get_camera(&self, h_size: usize, v_size: usize) -> Camera;
 
-    fn init_camera(h_size: usize, v_size: usize
+    fn init_camera(&self, h_size: usize, v_size: usize
                    , from_x: Float, from_y: Float, from_z: Float
                    , look_x: Float, look_y: Float, look_z: Float) -> Camera {
         let mut camera = Camera::new(h_size, v_size, PI / 3.0);
@@ -29,12 +29,12 @@ pub trait Scene {
         let canvas = camera.render(&world, file_path);
         let result = canvas.save_png(file_path);
         match result {
-            Ok(_) => { print!("Ok") }
-            Err(error) => { print!("Error: {}", error) }
+            Ok(_) => { println!("Ok") }
+            Err(error) => { println!("Error: {}", error) }
         }
     }
 
-    fn init_world(add_floor : bool) -> World {
+    fn init_world(&self, add_floor : bool) -> World {
         let mut world = World::new();
         let lights = vec!(
             PointLight::new(point(0.0, 10.5, -10.0), Color::white()),
