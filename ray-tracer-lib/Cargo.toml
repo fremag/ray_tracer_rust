@@ -7,3 +7,4 @@ edition = "2021"
 [dependencies]
 sorted-vec = "0.8.3"
 rand = { version = "0.8.5", features = [] }
+png = { version = "0.17.11", features = [] }

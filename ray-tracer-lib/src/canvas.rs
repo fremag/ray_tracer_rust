@@ -1,5 +1,6 @@
 use std::fs::File;
-use std::io::{Write, Error};
+use std::io::{Write, Error, BufWriter};
+use std::path::Path;
 use crate::colors::Color;
 use crate::core::math::Float;
 
@@ -60,14 +61,7 @@ impl Canvas {
             line.clear()
         }
 
-        let mut c = 255.0 * value;
-        if c < 0.0 {
-            c = 0.0;
-        }
-        if c > 255.0 {
-            c = 255.0;
-        }
-
+        let c = clamp(value);
         let val_str = format!("{:.0}", c);
         line.push_str(&val_str);
         line.push(' ' );
@@ -80,5 +74,45 @@ impl Canvas {
 
         Ok(())
     }
+
+    pub fn save_png(&self, file_path: &str) -> Result<(), Error> {
+        let path = Path::new(file_path);
+        let file = File::create(path).unwrap();
+        let ref mut w = BufWriter::new(file);
+        let mut encoder = png::Encoder::new(w, self.width as u32, self.height as u32); // Width is 2 pixels and height is 1.
+        encoder.set_color(png::ColorType::Rgb);
+        encoder.set_depth(png::BitDepth::Eight);
+        let mut writer = encoder.write_header().unwrap();
+        let mut data = vec![];
+
+        for y in 0..self.height {
+            for x in 0..self.width {
+                let c = self.pixel_at(x, y);
+                let r = clamp(c.r);
+                let g = clamp(c.g);
+                let b = clamp(c.b);
+                data.push(r);
+                data.push(g);
+                data.push(b);
+            }
+        }
+
+        writer.write_image_data(&data).unwrap();
+
+        Ok(())
+    }
+}
+
+fn clamp(value : Float) -> u8 {
+
+    let mut c = (255.0 * value).round();
+    if c < 0.0 {
+        c = 0.0;
+    }
+    if c > 255.0 {
+        c = 255.0;
+    }
+
+    c as u8
 }
 

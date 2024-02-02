@@ -27,7 +27,7 @@ pub trait Scene {
         let camera = self.get_camera(h_size, v_size);
         let world = self.get_world();
         let canvas = camera.render(&world, file_path);
-        let result = canvas.save(file_path);
+        let result = canvas.save_png(file_path);
         match result {
             Ok(_) => { print!("Ok") }
             Err(error) => { print!("Error: {}", error) }
