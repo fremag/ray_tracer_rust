@@ -22,3 +22,4 @@ mod matrix_tests;
 mod sphere_tests;
 mod transform_tests;
 mod material_tests;
+mod obj_reader_tests;

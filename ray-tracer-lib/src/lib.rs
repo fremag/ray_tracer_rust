@@ -9,6 +9,7 @@ pub mod tests;
 pub mod world;
 pub mod canvas;
 pub mod camera;
+mod obj_reader;
 
 
 

@@ -26,8 +26,8 @@ impl Group {
         self.children.len()
     }
 
-    pub fn child(&self, p0: usize) -> &Object {
-        &self.children[p0]
+    pub fn child(&self, i: usize) -> &Object {
+        &self.children[i]
     }
 
     pub fn from(objects: Vec<Object>, transformation: Matrix<4>) -> Object {
