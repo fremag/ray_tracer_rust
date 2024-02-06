@@ -9,12 +9,13 @@ use crate::core::intersections::{Intersections, intersections};
 use crate::material::{Material};
 use crate::core::math::Float;
 use crate::core::matrix::Matrix;
-use crate::object::ObjectType::ObjectShape;
+use crate::object::ObjectType::{ObjectShape, TriangleGroup};
 use crate::shapes::plane::Plane;
 use crate::core::ray::Ray;
 use crate::shapes::shape::Shape;
 use crate::shapes::sphere::sphere;
 use crate::core::tuple::Tuple;
+use crate::shapes::triangle_model::TriangleModel;
 
 #[derive(Debug, Clone)]
 pub struct Object {
@@ -26,7 +27,7 @@ pub struct Object {
 }
 
 #[derive(Debug, Clone)]
-pub enum ObjectType { ObjectShape(Shape), ObjectGroup(Group)}
+pub enum ObjectType { ObjectShape(Shape), ObjectGroup(Group), TriangleGroup(TriangleModel)}
 
 impl Object {
     pub fn group(&self) -> Option<&Group> {
@@ -51,6 +52,7 @@ impl Object {
         let local_normal = match &self.object_type {
             ObjectShape(shape) => shape.normal_at(local_point),
             ObjectGroup(_) => panic!("No !"),
+            TriangleGroup(_)  => panic!("No !"),
         };
         let n = self.normal_to_world(&local_normal);
         n
@@ -61,6 +63,7 @@ impl Object {
         return match &self.object_type {
             ObjectShape(shape) => intersections(shape.intersect(&ray2).iter().map(|t| Intersection::new(*t,  &self )).collect()),
             ObjectGroup(group) => group.intersect(&ray2),
+            TriangleGroup(model) => model.intersect(&ray2),
         };
     }
 
@@ -68,6 +71,7 @@ impl Object {
         return match &self.object_type {
             ObjectShape(shape) => shape.bounds().transform(&self.transformation),
             ObjectGroup(group) => group.bounds(),
+            TriangleGroup(model) => model.bounds()
         };
     }
 
@@ -81,6 +85,9 @@ impl Object {
                 self.transformation = transformation;
                 self.transformation_inverse = self.transformation.inverse();
                 self.transformation_inverse_transpose = self.transformation_inverse.transpose();
+            }
+            TriangleGroup(model) => {
+                model.set_transformation(transformation);
             }
         }
         self

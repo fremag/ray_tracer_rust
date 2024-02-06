@@ -6,3 +6,4 @@ pub mod plane;
 pub mod sphere;
 pub mod shape;
 pub mod triangle;
+pub mod triangle_model;

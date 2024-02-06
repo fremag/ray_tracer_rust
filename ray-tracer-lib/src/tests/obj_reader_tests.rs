@@ -23,8 +23,8 @@ in a relative way,\n
 and came back the previous night.\n
 ";
         let mut obj_reader = ObjReader::new(str.as_bytes());
-        let group = obj_reader.read();
-        assert_eq!(group.len(), 0);
+        obj_reader.read();
+        assert!(obj_reader.triangles.is_empty());
     }
 
     #[test]
@@ -68,5 +68,57 @@ f 1 3 4\n
         assert_eq!(obj_reader.triangles[1].p1, obj_reader.vertices[0]);
         assert_eq!(obj_reader.triangles[1].p2, obj_reader.vertices[2]);
         assert_eq!(obj_reader.triangles[1].p3, obj_reader.vertices[3]);
+    }
+
+    #[test]
+    fn triangulating_polygons_test() {
+        let str =
+            "
+v -1 1 0
+v -1 0 0
+v 1 0 0
+v 1 1 0
+v 0 2 0
+f 1 2 3 4 5
+";
+        let mut obj_reader = ObjReader::new(str.as_bytes());
+        obj_reader.read();
+        assert_eq!(obj_reader.triangles[0].p1, obj_reader.vertices[0]);
+        assert_eq!(obj_reader.triangles[0].p2, obj_reader.vertices[1]);
+        assert_eq!(obj_reader.triangles[0].p3, obj_reader.vertices[2]);
+        assert_eq!(obj_reader.triangles[1].p1, obj_reader.vertices[0]);
+        assert_eq!(obj_reader.triangles[1].p2, obj_reader.vertices[2]);
+        assert_eq!(obj_reader.triangles[1].p3, obj_reader.vertices[3]);
+        assert_eq!(obj_reader.triangles[2].p1, obj_reader.vertices[0]);
+        assert_eq!(obj_reader.triangles[2].p2, obj_reader.vertices[3]);
+        assert_eq!(obj_reader.triangles[2].p3, obj_reader.vertices[4]);
+    }
+
+    #[test]
+    fn triangles_in_groups_test() {
+        let str =
+            "
+v -1 1 0
+v -1 0 0
+v 1 0 0
+v 1 1 0
+g FirstGroup
+f 1 2 3
+g SecondGroup
+f 1 3 4
+";
+        let mut obj_reader = ObjReader::new(str.as_bytes());
+        obj_reader.read();
+
+        assert!(obj_reader.models.contains_key("FirstGroup"));
+        assert!(obj_reader.models.contains_key("SecondGroup"));
+        let t1 = obj_reader.models["FirstGroup"].triangles[0];
+        let t2 = obj_reader.models["SecondGroup"].triangles[0];
+        assert_eq!(t1.p1, obj_reader.vertices[0]);
+        assert_eq!(t1.p2, obj_reader.vertices[1]);
+        assert_eq!(t1.p3, obj_reader.vertices[2]);
+        assert_eq!(t2.p1, obj_reader.vertices[0]);
+        assert_eq!(t2.p2, obj_reader.vertices[2]);
+        assert_eq!(t2.p3, obj_reader.vertices[3]);
     }
 }
