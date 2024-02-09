@@ -1,3 +1,4 @@
+#[cfg(test)]
 mod tests {
     use crate::core::tuple::point;
     use crate::obj_reader::ObjReader;
