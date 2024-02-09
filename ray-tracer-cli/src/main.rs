@@ -16,6 +16,7 @@ use crate::scenes::group_scene::GroupScene;
 use crate::scenes::patterns_scene::PatternsScene;
 use crate::scenes::refraction_sphere_scene::RefractionSphereScene;
 use crate::scenes::stripe_pattern_scene::StripePatternScene;
+use crate::scenes::teapot_scene::TeaPotScene;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -26,8 +27,8 @@ fn main() {
     }
 
     println!("Start...");
-    let scene = CloverTriangleScene::new(0.0, 0.0, -9.0);
-    scene.render(800, 600, "e:\\tmp\\clover_triangle.png");
+    let scene = TeaPotScene { };
+    scene.render(800, 600, "e:\\tmp\\tea_pot.png");
     println!("Done.")
 }
 

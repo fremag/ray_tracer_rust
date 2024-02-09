@@ -47,7 +47,7 @@ mod tests {
         assert_eq!(xs.count(), 1);
 
         assert_eq!(xs[0].t, 1.0);
-        assert_eq!(xs[0].object, &p);
+        assert_eq!(xs[0].object, p);
     }
 
     #[test]
@@ -57,7 +57,7 @@ mod tests {
         let xs = p.intersect(&r);
         assert_eq!(xs.count(), 1);
         assert_eq!(xs[0].t, 1.0);
-        assert_eq!(xs[0].object, &p);
+        assert_eq!(xs[0].object, p);
     }
 
     #[test]

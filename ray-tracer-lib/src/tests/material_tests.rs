@@ -122,7 +122,7 @@ mod tests {
                     None => { /* no intersection, do nothing */ }
                     Some(hit) => {
                         let point = r.position(hit.t);
-                        let object = hit.object;
+                        let object = hit.object.clone();
                         let normal = object.shape().unwrap().normal_at(point);
                         let eye = -r.direction;
                         let color = object.material().lighting(&object, &light, point, eye, normal, false);

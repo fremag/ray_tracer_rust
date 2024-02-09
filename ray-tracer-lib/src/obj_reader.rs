@@ -31,11 +31,14 @@ impl<T> ObjReader<T> where T: std::io::Read {
                         self.vertices.push(point(x, y, z));
                     }
                     if line.starts_with("f ") {
-                        let items: Vec<&str> = line.split(' ').collect();
+                        let items: Vec<&str> = line.split(' ').filter(|item| ! item.is_empty()).collect();
                         for i in 1..items.len()-2 {
-                            let i1 = items[1].parse::<usize>().unwrap() - 1;
-                            let i2 = items[i+1].parse::<usize>().unwrap() - 1;
-                            let i3 = items[i+2].parse::<usize>().unwrap() - 1;
+                            let s1 : Vec<&str> = items[1].split('/').collect();
+                            let s2 : Vec<&str> = items[i+1].split('/').collect();
+                            let s3 : Vec<&str> = items[i+2].split('/').collect();
+                            let i1 = s1[0].parse::<usize>().unwrap() - 1;
+                            let i2 = s2[0].parse::<usize>().unwrap() - 1;
+                            let i3 = s3[0].parse::<usize>().unwrap() - 1;
                             let v1 = &self.vertices[i1];
                             let v2 = &self.vertices[i2];
                             let v3 = &self.vertices[i3];

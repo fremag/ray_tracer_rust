@@ -74,7 +74,7 @@ impl Group {
         for child in self.children.iter() {
             let child_xs = child.intersect(ray);
             for x in child_xs.intersections.iter() {
-                xs.intersections.push(*x);
+                xs.intersections.push(x.clone());
             }
         }
 

@@ -8,3 +8,4 @@ pub mod refraction_sphere_scene;
 pub mod patterns_scene;
 pub mod stripe_pattern_scene;
 pub mod clover_triangles_scene;
+pub mod teapot_scene;

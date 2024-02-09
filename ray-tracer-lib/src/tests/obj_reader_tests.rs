@@ -3,17 +3,6 @@ mod tests {
     use crate::obj_reader::ObjReader;
 
     #[test]
-    fn test() {
-        // let file_path = r"C:\Users\Frédéric\RustroverProjects\rust_tracer\obj\teapot-low.obj";
-        // let file = File::open(file_path).unwrap();
-
-        let str = "v 1 2 3\nv 4 5 6\n";
-
-        let mut obj_reader = ObjReader::new(str.as_bytes());
-        obj_reader.read();
-    }
-
-    #[test]
     fn ignoring_unrecognized_lines_test() {
         let str = "
 There was a young lady named Bright\n

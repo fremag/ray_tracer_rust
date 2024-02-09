@@ -54,9 +54,9 @@ mod tests {
     fn shading_an_intersection_test() {
         let w = build_world();
         let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
-        let shape = &w.objects[0];
+        let shape = w.objects[0].clone();
         let i = Intersection { t: 4.0, object: shape };
-        let comps = prepare_computations(&i, &r, &intersections(vec!(i)));
+        let comps = prepare_computations(&i, &r, &intersections(vec!(i.clone())));
         let c = w.shade_hit(&comps, 1);
         assert_eq!(c, Color::new(0.38066, 0.47583, 0.2855));
     }
@@ -67,9 +67,9 @@ mod tests {
         let light = PointLight::new(point(0.0, 0.25, 0.0), Color::new(1.0, 1.0, 1.0));
         w.set_lights(vec!(light));
         let r = ray(point(0.0, 0.0, 0.0), vector(0.0, 0.0, 1.0));
-        let shape = &w.objects[1];
+        let shape = w.objects[1].clone();
         let i = Intersection { t: 0.5, object: shape };
-        let comps = prepare_computations(&i, &r, &intersections(vec!(i)));
+        let comps = prepare_computations(&i, &r, &intersections(vec!(i.clone())));
         let c = w.shade_hit(&comps, 1);
         assert_eq!(c, Color::new(0.90498, 0.90498, 0.90498));
     }
@@ -143,8 +143,8 @@ mod tests {
         w.set_objects(vec!(s1, s2));
 
         let r = ray(point(0.0, 0.0, 5.0), vector(0.0, 0.0, 1.0));
-        let i = Intersection::new(4.0, &w.objects[1]);
-        let comps = prepare_computations(&i, &r, &intersections(vec!(i)));
+        let i = Intersection::new(4.0, w.objects[1].clone());
+        let comps = prepare_computations(&i, &r, &intersections(vec!(i.clone())));
         let c = w.shade_hit(&comps, 1);
         assert_eq!(c, Color::new(0.1, 0.1, 0.1));
     }
@@ -161,8 +161,8 @@ mod tests {
             object.set_material(mat);
         }
 
-        let i = Intersection { t: 1.0, object: &w.objects[1] };
-        let comps = prepare_computations(&i, &r, &intersections(vec!(i)));
+        let i = Intersection { t: 1.0, object: w.objects[1].clone() };
+        let comps = prepare_computations(&i, &r, &intersections(vec!(i.clone())));
         let color = w.reflected_color(&comps, 1);
         assert_eq!(color, Color::new(0.0, 0.0, 0.0));
     }
@@ -178,8 +178,8 @@ mod tests {
 
         w.objects.push(shape);
         let r = ray(point(0.0, 0.0, -3.0), vector(0.0, -SQRT2 / 2.0, SQRT2 / 2.0));
-        let i = Intersection { t: SQRT2, object: &w.objects[2] };
-        let comps = prepare_computations(&i, &r, &intersections(vec!(i)));
+        let i = Intersection { t: SQRT2, object: w.objects[2].clone() };
+        let comps = prepare_computations(&i, &r, &intersections(vec!(i.clone())));
         let color = w.reflected_color(&comps, 1);
         assert_eq!(color, Color::new(0.19032, 0.2379, 0.14274));
     }
@@ -196,8 +196,8 @@ mod tests {
         w.objects.push(shape);
 
         let r = ray(point(0.0, 0.0, -3.0), vector(0.0, -SQRT2 / 2.0, SQRT2 / 2.0));
-        let i = Intersection { t: SQRT2, object: &w.objects[2] };
-        let comps = prepare_computations(&i, &r, &intersections(vec!(i)));
+        let i = Intersection { t: SQRT2, object: w.objects[2].clone() };
+        let comps = prepare_computations(&i, &r, &intersections(vec!(i.clone())));
         let color = w.shade_hit(&comps, 1);
         assert_eq!(color, Color::new(0.87677, 0.92436, 0.82918));
     }
@@ -242,9 +242,9 @@ mod tests {
 
         let r = ray(point(0.0, 0.0, -3.0), vector(0.0, -SQRT2 / 2.0, SQRT2 / 2.0));
 
-        let i = Intersection { t: SQRT2, object: &w.objects[0] };
+        let i = Intersection { t: SQRT2, object: w.objects[0].clone() };
 
-        let comps = prepare_computations(&i, &r, &intersections(vec!(i)));
+        let comps = prepare_computations(&i, &r, &intersections(vec!(i.clone())));
         let color = w.reflected_color(&comps, 0);
         assert_eq!(color, Color::black());
     }
@@ -254,8 +254,8 @@ mod tests {
         let w = build_world();
         let shape = &w.objects[0];
         let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
-        let i1 = Intersection { t: 4.0, object: &shape };
-        let i2 = Intersection { t: 6.0, object: &shape };
+        let i1 = Intersection { t: 4.0, object: shape.clone() };
+        let i2 = Intersection { t: 6.0, object: shape.clone() };
         let xs = intersections(vec!(i1, i2));
         let comps = prepare_computations(&xs.intersections[0], &r, &xs);
         let c = w.refracted_color(&comps, 5);
@@ -273,8 +273,8 @@ mod tests {
         shape.set_material(mat);
 
         let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
-        let i1 = Intersection { t: 4.0, object: &shape };
-        let i2 = Intersection { t: 6.0, object: &shape };
+        let i1 = Intersection { t: 4.0, object: shape.clone() };
+        let i2 = Intersection { t: 6.0, object: shape.clone() };
         let xs = intersections(vec!(i1, i2));
 
         let comps = prepare_computations(&xs.intersections[0], &r, &xs);
@@ -293,8 +293,8 @@ mod tests {
         shape.set_material(mat);
 
         let r = ray(point(0.0, 0.0, SQRT2 / 2.0), vector(0.0, 1.0, 0.0));
-        let i1 = Intersection { t: -SQRT2 / 2.0, object: &shape };
-        let i2 = Intersection { t: SQRT2 / 2.0, object: &shape };
+        let i1 = Intersection { t: -SQRT2 / 2.0, object: shape.clone() };
+        let i2 = Intersection { t: SQRT2 / 2.0, object: shape.clone() };
         let xs = intersections(vec!(i1, i2));
 
         // NOTE: this time you're inside the sphere, so you need
@@ -322,10 +322,10 @@ mod tests {
         shape_b.set_material(mat_b);
 
         let r = ray(point(0.0, 0.0, 0.1), vector(0.0, 1.0, 0.0));
-        let i1 = Intersection { t: -0.9899, object: &w.objects[0] };
-        let i2 = Intersection { t: -0.4899, object: &w.objects[1] };
-        let i3 = Intersection { t: 0.4899, object: &w.objects[1] };
-        let i4 = Intersection { t: 0.9899, object: &w.objects[0] };
+        let i1 = Intersection { t: -0.9899, object: w.objects[0].clone() };
+        let i2 = Intersection { t: -0.4899, object: w.objects[1].clone() };
+        let i3 = Intersection { t: 0.4899, object: w.objects[1].clone() };
+        let i4 = Intersection { t: 0.9899, object: w.objects[0].clone() };
         let xs = intersections(vec!(i1, i2, i3, i4));
         let comps = prepare_computations(&xs.intersections[2], &r, &xs);
         let c = w.refracted_color(&comps, 5);
@@ -356,7 +356,7 @@ mod tests {
         w.objects.push(ball);
 
         let r = ray(point(0.0, 0.0, -3.0), vector(0.0, -SQRT2 / 2.0, SQRT2 / 2.0));
-        let xs = intersections(vec!(Intersection { t: SQRT2, object: &w.objects[0] }));
+        let xs = intersections(vec!(Intersection { t: SQRT2, object: w.objects[0].clone() }));
 
         let comps = prepare_computations(&xs[0], &r, &xs);
         let color = w.shade_hit(&comps, 5);
@@ -387,7 +387,7 @@ mod tests {
         w.objects.push(ball);
 
         let r = ray(point(0.0, 0.0, -3.0), vector(0.0, -SQRT2 / 2.0, SQRT2 / 2.0));
-        let xs = intersections(vec!(Intersection { t: SQRT2, object: &w.objects[2] }));
+        let xs = intersections(vec!(Intersection { t: SQRT2, object: w.objects[2].clone() }));
 
         let comps = prepare_computations(&xs[0], &r, &xs);
         let color = w.shade_hit(&comps, 5);

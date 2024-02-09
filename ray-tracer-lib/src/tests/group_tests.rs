@@ -63,10 +63,10 @@ mod tests {
         assert_eq!(xs.intersections[2].t, 4.0);
         assert_eq!(xs.intersections[3].t, 6.0);
 
-        assert_eq!(xs.intersections[0].object, &s2_clone);
-        assert_eq!(xs.intersections[1].object, &s2_clone);
-        assert_eq!(xs.intersections[2].object, &s1_clone);
-        assert_eq!(xs.intersections[3].object, &s1_clone);
+        assert_eq!(&xs.intersections[0].object, &s2_clone);
+        assert_eq!(&xs.intersections[1].object, &s2_clone);
+        assert_eq!(&xs.intersections[2].object, &s1_clone);
+        assert_eq!(&xs.intersections[3].object, &s1_clone);
     }
 
     #[test]

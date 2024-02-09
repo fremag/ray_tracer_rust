@@ -23,7 +23,7 @@ impl<'a> World {
         for object in self.objects.iter() {
             let obj_intersections = object.intersect(ray);
             for intersection in obj_intersections.intersections.iter() {
-                intersection_vec.push(*intersection)
+                intersection_vec.push(intersection.clone())
             }
         }
 
@@ -36,7 +36,7 @@ impl<'a> World {
 
         for light in self.lights.iter() {
             let in_shadow = self.is_shadowed(light, comps.over_point);
-            let surface = material.lighting(comps.object, &light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
+            let surface = material.lighting(&comps.object, &light, comps.over_point, comps.eyev, comps.normalv, in_shadow);
             let reflected= self.reflected_color(comps, remaining);
             let refracted= self.refracted_color(comps, remaining);
 

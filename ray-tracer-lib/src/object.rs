@@ -61,9 +61,17 @@ impl Object {
     pub fn intersect(&self, ray: &Ray) -> Intersections {
         let ray2 = ray.transform(&self.transformation_inverse);
         return match &self.object_type {
-            ObjectShape(shape) => intersections(shape.intersect(&ray2).iter().map(|t| Intersection::new(*t,  &self )).collect()),
+            ObjectShape(shape) => intersections(shape.intersect(&ray2).iter().map(|t| Intersection::new(*t, self.clone() )).collect()),
             ObjectGroup(group) => group.intersect(&ray2),
-            TriangleGroup(model) => model.intersect(&ray2),
+            TriangleGroup(model) => {
+
+                let v = model.intersect(&ray2).iter().map(|(t, triangle)| {
+                    let mut obj = Object::new(Shape::Triangle(*triangle));
+                    obj.set_material(self.material);
+                    Intersection::new(*t, obj)
+                }).collect();
+                intersections(v)
+            },
         };
     }
 
@@ -123,6 +131,16 @@ impl Object {
     pub fn new_group(group: Group) -> Object {
         Object {
             object_type: ObjectGroup(group),
+            material: Material::new(),
+            transformation: Matrix::<4>::identity(),
+            transformation_inverse: Matrix::<4>::identity(),
+            transformation_inverse_transpose: Matrix::<4>::identity(),
+        }
+    }
+
+    pub fn new_triangle(model: TriangleModel) -> Object {
+        Object {
+            object_type: TriangleGroup(model),
             material: Material::new(),
             transformation: Matrix::<4>::identity(),
             transformation_inverse: Matrix::<4>::identity(),
