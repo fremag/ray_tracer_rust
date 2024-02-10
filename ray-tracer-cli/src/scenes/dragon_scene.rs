@@ -3,7 +3,7 @@ use std::fs::File;
 use ray_tracer_lib::camera::Camera;
 use ray_tracer_lib::colors::Color;
 use ray_tracer_lib::core::math::PI;
-use ray_tracer_lib::core::transform::{rotation_x, rotation_y, rotation_z, view_transform};
+use ray_tracer_lib::core::transform::{view_transform};
 use ray_tracer_lib::core::tuple::{point, vector};
 use ray_tracer_lib::lights::point_light::PointLight;
 use ray_tracer_lib::obj_reader::ObjReader;
@@ -11,23 +11,23 @@ use ray_tracer_lib::object::Object;
 use ray_tracer_lib::world::World;
 use crate::scene::Scene;
 
-pub struct TeaPotScene {}
+pub struct DragonScene {}
 
-impl Scene for TeaPotScene {
+impl Scene for DragonScene {
     fn get_world(&self) -> World {
         println!("{}", env::current_dir().unwrap().display());
-        let file_path = r"./obj/teapot.obj";
+
+        let file_path = r"./obj/dragon.obj";
         let file = File::open(file_path).unwrap();
 
         let mut obj_reader = ObjReader::new(file);
         obj_reader.read();
 
-        let teapot = obj_reader.models;
-        let teapot_model= teapot.get("Teapot001").unwrap();
-        let mut obj_teapot = Object::new_triangle(teapot_model.clone());
-        obj_teapot.set_transformation(&rotation_y(-PI/4.0) * &(&rotation_x(-PI/2.0)*&rotation_z(PI/2.0)));
+        let dragon = obj_reader.models;
+        let dragon_model = dragon.get("Default").unwrap();
+        let obj_dragon = Object::new_triangle(dragon_model.clone());
         let mut world = World::new();
-        world.objects.push(obj_teapot);
+        world.objects.push(obj_dragon);
         let lights = vec!(PointLight::new(point(-100.0, 100.0, -100.0), Color::new(1.0, 1.0, 1.0)));
         world.set_lights(lights);
         world
@@ -35,8 +35,8 @@ impl Scene for TeaPotScene {
 
     fn get_camera(&self, h_size: usize, v_size: usize) -> Camera {
         let mut camera = Camera::new(h_size, v_size, PI / 3.0);
-        camera.set_transform(view_transform(point(-15.0, 15.0, -30.0),
-                                            point(0.0, 1.0, 0.0),
+        camera.set_transform(view_transform(point(-2.0, 6.0, -6.0),
+                                            point(-1.0, 2.0, 0.0),
                                             vector(0.0, 1.0, 0.0)));
         camera
     }

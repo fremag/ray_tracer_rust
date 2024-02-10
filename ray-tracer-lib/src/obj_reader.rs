@@ -58,10 +58,8 @@ impl<T> ObjReader<T> where T: std::io::Read {
                 }
             }
         }
-        if ! self.models.is_empty() {
-            let triangle_model = TriangleModel::new(self.triangles.clone());
-            self.models.insert(current_name.to_string(), triangle_model);
-            self.triangles = vec![];
-        }
+        let triangle_model = TriangleModel::new(self.triangles.clone());
+        self.models.insert(current_name.to_string(), triangle_model);
+        self.triangles = vec![];
     }
 }

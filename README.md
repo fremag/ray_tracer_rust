@@ -10,6 +10,8 @@ I'm learning Rust while working my way through Jamis Buck's
 
 <details open>
 <summary>Chapter 15: triangles</summary>
+![teapot_triangles](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/teapot.png)
+![dragon_triangles](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/dragon.png)
 
 ![clover_triangles](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/clover_triangles.png)
 

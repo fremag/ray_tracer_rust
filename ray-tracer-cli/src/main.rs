@@ -12,6 +12,7 @@ use crate::scenes::clover_triangles_scene::CloverTriangleScene;
 use crate::scenes::cone_scene::ConeScene;
 use crate::scenes::cube_scene::CubeScene;
 use crate::scenes::cylinder_scene::CylinderScene;
+use crate::scenes::dragon_scene::DragonScene;
 use crate::scenes::group_scene::GroupScene;
 use crate::scenes::patterns_scene::PatternsScene;
 use crate::scenes::refraction_sphere_scene::RefractionSphereScene;
@@ -27,27 +28,29 @@ fn main() {
     }
 
     println!("Start...");
-    let scene = TeaPotScene { };
-    scene.render(800, 600, "e:\\tmp\\tea_pot.png");
+    render(&TeaPotScene{},400, 400, "./img/teapot.png");
     println!("Done.")
 }
 
 fn render_all() {
-    render(&CloverScene::new(0.0, 0.0, -9.0), 800, 600, "e:\\tmp\\clover.png");
-    render(&CloverTriangleScene::new(0.0, 0.0, -9.0),800, 600, "e:\\tmp\\clover_triangle.png");
-    render(&CylinderScene{},400, 400, "e:\\tmp\\cylinders_scene.png");
-    render(&ConeScene{},400, 400, "e:\\tmp\\cones_scene.png");
-    render(&CubeScene{},400, 400, "e:\\tmp\\cubes_scene.png");
-    render(&GroupScene{},400, 400, "e:\\tmp\\group_scene.png");
-    render(&PatternsScene{},400, 400, "e:\\tmp\\all_patterns_scene.png");
-    render(&StripePatternScene{},400, 400, "e:\\tmp\\pattern_stripe_scene.png");
-    render(&BasicRefractionScene{},640, 400, "e:\\tmp\\basic_refraction_sphere_scene.png");
-    render(&RefractionSphereScene{},400, 400, "e:\\tmp\\refraction_sphere_scene.png");
+    render(&CloverScene::new(0.0, 0.0, -9.0), 800, 600, "./img/clover.png");
+    render(&CloverTriangleScene::new(0.0, 0.0, -9.0),800, 600, "./img/clover_triangle.png");
+    render(&CylinderScene{},400, 400, "./img/cylinders_scene.png");
+    render(&ConeScene{},400, 400, "./img/cones_scene.png");
+    render(&CubeScene{},400, 400, "./img/cubes_scene.png");
+    render(&GroupScene{},400, 400, "./img/group_scene.png");
+    render(&PatternsScene{},400, 400, "./img/all_patterns_scene.png");
+    render(&StripePatternScene{},400, 400, "./img/pattern_stripe_scene.png");
+    render(&BasicRefractionScene{},640, 400, "./img/basic_refraction_sphere_scene.png");
+    render(&RefractionSphereScene{},400, 400, "./img/refraction_sphere_scene.png");
+    render(&TeaPotScene{},400, 400, "./img/teapot.png");
+    render(&DragonScene { }, 800, 600, "./img/dragon.png");
 }
 
 fn render(scene : &dyn Scene, h_size : usize, v_size : usize, file_path: &str) {
     scene.render(h_size, v_size, file_path);
     let image = image::open(file_path).expect("Failed to open image");
-    let ascii_art = artem::convert(image, &artem::config::ConfigBuilder::new().build());
+    let config = &artem::config::ConfigBuilder::new().border(true).build();
+    let ascii_art = artem::convert(image, config);
     println!("{}", ascii_art);
 }

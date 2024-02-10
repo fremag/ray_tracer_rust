@@ -52,12 +52,13 @@ f 1 3 4\n
 
         let mut obj_reader = ObjReader::new(str.as_bytes());
         obj_reader.read();
-        assert_eq!(obj_reader.triangles[0].p1, obj_reader.vertices[0]);
-        assert_eq!(obj_reader.triangles[0].p2, obj_reader.vertices[1]);
-        assert_eq!(obj_reader.triangles[0].p3, obj_reader.vertices[2]);
-        assert_eq!(obj_reader.triangles[1].p1, obj_reader.vertices[0]);
-        assert_eq!(obj_reader.triangles[1].p2, obj_reader.vertices[2]);
-        assert_eq!(obj_reader.triangles[1].p3, obj_reader.vertices[3]);
+        let model = &obj_reader.models["Default"];
+        assert_eq!(model.triangles[0].p1, obj_reader.vertices[0]);
+        assert_eq!(model.triangles[0].p2, obj_reader.vertices[1]);
+        assert_eq!(model.triangles[0].p3, obj_reader.vertices[2]);
+        assert_eq!(model.triangles[1].p1, obj_reader.vertices[0]);
+        assert_eq!(model.triangles[1].p2, obj_reader.vertices[2]);
+        assert_eq!(model.triangles[1].p3, obj_reader.vertices[3]);
     }
 
     #[test]
@@ -73,15 +74,16 @@ f 1 2 3 4 5
 ";
         let mut obj_reader = ObjReader::new(str.as_bytes());
         obj_reader.read();
-        assert_eq!(obj_reader.triangles[0].p1, obj_reader.vertices[0]);
-        assert_eq!(obj_reader.triangles[0].p2, obj_reader.vertices[1]);
-        assert_eq!(obj_reader.triangles[0].p3, obj_reader.vertices[2]);
-        assert_eq!(obj_reader.triangles[1].p1, obj_reader.vertices[0]);
-        assert_eq!(obj_reader.triangles[1].p2, obj_reader.vertices[2]);
-        assert_eq!(obj_reader.triangles[1].p3, obj_reader.vertices[3]);
-        assert_eq!(obj_reader.triangles[2].p1, obj_reader.vertices[0]);
-        assert_eq!(obj_reader.triangles[2].p2, obj_reader.vertices[3]);
-        assert_eq!(obj_reader.triangles[2].p3, obj_reader.vertices[4]);
+        let model = &obj_reader.models["Default"];
+        assert_eq!(model.triangles[0].p1, obj_reader.vertices[0]);
+        assert_eq!(model.triangles[0].p2, obj_reader.vertices[1]);
+        assert_eq!(model.triangles[0].p3, obj_reader.vertices[2]);
+        assert_eq!(model.triangles[1].p1, obj_reader.vertices[0]);
+        assert_eq!(model.triangles[1].p2, obj_reader.vertices[2]);
+        assert_eq!(model.triangles[1].p3, obj_reader.vertices[3]);
+        assert_eq!(model.triangles[2].p1, obj_reader.vertices[0]);
+        assert_eq!(model.triangles[2].p2, obj_reader.vertices[3]);
+        assert_eq!(model.triangles[2].p3, obj_reader.vertices[4]);
     }
 
     #[test]
