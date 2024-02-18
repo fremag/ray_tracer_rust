@@ -9,12 +9,13 @@ use crate::core::intersections::{Intersections, intersections};
 use crate::material::{Material};
 use crate::core::math::Float;
 use crate::core::matrix::Matrix;
-use crate::object::ObjectType::{ObjectShape, TriangleGroup};
+use crate::object::ObjectType::{ObjectShape, SmoothTriangleGroup, TriangleGroup};
 use crate::shapes::plane::Plane;
 use crate::core::ray::Ray;
 use crate::shapes::shape::Shape;
 use crate::shapes::sphere::sphere;
 use crate::core::tuple::Tuple;
+use crate::shapes::smooth_triangle_model::SmoothTriangleModel;
 use crate::shapes::triangle_model::TriangleModel;
 
 #[derive(Debug, Clone)]
@@ -27,7 +28,7 @@ pub struct Object {
 }
 
 #[derive(Debug, Clone)]
-pub enum ObjectType { ObjectShape(Shape), ObjectGroup(Group), TriangleGroup(TriangleModel)}
+pub enum ObjectType { ObjectShape(Shape), ObjectGroup(Group), TriangleGroup(TriangleModel), SmoothTriangleGroup(SmoothTriangleModel)}
 
 impl Object {
     pub fn group(&self) -> Option<&Group> {
@@ -47,12 +48,13 @@ impl Object {
         &(self.transformation_inverse) * point
     }
 
-    pub fn normal_at(&self, world_point: Tuple) -> Tuple {
+    pub fn normal_at(&self, world_point: Tuple, hit: &Intersection) -> Tuple {
         let local_point = self.world_to_object(&world_point);
         let local_normal = match &self.object_type {
-            ObjectShape(shape) => shape.normal_at(local_point),
+            ObjectShape(shape) => shape.normal_at(local_point, hit),
             ObjectGroup(_) => panic!("No !"),
             TriangleGroup(_)  => panic!("No !"),
+            SmoothTriangleGroup(_)  => panic!("No !"),
         };
         let n = self.normal_to_world(&local_normal);
         n
@@ -72,6 +74,14 @@ impl Object {
                 }).collect();
                 intersections(v)
             },
+            SmoothTriangleGroup(model) => {
+                let v = model.intersect(&ray2).into_iter().map(|(t, smooth_triangle, u, v)| {
+                    let mut obj = Object::new(Shape::SmoothTriangle(smooth_triangle));
+                    obj.set_material(self.material);
+                    Intersection::new_uv(t, obj, u, v)
+                }).collect();
+                intersections(v)
+            },
         };
     }
 
@@ -79,7 +89,8 @@ impl Object {
         return match &self.object_type {
             ObjectShape(shape) => shape.bounds().transform(&self.transformation),
             ObjectGroup(group) => group.bounds(),
-            TriangleGroup(model) => model.bounds()
+            TriangleGroup(model) => model.bounds(),
+            SmoothTriangleGroup(model) => model.bounds(),
         };
     }
 
@@ -97,6 +108,7 @@ impl Object {
             TriangleGroup(model) => {
                 model.set_transformation(transformation);
             }
+            SmoothTriangleGroup(model) => model.set_transformation(transformation)
         }
         self
     }
@@ -141,6 +153,16 @@ impl Object {
     pub fn new_triangle(model: TriangleModel) -> Object {
         Object {
             object_type: TriangleGroup(model),
+            material: Material::new(),
+            transformation: Matrix::<4>::identity(),
+            transformation_inverse: Matrix::<4>::identity(),
+            transformation_inverse_transpose: Matrix::<4>::identity(),
+        }
+    }
+
+    pub fn new_smooth_triangle(model: SmoothTriangleModel) -> Object {
+        Object {
+            object_type: SmoothTriangleGroup(model),
             material: Material::new(),
             transformation: Matrix::<4>::identity(),
             transformation_inverse: Matrix::<4>::identity(),

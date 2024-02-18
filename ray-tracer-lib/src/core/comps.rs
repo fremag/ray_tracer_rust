@@ -47,7 +47,7 @@ pub fn prepare_computations(hit: &Intersection, ray: &Ray, xs: &Intersections) -
     // instantiate a data structure for storing some precomputed values
     let point = ray.position(hit.t);
     let eyev = -ray.direction;
-    let mut normalv = hit.object.normal_at(point);
+    let mut normalv = hit.object.normal_at(point, hit);
     let mut inside = false;
 
     if normalv.dot(&eyev) < 0.0 {

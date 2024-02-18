@@ -10,7 +10,9 @@ mod tests {
     use crate::core::transform::{scaling, translation};
     use crate::core::tuple::{point, vector};
     use crate::material::Material;
-    use crate::object::build_sphere;
+    use crate::object::{build_sphere, Object};
+    use crate::shapes::triangle::Triangle;
+    use crate::shapes::triangle_model::TriangleModel;
     use crate::tests::helper::tests::build_glass_sphere;
 
     #[test]
@@ -47,8 +49,8 @@ mod tests {
     #[test]
     fn the_hit_when_all_intersections_have_positive_t_test() {
         let s = build_sphere();
-        let i1 = Intersection { t: 1.0, object: s.clone() };
-        let i2 = Intersection { t: 2.0, object: s.clone() };
+        let i1 = Intersection::new(1.0, s.clone());
+        let i2 = Intersection::new(2.0, s.clone());
         let xs = intersections(vec!(i2.clone(), i1.clone()));
         let i = xs.hit();
         match i {
@@ -60,8 +62,8 @@ mod tests {
     #[test]
     fn the_hit_when_some_intersections_have_negative_t_test() {
         let s = build_sphere();
-        let i1 = Intersection { t: -1.0, object: s.clone() };
-        let i2 = Intersection { t: 1.0, object: s.clone() };
+        let i1 = Intersection::new(-1.0, s.clone());
+        let i2 = Intersection::new(1.0, s.clone());
         let xs = intersections(vec!(i2.clone(), i1.clone()));
         let i = xs.hit();
         match i {
@@ -73,8 +75,8 @@ mod tests {
     #[test]
     fn the_hit_when_all_intersections_have_negative_t_test() {
         let s = build_sphere();
-        let i1 = Intersection { t: -2.0, object: s.clone() };
-        let i2 = Intersection { t: -1.0, object: s };
+        let i1 = Intersection::new(-2.0, s.clone());
+        let i2 = Intersection::new(-1.0, s);
         let xs = intersections(vec!(i2, i1));
         let i = xs.hit();
         assert_eq!(i, None);
@@ -83,10 +85,10 @@ mod tests {
     #[test]
     fn the_hit_is_always_the_lowest_non_negative_intersection_test() {
         let s = build_sphere();
-        let i1 = Intersection { t: 5.0, object: s.clone() };
-        let i2 = Intersection { t: 7.0, object: s.clone() };
-        let i3 = Intersection { t: -3.0, object: s.clone() };
-        let i4 = Intersection { t: 2.0, object: s.clone() };
+        let i1 = Intersection::new(5.0, s.clone());
+        let i2 = Intersection::new(7.0, s.clone());
+        let i3 = Intersection::new(-3.0, s.clone());
+        let i4 = Intersection::new(2.0, s.clone());
         let xs = intersections(vec!(i1, i2, i3, i4.clone()));
         let i = xs.hit();
         match i {
@@ -169,12 +171,12 @@ mod tests {
 
         let r = ray(point(0.0, 0.0, -4.0), vector(0.0, 0.0, 1.0));
         let xs = intersections(vec!(
-            Intersection { t: 2.0, object: a.clone() },
-            Intersection { t: 2.75, object: b.clone() },
-            Intersection { t: 3.25, object: c.clone() },
-            Intersection { t: 4.75, object: b.clone() },
-            Intersection { t: 5.25, object: c.clone() },
-            Intersection { t: 6.00, object: a.clone() }));
+            Intersection::new(2.0, a.clone()),
+            Intersection::new(2.75, b.clone()),
+            Intersection::new(3.25, c.clone()),
+            Intersection::new(4.75, b.clone()),
+            Intersection::new(5.25, c.clone()),
+            Intersection::new(6.00, a.clone())));
 
         check_n1_n2(&xs, &r, 0, 1.0, 1.5);
         check_n1_n2(&xs, &r, 1, 1.5, 2.0);
@@ -195,7 +197,7 @@ mod tests {
         let r = ray(point(0.0, 0.0, -5.0), vector(0.0, 0.0, 1.0));
         let mut shape = build_glass_sphere();
         shape.set_transformation(translation(0.0, 0.0, 1.0));
-        let i = Intersection { t: 5.0, object: shape.clone() };
+        let i = Intersection::new(5.0, shape.clone());
         let xs = intersections(vec![i.clone()]);
         let comps = prepare_computations(&i, &r, &xs);
         assert!(comps.under_point.z > EPSILON / 2.0);
@@ -206,7 +208,7 @@ mod tests {
     fn the_schlick_approximation_under_total_internal_reflection_test() {
         let shape = build_glass_sphere();
         let r = ray(point(0.0, 0.0, SQRT2 / 2.0), vector(0.0, 1.0, 0.0));
-        let xs = intersections(vec!(Intersection { t: -SQRT2 / 2.0, object: shape.clone() }, Intersection { t: SQRT2 / 2.0, object: shape.clone() }));
+        let xs = intersections(vec!(Intersection::new(-SQRT2 / 2.0, shape.clone()), Intersection::new(SQRT2 / 2.0, shape.clone())));
         let comps = prepare_computations(&xs.intersections[1], &r, &xs);
         let reflectance = comps.schlick();
         assert_eq!(reflectance, 1.0);
@@ -216,7 +218,7 @@ mod tests {
     fn the_schlick_approximation_with_a_perpendicular_viewing_angle_test() {
         let shape = build_glass_sphere();
         let r = ray(point(0.0, 0.0, 0.0), vector(0.0, 1.0, 0.0));
-        let xs = intersections(vec![Intersection { t: -1.0, object: shape.clone() }, Intersection { t: 1.0, object: shape.clone() }]);
+        let xs = intersections(vec![Intersection::new(-1.0, shape.clone()), Intersection::new(1.0, shape.clone())]);
         let comps = prepare_computations(&xs[1], &r, &xs);
         let reflectance = comps.schlick();
         assert!(equals(reflectance, 0.04));
@@ -226,9 +228,19 @@ mod tests {
     fn the_schlick_approximation_with_small_angle_and_n2_greater_than_n1() {
         let shape = build_glass_sphere();
         let r = ray(point(0.0, 0.99, -2.0), vector(0.0, 0.0, 1.0));
-        let xs = intersections(vec![Intersection { t: 1.8589, object: shape.clone() }]);
+        let xs = intersections(vec![Intersection::new(1.8589, shape.clone())]);
         let comps = prepare_computations(&xs.intersections[0], &r, &xs);
         let reflectance = comps.schlick();
         assert!(equals(reflectance, 0.48873));
+    }
+
+
+    #[test]
+    fn an_intersection_can_encapsulate_u_and_v_test() {
+        let s = Triangle::new(point(0.0, 1.0, 0.0), point(-1.0, 0.0, 0.0), point(1.0, 0.0, 0.0));
+        let model = TriangleModel::new(vec![s]);
+        let i = Intersection::new_uv(3.5, Object::new_triangle(model), 0.2, 0.4);
+        assert_eq!(i.u, 0.2);
+        assert_eq!(i.v, 0.4);
     }
 }

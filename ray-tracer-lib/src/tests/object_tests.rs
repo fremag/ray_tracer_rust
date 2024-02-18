@@ -10,6 +10,7 @@ mod tests {
     use crate::core::transform::{rotation_z, scaling, translation};
     use crate::core::tuple::{point, vector};
     use crate::shapes::sphere::sphere;
+    use crate::tests::helper::tests::dummy_intersection;
 
     #[test]
     fn a_sphere_s_default_transformation_test() {
@@ -135,7 +136,7 @@ mod tests {
         let mut s = Object::new(Shape::Sphere(sphere));
         s.set_transformation(translation(0.0, 1.0, 0.0));
 
-        let n = s.normal_at(point(0.0, 1.0 + SQRT2 / 2.0, -SQRT2 / 2.0));
+        let n = s.normal_at(point(0.0, 1.0 + SQRT2 / 2.0, -SQRT2 / 2.0), &dummy_intersection() );
         assert_eq!(n, vector(0.0, SQRT2 / 2.0, -SQRT2 / 2.0));
     }
 
@@ -145,7 +146,7 @@ mod tests {
         let mut s = Object::new(Shape::Sphere(sphere));
         let m = &scaling(1.0, 0.5, 1.0) * &rotation_z(PI / 5.0);
         s.set_transformation(m);
-        let n = s.normal_at(point(0.0, SQRT2 / 2.0, -SQRT2 / 2.0));
+        let n = s.normal_at(point(0.0, SQRT2 / 2.0, -SQRT2 / 2.0), &dummy_intersection());
         assert_eq!(n, vector(0.0, 0.97014, -0.24254));
     }
 }

@@ -5,12 +5,19 @@ use crate::object::Object;
 #[derive(Debug, Clone)]
 pub struct Intersection {
     pub t : Float,
+    pub u : Float,
+    pub v : Float,
     pub object: Object
 }
 
 impl Intersection {
     pub fn new(t : Float, object : Object) -> Self {
-        let inter = Intersection {t, object};
+        let inter = Intersection {t, u: 0.0, v: 0.0, object};
+        inter
+    }
+
+    pub fn new_uv(t : Float, object : Object, u: Float, v : Float) -> Self {
+        let inter = Intersection {t, u, v, object};
         inter
     }
 }

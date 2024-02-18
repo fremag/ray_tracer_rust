@@ -29,26 +29,34 @@ impl Triangle {
     }
 
     pub fn intersect(&self, ray: &Ray) -> Vec<Float> {
+        let (t, _u, _v) = self.intersect_uv(ray);
+        if Float::is_nan(t) {
+            return vec![]
+        }
+        vec![t]
+    }
+
+    pub fn intersect_uv(&self, ray: &Ray) -> (Float, Float, Float) {
         let dir_cross_e2 = ray.direction * &self.e2;
         let det = self.e1.dot(&dir_cross_e2);
         if det.abs() < math::EPSILON {
-            return vec![];
+            return (Float::NAN, Float::NAN, Float::NAN);
         }
         let f = 1.0 / det;
         let p1_to_origin = ray.origin - self.p1;
         let u = f * p1_to_origin.dot(&dir_cross_e2);
         if u < 0.0 || u > 1.0 {
-            return vec![];
+            return (Float::NAN, Float::NAN, Float::NAN);
         }
 
         let origin_cross_e1 = p1_to_origin * &self.e1;
         let v = f * ray.direction.dot(&origin_cross_e1);
         if v < 0.0 || (u + v) > 1.0 {
-            return vec![];
+            return (Float::NAN, Float::NAN, Float::NAN);
         }
 
         let t = f * self.e2.dot(&origin_cross_e1);
-        return vec![t]
+        (t, u, v)
     }
 
     pub fn normal_at(&self, _: &Tuple) -> Tuple {

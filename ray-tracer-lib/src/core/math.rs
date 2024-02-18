@@ -4,6 +4,7 @@ use crate::core::tuple::Tuple;
 pub type Float = f64;
 
 pub const EPSILON: Float = 0.0001;
+pub const NAN: Float = f64::NAN;
 pub const INFINITY: Float = f64::INFINITY;
 pub const PI: Float = std::f64::consts::PI;
 pub const SQRT2: Float = std::f64::consts::SQRT_2 as Float;

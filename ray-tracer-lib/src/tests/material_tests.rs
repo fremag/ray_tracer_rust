@@ -10,7 +10,7 @@ mod tests {
     use crate::patterns::pattern::{Pattern};
     use crate::core::ray::ray;
     use crate::core::tuple::{point, vector};
-    use crate::tests::helper::tests::build_glass_sphere;
+    use crate::tests::helper::tests::{build_glass_sphere, dummy_intersection};
 
     #[test]
     fn default_material_test() {
@@ -123,7 +123,7 @@ mod tests {
                     Some(hit) => {
                         let point = r.position(hit.t);
                         let object = hit.object.clone();
-                        let normal = object.shape().unwrap().normal_at(point);
+                        let normal = object.shape().unwrap().normal_at(point, &dummy_intersection());
                         let eye = -r.direction;
                         let color = object.material().lighting(&object, &light, point, eye, normal, false);
                         canvas.write_pixel(x, y, color);

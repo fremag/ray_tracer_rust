@@ -1,6 +1,7 @@
 #[cfg(test)]
 pub mod tests {
     use crate::colors::Color;
+    use crate::core::intersection::Intersection;
     use crate::core::transform::scaling;
     use crate::core::tuple::point;
     use crate::lights::point_light::PointLight;
@@ -37,5 +38,9 @@ pub mod tests {
         material.refractive_index = 1.5;
         sphere.set_material(material);
         sphere
+    }
+
+    pub fn dummy_intersection() -> Intersection {
+        Intersection {t: 0.0, object: build_sphere(), u: 0.0, v: 0.0}
     }
 }
