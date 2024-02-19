@@ -16,6 +16,7 @@ use crate::scenes::dragon_scene::DragonScene;
 use crate::scenes::group_scene::GroupScene;
 use crate::scenes::patterns_scene::PatternsScene;
 use crate::scenes::refraction_sphere_scene::RefractionSphereScene;
+use crate::scenes::smooth_teapot_scene::SmoothTeaPotScene;
 use crate::scenes::stripe_pattern_scene::StripePatternScene;
 use crate::scenes::teapot_scene::TeaPotScene;
 
@@ -28,7 +29,7 @@ fn main() {
     }
 
     println!("Start...");
-    render(&TeaPotScene{},400, 400, "./img/teapot.png");
+    render(&SmoothTeaPotScene{},400, 400, "./img/teapot_smooth.png");
     println!("Done.")
 }
 
@@ -45,6 +46,7 @@ fn render_all() {
     render(&RefractionSphereScene{},400, 400, "./img/refraction_sphere_scene.png");
     render(&TeaPotScene{},400, 400, "./img/teapot.png");
     render(&DragonScene { }, 800, 600, "./img/dragon.png");
+    render(&SmoothTeaPotScene{},400, 400, "./img/teapot_smooth.png");
 }
 
 fn render(scene : &dyn Scene, h_size : usize, v_size : usize, file_path: &str) {

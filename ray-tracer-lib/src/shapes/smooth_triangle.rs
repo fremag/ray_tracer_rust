@@ -23,10 +23,6 @@ impl SmoothTriangle {
         let b=  self.n3 * intersection.v;
         let c = self.n1 * (1.0 - intersection.u - intersection.v);
         let n = a+b+c;
-        print!("{} {} {}", a.x, a.y, a.z);
-        print!("{} {} {}", b.x, b.y, b.z);
-        print!("{} {} {}", c.x, c.y, c.z);
-        print!("{} {} {}", n.x, n.y, n.z);
         n.normalize()
     }
 

@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::core::tuple::point;
+    use crate::core::tuple::{point, vector};
     use crate::obj_reader::ObjReader;
 
     #[test]
@@ -112,5 +112,50 @@ f 1 3 4
         assert_eq!(t2.p1, obj_reader.vertices[0]);
         assert_eq!(t2.p2, obj_reader.vertices[2]);
         assert_eq!(t2.p3, obj_reader.vertices[3]);
+    }
+
+    #[test]
+    fn vertex_normal_records_test() {
+        let str = "
+vn 0 0 1
+vn 0.707 0 -0.707
+vn 1 2 3
+";
+        let mut obj_reader = ObjReader::new(str.as_bytes());
+        obj_reader.read();
+        assert_eq!(obj_reader.normals[0], vector(0.0, 0.0, 1.0));
+        assert_eq!(obj_reader.normals[1], vector(0.707, 0.0, -0.707));
+        assert_eq!(obj_reader.normals[2], vector(1.0, 2.0, 3.0));
+    }
+
+    #[test]
+    fn faces_with_normals_test() {
+        let str = "
+v 0 1 0
+v -1 0 0
+v 1 0 0
+vn -1 0 0
+vn 1 0 0
+vn 0 1 0
+f 1//3 2//1 3//2
+f 1/0/3 2/102/1 3/14/2
+";
+
+        let mut obj_reader = ObjReader::new(str.as_bytes());
+        obj_reader.read();
+        let t1 = &obj_reader.smooth_triangles[0];
+        assert_eq!(t1.triangle.p1, point(0.0, 1.0, 0.0));
+        assert_eq!(t1.triangle.p2, point(-1.0, 0.0, 0.0));
+        assert_eq!(t1.triangle.p3, point(1.0, 0.0, 0.0));
+        assert_eq!(t1.n1, vector(0.0, 1.0, 0.0));
+        assert_eq!(t1.n2, vector(-1.0, 0.0, 0.0));
+        assert_eq!(t1.n3, vector(1.0, 0.0, 0.0));
+        let t2 = &obj_reader.smooth_triangles[1];
+        assert_eq!(t2.triangle.p1, point(0.0, 1.0, 0.0));
+        assert_eq!(t2.triangle.p2, point(-1.0, 0.0, 0.0));
+        assert_eq!(t2.triangle.p3, point(1.0, 0.0, 0.0));
+        assert_eq!(t2.n1, vector(0.0, 1.0, 0.0));
+        assert_eq!(t2.n2, vector(-1.0, 0.0, 0.0));
+        assert_eq!(t2.n3, vector(1.0, 0.0, 0.0));
     }
 }
