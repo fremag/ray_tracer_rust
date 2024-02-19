@@ -12,6 +12,7 @@ I'm learning Rust while working my way through Jamis Buck's
 <summary>Chapter 15: triangles</summary>
 
 ![teapot_triangles](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/teapot.png)
+![teapot_smooth_triangles](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/teapot_smooth.png)
 
 ![dragon_triangles](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/dragon.png)
 
