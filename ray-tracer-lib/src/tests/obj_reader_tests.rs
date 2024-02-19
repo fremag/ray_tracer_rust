@@ -143,14 +143,16 @@ f 1/0/3 2/102/1 3/14/2
 
         let mut obj_reader = ObjReader::new(str.as_bytes());
         obj_reader.read();
-        let t1 = &obj_reader.smooth_triangles[0];
+        let smooth_model = &obj_reader.smooth_models["Default"];
+
+        let t1 = &smooth_model.smooth_triangles[0];
         assert_eq!(t1.triangle.p1, point(0.0, 1.0, 0.0));
         assert_eq!(t1.triangle.p2, point(-1.0, 0.0, 0.0));
         assert_eq!(t1.triangle.p3, point(1.0, 0.0, 0.0));
         assert_eq!(t1.n1, vector(0.0, 1.0, 0.0));
         assert_eq!(t1.n2, vector(-1.0, 0.0, 0.0));
         assert_eq!(t1.n3, vector(1.0, 0.0, 0.0));
-        let t2 = &obj_reader.smooth_triangles[1];
+        let t2 = &smooth_model.smooth_triangles[1];
         assert_eq!(t2.triangle.p1, point(0.0, 1.0, 0.0));
         assert_eq!(t2.triangle.p2, point(-1.0, 0.0, 0.0));
         assert_eq!(t2.triangle.p3, point(1.0, 0.0, 0.0));
