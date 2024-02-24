@@ -239,7 +239,7 @@ mod tests {
     fn an_intersection_can_encapsulate_u_and_v_test() {
         let s = Triangle::new(point(0.0, 1.0, 0.0), point(-1.0, 0.0, 0.0), point(1.0, 0.0, 0.0));
         let model = TriangleModel::new(vec![s]);
-        let i = Intersection::new_uv(3.5, Object::new_triangle(model), 0.2, 0.4);
+        let i = Intersection::new_uv(3.5, Object::new_triangle_group(model), 0.2, 0.4);
         assert_eq!(i.u, 0.2);
         assert_eq!(i.v, 0.4);
     }

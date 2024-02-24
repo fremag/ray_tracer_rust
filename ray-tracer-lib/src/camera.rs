@@ -1,12 +1,15 @@
 use io::stdout;
 use std::io;
 use std::io::Write;
+use std::sync::atomic::Ordering;
 use crate::canvas::Canvas;
 use crate::core::math::Float;
 use crate::core::matrix::Matrix;
 use crate::core::ray::{Ray, ray};
 use crate::core::tuple::point;
+use crate::object::{INTERSECTION_COUNTER, OBJECT_COUNTER};
 use crate::world::World;
+use thousands::Separable;
 
 pub struct Camera {
     pub h_size: usize,
@@ -65,10 +68,14 @@ impl Camera {
 
     pub fn render(&self, world: &World, file_path: &str) -> Canvas {
         let mut image = Canvas::new(self.h_size, self.v_size);
+        let nb_objects = OBJECT_COUNTER.load(Ordering::Relaxed).separate_with_commas();
+
         for y in 0..self.v_size {
+
             let pct= (y+1) as f32 / self.v_size as f32 * 100.0;
-            print!("\r{:3.2} % - {} / {} - {}", pct, y+1, self.v_size, file_path);
+            print!("\r{:3.2} % - {} / {} - {} - {} inters - {} Objs, {}", pct, y+1, self.v_size, file_path, INTERSECTION_COUNTER.load(Ordering::Relaxed).separate_with_commas(), OBJECT_COUNTER.load(Ordering::Relaxed).separate_with_commas(), nb_objects);
             let _ = stdout().flush();
+
             for x in 0..self.h_size {
                 let ray = self.ray_for_pixel(x, y);
                 let color = world.color_at(&ray, 5);

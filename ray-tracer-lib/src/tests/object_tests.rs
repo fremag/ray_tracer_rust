@@ -3,7 +3,7 @@ mod tests {
     use crate::material::Material;
     use crate::core::math::{PI, SQRT2};
     use crate::core::matrix::Matrix;
-    use crate::object::{build_sphere, Object};
+    use crate::object::{build_sphere, get_next_unique_shape_id, Object};
     use crate::core::ray::ray;
     use crate::shapes::shape::Shape;
     use crate::shapes::sphere;
@@ -148,5 +148,12 @@ mod tests {
         s.set_transformation(m);
         let n = s.normal_at(point(0.0, SQRT2 / 2.0, -SQRT2 / 2.0), &dummy_intersection());
         assert_eq!(n, vector(0.0, 0.97014, -0.24254));
+    }
+
+    #[test]
+    fn object_counter_test() {
+        let id1 = get_next_unique_shape_id();
+        let id2 = get_next_unique_shape_id();
+        assert_eq!(id1+1, id2);
     }
 }

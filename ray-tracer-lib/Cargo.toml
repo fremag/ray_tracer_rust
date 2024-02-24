@@ -8,3 +8,4 @@ edition = "2021"
 sorted-vec = "0.8.3"
 rand = { version = "0.8.5", features = [] }
 png = { version = "0.17.11", features = [] }
+thousands = {version = "0.2.0"}

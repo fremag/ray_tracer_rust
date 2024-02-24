@@ -1,3 +1,4 @@
+use std::sync::atomic::{AtomicUsize, Ordering};
 use ObjectType::ObjectGroup;
 use crate::core::bounds::Bounds;
 use crate::shapes::cone::Cone;
@@ -18,8 +19,15 @@ use crate::core::tuple::Tuple;
 use crate::shapes::smooth_triangle_model::SmoothTriangleModel;
 use crate::shapes::triangle_model::TriangleModel;
 
+pub static OBJECT_COUNTER: AtomicUsize = AtomicUsize::new(0);
+pub static INTERSECTION_COUNTER: AtomicUsize = AtomicUsize::new(0);
+pub fn get_next_unique_shape_id() -> usize {
+    OBJECT_COUNTER.fetch_add(1, Ordering::SeqCst)
+}
+
 #[derive(Debug, Clone)]
 pub struct Object {
+    pub object_id : usize,
     pub object_type: ObjectType,
     material: Material,
     transformation: Matrix<4>,
@@ -61,22 +69,28 @@ impl Object {
     }
 
     pub fn intersect(&self, ray: &Ray) -> Intersections {
+        if cfg!(debug_assertions) {
+            INTERSECTION_COUNTER.fetch_add(1, Ordering::SeqCst);
+        }
+
         let ray2 = ray.transform(&self.transformation_inverse);
         return match &self.object_type {
             ObjectShape(shape) => intersections(shape.intersect(&ray2).iter().map(|t| Intersection::new(*t, self.clone() )).collect()),
             ObjectGroup(group) => group.intersect(&ray2),
             TriangleGroup(model) => {
 
-                let v = model.intersect(&ray2).iter().map(|(t, triangle)| {
-                    let mut obj = Object::new(Shape::Triangle(*triangle));
+                let v = model.intersect(&ray2).into_iter().map(|(t, triangle)| {
+                    let id =  triangle.id;
+                    let mut obj = Object::new_with_id(Shape::Triangle(triangle), id);
                     obj.set_material(self.material);
-                    Intersection::new(*t, obj)
+                    Intersection::new(t, obj)
                 }).collect();
                 intersections(v)
             },
             SmoothTriangleGroup(model) => {
                 let v = model.intersect(&ray2).into_iter().map(|(t, smooth_triangle, u, v)| {
-                    let mut obj = Object::new(Shape::SmoothTriangle(smooth_triangle));
+                    let id  = smooth_triangle.triangle.id;
+                    let mut obj = Object::new_with_id(Shape::SmoothTriangle(smooth_triangle), id);
                     obj.set_material(self.material);
                     Intersection::new_uv(t, obj, u, v)
                 }).collect();
@@ -132,6 +146,18 @@ impl Object {
 
     pub fn new(shape: Shape) -> Object {
         Object {
+            object_id: get_next_unique_shape_id(),
+            object_type: ObjectShape(shape),
+            material: Material::new(),
+            transformation: Matrix::<4>::identity(),
+            transformation_inverse: Matrix::<4>::identity(),
+            transformation_inverse_transpose: Matrix::<4>::identity(),
+        }
+    }
+
+    pub fn new_with_id(shape: Shape, id : usize) -> Object {
+        Object {
+            object_id: id,
             object_type: ObjectShape(shape),
             material: Material::new(),
             transformation: Matrix::<4>::identity(),
@@ -142,6 +168,7 @@ impl Object {
 
     pub fn new_group(group: Group) -> Object {
         Object {
+            object_id: get_next_unique_shape_id(),
             object_type: ObjectGroup(group),
             material: Material::new(),
             transformation: Matrix::<4>::identity(),
@@ -150,8 +177,9 @@ impl Object {
         }
     }
 
-    pub fn new_triangle(model: TriangleModel) -> Object {
+    pub fn new_triangle_group(model: TriangleModel) -> Object {
         Object {
+            object_id: get_next_unique_shape_id(),
             object_type: TriangleGroup(model),
             material: Material::new(),
             transformation: Matrix::<4>::identity(),
@@ -160,8 +188,9 @@ impl Object {
         }
     }
 
-    pub fn new_smooth_triangle(model: SmoothTriangleModel) -> Object {
+    pub fn new_smooth_triangle_group(model: SmoothTriangleModel) -> Object {
         Object {
+            object_id: get_next_unique_shape_id(),
             object_type: SmoothTriangleGroup(model),
             material: Material::new(),
             transformation: Matrix::<4>::identity(),

@@ -25,7 +25,7 @@ impl Scene for DragonScene {
 
         let dragon = obj_reader.models;
         let dragon_model = dragon.get("Default").unwrap();
-        let obj_dragon = Object::new_triangle(dragon_model.clone());
+        let obj_dragon = Object::new_triangle_group(dragon_model.clone());
         let mut world = World::new();
         world.objects.push(obj_dragon);
         let lights = vec!(PointLight::new(point(-100.0, 100.0, -100.0), Color::new(1.0, 1.0, 1.0)));

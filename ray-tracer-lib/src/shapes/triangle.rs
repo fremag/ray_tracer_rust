@@ -3,9 +3,11 @@ use crate::core::math;
 use crate::core::math::Float;
 use crate::core::ray::Ray;
 use crate::core::tuple::Tuple;
+use crate::object::get_next_unique_shape_id;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Triangle {
+    pub id : usize,
     pub p1: Tuple,
     pub p2: Tuple,
     pub p3: Tuple,
@@ -22,10 +24,11 @@ impl PartialEq for Triangle {
 
 impl Triangle {
     pub fn new(p1 : Tuple, p2 : Tuple, p3 : Tuple) -> Self {
+        let id = get_next_unique_shape_id();
         let e1 = p2-p1;
         let e2 = p3-p1;
         let normal = (e2 * &e1).normalize();
-        Self {p1, p2, p3, e1, e2, normal}
+        Self {id, p1, p2, p3, e1, e2, normal}
     }
 
     pub fn intersect(&self, ray: &Ray) -> Vec<Float> {

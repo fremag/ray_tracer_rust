@@ -24,7 +24,7 @@ impl Scene for SmoothTeaPotScene {
 
         let teapot = obj_reader.smooth_models;
         let teapot_model= teapot.get("Teapot001").unwrap();
-        let mut obj_teapot = Object::new_smooth_triangle(teapot_model.clone());
+        let mut obj_teapot = Object::new_smooth_triangle_group(teapot_model.clone());
         obj_teapot.set_transformation(&rotation_y(-PI/4.0) * &(&rotation_x(-PI/2.0)*&rotation_z(PI/2.0)));
         let mut world = World::new();
         world.objects.push(obj_teapot);

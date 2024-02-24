@@ -51,7 +51,7 @@ mod tests {
     fn a_smooth_triangle_uses_u_v_to_interpolate_the_normal_test() {
         let smooth_triangle = get_test_triangle();
         let model = SmoothTriangleModel::new(vec![smooth_triangle.clone()]);
-        let obj = Object::new_smooth_triangle(model);
+        let obj = Object::new_smooth_triangle_group(model);
         let i = Intersection::new_uv(1.0, obj, 0.45, 0.25);
         let n = smooth_triangle.normal_at(&point(0.0, 0.0, 0.0), &i);
         assert_eq!(n, vector(-0.5547, 0.83205, 0.0));
