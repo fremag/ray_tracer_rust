@@ -10,6 +10,7 @@ use crate::scene::Scene;
 use crate::scenes::basic_refraction_scene::BasicRefractionScene;
 use crate::scenes::clover_triangles_scene::CloverTriangleScene;
 use crate::scenes::cone_scene::ConeScene;
+use crate::scenes::csg_scene::CsgScene;
 use crate::scenes::cube_scene::CubeScene;
 use crate::scenes::cylinder_scene::CylinderScene;
 use crate::scenes::dragon_scene::DragonScene;
@@ -29,7 +30,7 @@ fn main() {
     }
 
     println!("Start...");
-    render(&SmoothTeaPotScene{},400, 400, "./img/teapot_smooth.png");
+    render(&CsgScene{},400, 400, "./img/csg.png");
     println!("Done.")
 }
 

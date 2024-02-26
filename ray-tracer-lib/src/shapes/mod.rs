@@ -9,3 +9,4 @@ pub mod triangle;
 pub mod triangle_model;
 pub mod smooth_triangle;
 pub mod smooth_triangle_model;
+pub mod csg;

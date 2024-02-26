@@ -1,18 +1,21 @@
+use std::collections::HashSet;
 use crate::core::bounds::Bounds;
 use crate::core::math::Float;
 use crate::core::matrix::Matrix;
 use crate::core::ray::Ray;
+use crate::object::Object;
 use crate::shapes::triangle::Triangle;
 
 #[derive(Debug, Clone)]
 pub struct TriangleModel {
     pub triangles : Vec<Triangle>,
     pub bounds : Bounds,
+    triangles_ids : HashSet<usize>
 }
 
 impl TriangleModel {
     pub fn new(triangles : Vec<Triangle>) -> Self {
-        let mut model = Self {triangles, bounds: Bounds::new()};
+        let mut model = Self {triangles, bounds: Bounds::new(), triangles_ids: HashSet::new()};
         model.init();
         model
     }
@@ -55,8 +58,14 @@ impl TriangleModel {
             bounds.add(&triangle.p1);
             bounds.add(&triangle.p2);
             bounds.add(&triangle.p3);
+            let id = triangle.id;
+            self.triangles_ids.insert(id);
         }
 
         self.bounds = bounds;
+    }
+
+    pub(crate) fn includes(&self, object: &Object) -> bool {
+        self.triangles_ids.contains(&object.object_id)
     }
 }

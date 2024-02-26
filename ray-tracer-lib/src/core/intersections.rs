@@ -22,6 +22,10 @@ impl Intersections {
     pub fn count(&self) -> usize {
         self.intersections.len()
     }
+
+    pub fn push(&mut self, intersection : Intersection ) {
+        self.intersections.push(intersection);
+    }
 }
 
 impl Index<usize> for Intersections {

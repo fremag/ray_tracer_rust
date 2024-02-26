@@ -11,3 +11,4 @@ pub mod clover_triangles_scene;
 pub mod teapot_scene;
 pub mod dragon_scene;
 pub mod smooth_teapot_scene;
+pub mod csg_scene;

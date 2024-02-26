@@ -10,12 +10,13 @@ use crate::core::intersections::{Intersections, intersections};
 use crate::material::{Material};
 use crate::core::math::Float;
 use crate::core::matrix::Matrix;
-use crate::object::ObjectType::{ObjectShape, SmoothTriangleGroup, TriangleGroup};
+use crate::object::ObjectType::{CsgGroup, ObjectShape, SmoothTriangleGroup, TriangleGroup};
 use crate::shapes::plane::Plane;
 use crate::core::ray::Ray;
 use crate::shapes::shape::Shape;
 use crate::shapes::sphere::sphere;
 use crate::core::tuple::Tuple;
+use crate::shapes::csg::Csg;
 use crate::shapes::smooth_triangle_model::SmoothTriangleModel;
 use crate::shapes::triangle_model::TriangleModel;
 
@@ -36,7 +37,7 @@ pub struct Object {
 }
 
 #[derive(Debug, Clone)]
-pub enum ObjectType { ObjectShape(Shape), ObjectGroup(Group), TriangleGroup(TriangleModel), SmoothTriangleGroup(SmoothTriangleModel)}
+pub enum ObjectType { ObjectShape(Shape), ObjectGroup(Group), TriangleGroup(TriangleModel), SmoothTriangleGroup(SmoothTriangleModel), CsgGroup(Csg)}
 
 impl Object {
     pub fn group(&self) -> Option<&Group> {
@@ -61,8 +62,9 @@ impl Object {
         let local_normal = match &self.object_type {
             ObjectShape(shape) => shape.normal_at(local_point, hit),
             ObjectGroup(_) => panic!("No !"),
-            TriangleGroup(_)  => panic!("No !"),
-            SmoothTriangleGroup(_)  => panic!("No !"),
+            TriangleGroup(_) => panic!("No !"),
+            SmoothTriangleGroup(_) => panic!("No !"),
+            CsgGroup(_) => panic!("No !"),
         };
         let n = self.normal_to_world(&local_normal);
         n
@@ -73,13 +75,13 @@ impl Object {
             INTERSECTION_COUNTER.fetch_add(1, Ordering::SeqCst);
         }
 
-        let ray2 = ray.transform(&self.transformation_inverse);
+        let transformed_ray = ray.transform(&self.transformation_inverse);
         return match &self.object_type {
-            ObjectShape(shape) => intersections(shape.intersect(&ray2).iter().map(|t| Intersection::new(*t, self.clone() )).collect()),
-            ObjectGroup(group) => group.intersect(&ray2),
+            ObjectShape(shape) => intersections(shape.intersect(&transformed_ray).iter().map(|t| Intersection::new(*t, self.clone() )).collect()),
+            ObjectGroup(group) => group.intersect(&transformed_ray),
             TriangleGroup(model) => {
 
-                let v = model.intersect(&ray2).into_iter().map(|(t, triangle)| {
+                let v = model.intersect(&transformed_ray).into_iter().map(|(t, triangle)| {
                     let id =  triangle.id;
                     let mut obj = Object::new_with_id(Shape::Triangle(triangle), id);
                     obj.set_material(self.material);
@@ -88,7 +90,7 @@ impl Object {
                 intersections(v)
             },
             SmoothTriangleGroup(model) => {
-                let v = model.intersect(&ray2).into_iter().map(|(t, smooth_triangle, u, v)| {
+                let v = model.intersect(&transformed_ray).into_iter().map(|(t, smooth_triangle, u, v)| {
                     let id  = smooth_triangle.triangle.id;
                     let mut obj = Object::new_with_id(Shape::SmoothTriangle(smooth_triangle), id);
                     obj.set_material(self.material);
@@ -96,6 +98,7 @@ impl Object {
                 }).collect();
                 intersections(v)
             },
+            CsgGroup(csg) => csg.intersect(&transformed_ray)
         };
     }
 
@@ -105,7 +108,17 @@ impl Object {
             ObjectGroup(group) => group.bounds(),
             TriangleGroup(model) => model.bounds(),
             SmoothTriangleGroup(model) => model.bounds(),
+            CsgGroup(csg) => csg.bounds()
         };
+    }
+    pub(crate) fn includes(&self, other_obj: &Object) -> bool {
+        match &self.object_type {
+            ObjectShape(_) => self.object_id == other_obj.object_id,
+            ObjectGroup(object_group) => object_group.includes(other_obj),
+            TriangleGroup(triangle_group) => triangle_group.includes(other_obj),
+            SmoothTriangleGroup(smooth_triangle_group) => smooth_triangle_group.includes(other_obj),
+            CsgGroup(csg) => csg.includes(other_obj)
+        }
     }
 
     pub fn set_transformation(&mut self, transformation: Matrix<4>) -> &Self {
@@ -122,7 +135,8 @@ impl Object {
             TriangleGroup(model) => {
                 model.set_transformation(transformation);
             }
-            SmoothTriangleGroup(model) => model.set_transformation(transformation)
+            SmoothTriangleGroup(model) => model.set_transformation(transformation),
+            CsgGroup(csg) => csg.set_transformation(transformation),
         }
         self
     }
@@ -192,6 +206,17 @@ impl Object {
         Object {
             object_id: get_next_unique_shape_id(),
             object_type: SmoothTriangleGroup(model),
+            material: Material::new(),
+            transformation: Matrix::<4>::identity(),
+            transformation_inverse: Matrix::<4>::identity(),
+            transformation_inverse_transpose: Matrix::<4>::identity(),
+        }
+    }
+
+    pub fn new_csg(csg: Csg) -> Object {
+        Object {
+            object_id: get_next_unique_shape_id(),
+            object_type: CsgGroup(csg),
             material: Material::new(),
             transformation: Matrix::<4>::identity(),
             transformation_inverse: Matrix::<4>::identity(),

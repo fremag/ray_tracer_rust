@@ -1,14 +1,16 @@
+use std::collections::HashSet;
 use crate::core::bounds::Bounds;
 use crate::core::intersections::{Intersections, intersections};
 use crate::core::matrix::Matrix;
-use crate::object::Object;
+use crate::object::{Object, ObjectType};
 use crate::core::ray::Ray;
 
 #[derive(Debug, Clone)]
 pub struct Group {
     pub children : Vec<Object>,
     bounds : Bounds,
-    transformation : Matrix<4>
+    transformation : Matrix<4>,
+    children_ids : HashSet<usize>
 }
 
 impl Group {
@@ -19,7 +21,8 @@ impl Group {
     pub fn new() -> Self {
         Self {  children: vec![],
                 bounds: Bounds::new(),
-                transformation: Matrix::<4>::identity()}
+                transformation: Matrix::<4>::identity(),
+                children_ids: HashSet::new()}
     }
 
     pub fn len(&self) -> usize {
@@ -62,7 +65,7 @@ impl Group {
             self.bounds.extend(&transformed_children.bounds());
         }
         self.children.push(transformed_children);
-
+        self.children_ids.insert(child.object_id);
     }
 
     pub fn intersect(&self, ray: &Ray) -> Intersections {
@@ -79,5 +82,20 @@ impl Group {
         }
 
         xs
+    }
+
+    pub(crate) fn includes(&self, object: &Object) -> bool {
+        if self.children_ids.contains(&object.object_id) {
+            return true;
+        }
+        let groups = self.children.iter().filter(|child| match &child.object_type {
+            ObjectType::ObjectShape(_) => true, _ => false
+        } );
+        for group in groups{
+            if group.includes(object) {
+                return true;
+            }
+        }
+        return false;
     }
 }

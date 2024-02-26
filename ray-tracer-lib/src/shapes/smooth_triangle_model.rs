@@ -1,18 +1,21 @@
+use std::collections::HashSet;
 use crate::core::bounds::Bounds;
 use crate::core::math::Float;
 use crate::core::matrix::Matrix;
 use crate::core::ray::Ray;
+use crate::object::Object;
 use crate::shapes::smooth_triangle::SmoothTriangle;
 
 #[derive(Debug, Clone)]
 pub struct SmoothTriangleModel {
     pub smooth_triangles : Vec<SmoothTriangle>,
     pub bounds : Bounds,
+    triangles_ids : HashSet<usize>
 }
 
 impl SmoothTriangleModel {
     pub fn new(smooth_triangles : Vec<SmoothTriangle>) -> Self {
-        let mut model = Self {smooth_triangles, bounds: Bounds::new()};
+        let mut model = Self {smooth_triangles, bounds: Bounds::new(), triangles_ids: HashSet::new()};
         model.init();
         model
     }
@@ -57,8 +60,13 @@ impl SmoothTriangleModel {
             bounds.add(&triangle.triangle.p1);
             bounds.add(&triangle.triangle.p2);
             bounds.add(&triangle.triangle.p3);
+            self.triangles_ids.insert(triangle.triangle.id);
         }
 
         self.bounds = bounds;
+    }
+
+    pub(crate) fn includes(&self, object: &Object) -> bool {
+        self.triangles_ids.contains(&object.object_id)
     }
 }

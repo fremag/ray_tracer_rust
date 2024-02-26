@@ -9,6 +9,12 @@ I'm learning Rust while working my way through Jamis Buck's
 [The Ray Tracer Challenge](http://raytracerchallenge.com/)
 
 <details open>
+<summary>Chapter 16: Constructive Solid Geometry</summary>
+
+![csg](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/csg.png)
+</details>
+
+<details open>
 <summary>Chapter 15: triangles</summary>
 
 ![teapot_triangles](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/teapot.png)
