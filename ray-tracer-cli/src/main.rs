@@ -30,7 +30,7 @@ fn main() {
     }
 
     println!("Start...");
-    render(&CsgScene{},400, 400, "./img/csg.png");
+    render(&CsgScene{},400, 400, "./img/csg_scene.png");
     println!("Done.")
 }
 

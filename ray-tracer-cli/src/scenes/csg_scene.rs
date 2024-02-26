@@ -1,7 +1,7 @@
 use ray_tracer_lib::camera::Camera;
 use ray_tracer_lib::colors::Color;
 use ray_tracer_lib::core::math::{PI};
-use ray_tracer_lib::core::transform::{scaling, view_transform};
+use ray_tracer_lib::core::transform::{rotation_y, scaling, translation, view_transform};
 use ray_tracer_lib::core::tuple::{point, vector};
 use ray_tracer_lib::lights::point_light::PointLight;
 use ray_tracer_lib::material::Material;
@@ -42,8 +42,9 @@ impl Scene for CsgScene {
         cube2.set_material(mat2.clone());
 
         let csg = Csg::new(CsgOperation::Difference, cyl1, cube2);
-
-        world.objects.push(Object::new_csg(csg));
+        let mut obj_csg = Object::new_csg(csg);
+        obj_csg.set_transformation(&translation(0.0, 1.0, 0.0) * &rotation_y(90.0));
+        world.objects.push(obj_csg);
 
         world
     }
