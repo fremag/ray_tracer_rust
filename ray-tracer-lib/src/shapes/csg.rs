@@ -17,8 +17,15 @@ pub struct Csg {
 
 impl Csg {
     pub(crate) fn intersect(&self, ray: &Ray) -> Intersections {
-        let mut left_xs = self.left().intersect(ray);
-        let right_xs = self.right().intersect(ray);
+        let intersections_with_bounds = self.group.bounds().intersect(&ray);
+        if intersections_with_bounds.is_empty() {
+            return intersections(vec![]);
+        }
+        
+        let left = self.left();
+        let mut left_xs = left.intersect(ray);
+        let right = self.right();
+        let right_xs = right.intersect(ray);
 
         for intersection in right_xs.intersections.iter() {
             left_xs.push(intersection.clone());
@@ -71,7 +78,8 @@ impl Csg {
         for i in xs.intersections.iter() {
             // if i.object is part of the "left" child, then lhit is true
             let obj = &i.object;
-            let lhit = self.left().includes(obj);
+            let left = self.left();
+            let lhit = left.includes(obj);
             if Csg::intersection_allowed(&self.csg_operation, lhit, inl, inr) {
                 let intersection = Intersection::new(i.t, i.object.clone());
                 result.intersections.push(intersection);
@@ -85,5 +93,13 @@ impl Csg {
         }
 
         result
+    }
+
+    pub(crate) fn get_child_ids(&self) -> Vec<usize> {
+        let mut ids : Vec<usize> = self.left().get_child_ids().into_iter().collect();
+        let ids_right = self.right().get_child_ids();
+        ids.extend(ids_right);
+
+        ids
     }
 }

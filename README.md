@@ -10,6 +10,7 @@ I'm learning Rust while working my way through Jamis Buck's
 
 <details open>
 <summary>Chapter 16: Constructive Solid Geometry</summary>
+![menger](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/menger_sponge_scene.png)
 
 ![csg](https://raw.githubusercontent.com/fremag/ray_tracer_rust/main/img/csg_scene.png)
 </details>

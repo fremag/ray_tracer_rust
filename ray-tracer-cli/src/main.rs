@@ -15,6 +15,7 @@ use crate::scenes::cube_scene::CubeScene;
 use crate::scenes::cylinder_scene::CylinderScene;
 use crate::scenes::dragon_scene::DragonScene;
 use crate::scenes::group_scene::GroupScene;
+use crate::scenes::menger_scene::{MengerCastleScene, MengerSpongeScene};
 use crate::scenes::patterns_scene::PatternsScene;
 use crate::scenes::refraction_sphere_scene::RefractionSphereScene;
 use crate::scenes::smooth_teapot_scene::SmoothTeaPotScene;
@@ -30,7 +31,7 @@ fn main() {
     }
 
     println!("Start...");
-    render(&CsgScene{},400, 400, "./img/csg_scene.png");
+    render(&MengerCastleScene{},800, 800, "./img/menger_castle_scene.png");
     println!("Done.")
 }
 
@@ -48,6 +49,8 @@ fn render_all() {
     render(&TeaPotScene{},400, 400, "./img/teapot.png");
     render(&DragonScene { }, 800, 600, "./img/dragon.png");
     render(&SmoothTeaPotScene{},400, 400, "./img/teapot_smooth.png");
+    render(&CsgScene{},400, 400, "./img/csg_scene.png");
+    render(&MengerSpongeScene{},400, 400, "./img/menger_sponge_scene.png");
 }
 
 fn render(scene : &dyn Scene, h_size : usize, v_size : usize, file_path: &str) {

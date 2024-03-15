@@ -12,3 +12,4 @@ pub mod teapot_scene;
 pub mod dragon_scene;
 pub mod smooth_teapot_scene;
 pub mod csg_scene;
+pub mod menger_scene;

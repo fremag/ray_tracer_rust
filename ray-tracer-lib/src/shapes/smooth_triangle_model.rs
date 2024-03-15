@@ -69,4 +69,10 @@ impl SmoothTriangleModel {
     pub(crate) fn includes(&self, object: &Object) -> bool {
         self.triangles_ids.contains(&object.object_id)
     }
+
+    pub fn get_child_ids(&self) -> Vec<usize> {
+        let mut ids = vec![];
+        ids.extend(self.triangles_ids.clone());
+        ids
+    }
 }

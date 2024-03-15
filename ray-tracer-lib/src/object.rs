@@ -75,13 +75,15 @@ impl Object {
             INTERSECTION_COUNTER.fetch_add(1, Ordering::SeqCst);
         }
 
-        let transformed_ray = ray.transform(&self.transformation_inverse);
         return match &self.object_type {
-            ObjectShape(shape) => intersections(shape.intersect(&transformed_ray).iter().map(|t| Intersection::new(*t, self.clone() )).collect()),
-            ObjectGroup(group) => group.intersect(&transformed_ray),
+            ObjectShape(shape) => {
+                let transformed_ray = ray.transform(&self.transformation_inverse);
+                intersections(shape.intersect(&transformed_ray).iter().map(|t| Intersection::new(*t, self.clone() )).collect())
+            },
+            ObjectGroup(group) => group.intersect(&ray),
             TriangleGroup(model) => {
 
-                let v = model.intersect(&transformed_ray).into_iter().map(|(t, triangle)| {
+                let v = model.intersect(&ray).into_iter().map(|(t, triangle)| {
                     let id =  triangle.id;
                     let mut obj = Object::new_with_id(Shape::Triangle(triangle), id);
                     obj.set_material(self.material);
@@ -90,7 +92,7 @@ impl Object {
                 intersections(v)
             },
             SmoothTriangleGroup(model) => {
-                let v = model.intersect(&transformed_ray).into_iter().map(|(t, smooth_triangle, u, v)| {
+                let v = model.intersect(&ray).into_iter().map(|(t, smooth_triangle, u, v)| {
                     let id  = smooth_triangle.triangle.id;
                     let mut obj = Object::new_with_id(Shape::SmoothTriangle(smooth_triangle), id);
                     obj.set_material(self.material);
@@ -98,7 +100,7 @@ impl Object {
                 }).collect();
                 intersections(v)
             },
-            CsgGroup(csg) => csg.intersect(&transformed_ray)
+            CsgGroup(csg) => csg.intersect(&ray)
         };
     }
 
@@ -221,6 +223,16 @@ impl Object {
             transformation: Matrix::<4>::identity(),
             transformation_inverse: Matrix::<4>::identity(),
             transformation_inverse_transpose: Matrix::<4>::identity(),
+        }
+    }
+
+    pub fn get_child_ids(&self) -> Vec<usize>{
+        match &self.object_type {
+            ObjectShape(_) => vec![],
+            ObjectGroup(group) => group.get_child_ids(),
+            TriangleGroup(triangle_group) => triangle_group.get_child_ids(),
+            SmoothTriangleGroup(smooth_triangle_group) => smooth_triangle_group.get_child_ids(),
+            CsgGroup(csg) => csg.get_child_ids()
         }
     }
 }

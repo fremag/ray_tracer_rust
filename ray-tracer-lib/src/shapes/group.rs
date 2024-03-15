@@ -66,6 +66,18 @@ impl Group {
         }
         self.children.push(transformed_children);
         self.children_ids.insert(child.object_id);
+        for id in child.get_child_ids() {
+            self.children_ids.insert(id);
+        }
+    }
+    pub fn get_child_ids(&self) -> Vec<usize> {
+        let mut ids = vec![];
+        for child in &self.children {
+            for id in child.get_child_ids() {
+                ids.push(id);
+            }
+        }
+        ids
     }
 
     pub fn intersect(&self, ray: &Ray) -> Intersections {
@@ -89,7 +101,7 @@ impl Group {
             return true;
         }
         let groups = self.children.iter().filter(|child| match &child.object_type {
-            ObjectType::ObjectShape(_) => true, _ => false
+            ObjectType::ObjectShape(_) => false, _ => true
         } );
         for group in groups{
             if group.includes(object) {
