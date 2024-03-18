@@ -1,6 +1,7 @@
 use ray_tracer_lib::camera::Camera;
 use ray_tracer_lib::colors::Color;
 use ray_tracer_lib::core::math::{Float, PI};
+use ray_tracer_lib::core::matrix::Matrix;
 use ray_tracer_lib::core::transform::{rotation_x, rotation_y, scaling, translation, view_transform};
 use ray_tracer_lib::core::tuple::{point, vector};
 use ray_tracer_lib::lights::point_light::PointLight;
@@ -8,6 +9,7 @@ use ray_tracer_lib::material::Material;
 use ray_tracer_lib::object::{build_cube, build_plane, Object};
 use ray_tracer_lib::patterns::pattern::Pattern;
 use ray_tracer_lib::shapes::csg::{Csg, CsgOperation};
+use ray_tracer_lib::shapes::group::Group;
 use ray_tracer_lib::world::World;
 use crate::scene::Scene;
 
@@ -139,17 +141,8 @@ impl MengerSponge {
         let g8 = Self::make_cubes(x1 + 2.0 * delta_x, y1 + 1.0 * delta_y, x1 + 3.0 * delta_x, y1 + 2.0 * delta_y, n + 1, max);
         let g9 = Self::make_cubes(x1 + 2.0 * delta_x, y1 + 2.0 * delta_y, x1 + 3.0 * delta_x, y1 + 3.0 * delta_y, n + 1, max);
 
-        let u1 = Object::new_csg(Csg::new(CsgOperation::Union, g1, g2));
-        let u2 = Object::new_csg(Csg::new(CsgOperation::Union, u1, g3));
-        let u3 = Object::new_csg(Csg::new(CsgOperation::Union, g4, g6));
+        let group = Group::from(vec![cube, g1, g2, g3, g4, g6, g7, g8, g9], Matrix::<4>::identity());
 
-        let u4 = Object::new_csg(Csg::new(CsgOperation::Union, g7, g8));
-        let u5 = Object::new_csg(Csg::new(CsgOperation::Union, g9, u4));
-
-        let u6 = Object::new_csg(Csg::new(CsgOperation::Union, u2, u3));
-        let u7 = Object::new_csg(Csg::new(CsgOperation::Union, u5, u6));
-
-        let u8 = Object::new_csg(Csg::new(CsgOperation::Union, cube, u7));
-        u8
+        return group;
     }
 }

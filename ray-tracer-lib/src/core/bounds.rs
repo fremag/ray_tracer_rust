@@ -42,7 +42,11 @@ impl Bounds {
     }
 
     pub fn new() -> Bounds {
-        Bounds {min: point(0.0, 0.0, 0.0), max: point(0.0, 0.0, 0.0)}
+        let bounds = Self::from(
+            point(Float::INFINITY, Float::INFINITY, Float::INFINITY),
+            point(Float::NEG_INFINITY, Float::NEG_INFINITY, Float::NEG_INFINITY)
+        );
+        bounds
     }
 
     pub fn add(&mut self, point : &Tuple) {
