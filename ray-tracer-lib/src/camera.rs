@@ -24,6 +24,7 @@ pub struct Camera {
     pub pixel_size: Float,
     pub transform: Matrix<4>,
     pub inverse_transform: Matrix<4>,
+    pub block_size : usize,
 }
 
 pub struct Pixel {
@@ -58,7 +59,7 @@ impl Camera {
 
         let pixel_size = (half_width * 2.0) / h_size as Float;
 
-        Camera { h_size, v_size, field_of_view, transform: Matrix::<4>::identity(), inverse_transform: Matrix::<4>::identity(), half_width, half_height, pixel_size }
+        Camera { h_size, v_size, field_of_view, transform: Matrix::<4>::identity(), inverse_transform: Matrix::<4>::identity(), half_width, half_height, pixel_size, block_size : 16 }
     }
 
     pub fn set_transform(&mut self, transform: Matrix<4>) {
@@ -86,17 +87,16 @@ impl Camera {
 
     pub fn render(&self, world: &World, file_path: &str) -> Canvas {
         let mut blocks: Vec<Block> = vec![];
-        let n = 20;
-        let nx = self.v_size / n;
-        let ny = self.h_size / n;
+        let nx = usize::max(1,self.v_size / self.block_size);
+        let ny = usize::max(1,self.h_size / self.block_size);
 
         for i in 0..nx {
             for j in 0..ny {
                 let block = Block {
-                    x_min: usize::min(i * n, self.v_size-1),
-                    x_max: usize::min((i+1) * n, self.v_size-1),
-                    y_min: usize::min(j * n, self.h_size-1),
-                    y_max: usize::min((j+1) * n, self.h_size-1),
+                    x_min: usize::min(i * self.block_size, self.v_size-1),
+                    x_max: usize::min((i+1) * self.block_size, self.v_size-1),
+                    y_min: usize::min(j * self.block_size, self.h_size-1),
+                    y_max: usize::min((j+1) * self.block_size, self.h_size-1),
                     pixels: vec![],
                 };
                 blocks.push(block);
@@ -109,6 +109,7 @@ impl Camera {
         let start = Arc::new(Mutex::new(Instant::now()));
 
         let mut image = Canvas::new(self.h_size, self.v_size);
+
         blocks.par_iter_mut().for_each(|block| {
             num_block.fetch_add(1, Ordering::SeqCst);
             for x in block.x_min..block.x_max {

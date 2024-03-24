@@ -3,7 +3,7 @@ mod ray_tracer;
 mod scene;
 mod tests;
 
-use std::env;
+use std::{env};
 use std::process::exit;
 use scenes::clover_scene::CloverScene;
 use crate::scene::Scene;
@@ -29,8 +29,10 @@ fn main() {
         render_all();
         exit(0);
     }
+    let nb_threads = num_cpus::get() - 1;
+    rayon::ThreadPoolBuilder::new().num_threads(nb_threads).build_global().unwrap();
 
-    println!("Start...");
+    println!("Start... {} threads", nb_threads);
     render(&MengerCastleScene{},800, 800, "./img/menger_castle_scene.png");
     println!("Done.")
 }

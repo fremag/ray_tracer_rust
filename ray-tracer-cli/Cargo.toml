@@ -10,3 +10,5 @@ rand = { version = "0.8.5", features = [] }
 ray-tracer-lib = { version = "0.1.0", path = "../ray-tracer-lib" }
 artem = "2.0.2"
 image = { version = "0.24.8", features = [] }
+rayon = "1.10.0"
+num_cpus = "1.16"
