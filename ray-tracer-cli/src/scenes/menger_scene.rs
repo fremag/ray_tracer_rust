@@ -67,7 +67,7 @@ impl Scene for MengerCastleScene {
         floor.set_material(material_floor.clone());
         world.objects.push(floor);
 
-        let menger_sponge = MengerSponge::new(3);
+        let menger_sponge = MengerSponge::new(4);
         let mut cube = build_cube();
         cube.set_transformation(&scaling(2.0, 1.0, 2.0) * &translation(0.0, 1.0, 0.0));
 
